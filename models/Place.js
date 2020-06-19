@@ -12,6 +12,10 @@ const placeSchema = new Schema({
     type: String,
     required: true,
   },
+  description:{
+    type:String,
+    required:true
+  },
   image:{
       type:String,
   },
@@ -40,11 +44,28 @@ const placeSchema = new Schema({
     },
   ],
   categories: [
+     {category:String}
+    ],
+  comments : [
     {
-      category: {
-        type: String,
-      },
+      creator:{
+      type: mongoose.Types.ObjectId,
+      ref: 'user'
     },
+    title:{
+      type:String,
+      required:true
+    },
+    text:{
+      type:String,
+      required:true
+    },
+    createdAt:{
+      type:Date,
+      default: Date.now
+    }
+    
+  }
   ],
   createdAt: {
     type: Date,

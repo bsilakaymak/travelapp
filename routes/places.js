@@ -32,8 +32,7 @@ route.put("/:pid/comments", placesControllers.getComments);
 //add comment
 route.put("/:pid/comments", placesControllers.addComment);
 
-//update comment
-route.put("/:pid/comments/:cid", placesControllers.updateComment);
-
 //delete comment
 route.put("/:pid/comments/:cid", placesControllers.deleteComment);
+
+module.exports = route

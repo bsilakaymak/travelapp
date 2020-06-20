@@ -1,6 +1,7 @@
 const express = require('express');
 const {check} = require('express-validator');
 const route = express.Router();
+const placeListControllers = require("../controllers/placeList-controllers");
 
 //get placelists
 route.get('/', placeListControllers.getPlaceLists)
@@ -28,3 +29,5 @@ route.post('/:plid/followers', placeListControllers.addFollowerToPlaceList)
 
 //remove follower from placelist
 route.delete('/:plid/followers/:fid', placeListControllers.removeFollowerFromPlaceList)
+
+module.exports = route

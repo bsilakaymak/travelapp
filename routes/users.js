@@ -43,3 +43,4 @@ route.put("/privacy", usersControllers.setPrivacy);
 //delete a user
 route.delete("/:uid"), usersControllers.deleteUser;
 
+module.exports = route

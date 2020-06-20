@@ -112,23 +112,6 @@ const addComment = async(req, res) => {
     res.send('Server Error').status(500)
   }
 };
-const updatePlace = async(req, res) => {
-  const placeId = req.params.pid;
-  try {
-    const place = await Place.findById(placeId);
-    //check if the user is authorized to update the place
-    if(place.creator.toString()!== req.userData.id){
-      res.status(401).send('User not authorized');
-    }
-    place.title = req.body.title;
-    place.description = req.body.description;
-    await place.save()
-    res.send(place).status(200)
-    
-  } catch (error) {
-    res.send('Server Error').status(500)
-  }
-};
 const deleteComment = async(req, res) => {
   const placeId = req.params.pid
   const commentId = req.params.cid
@@ -166,6 +149,5 @@ module.exports = {
   deletePlace,
   getComments,
   addComment,
-  updateComment,
   deleteComment,
 };

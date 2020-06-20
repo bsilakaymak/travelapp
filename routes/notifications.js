@@ -1,6 +1,9 @@
 const express = require('express');
 const {check} = require('express-validator');
 const route = express.Router();
+const notificationControllers = require("../controllers/notification-controllers");
+
+
 
 //get notifications
 route.get('/', notificationControllers.getNotifications)
@@ -10,3 +13,5 @@ route.post('/', notificationControllers.addNotification)
 route.delete('/:nid', notificationControllers.deleteNotification)
 //delete all notifications
 route.delete('/', notificationControllers.deleteAllNotifications)
+
+module.exports = route

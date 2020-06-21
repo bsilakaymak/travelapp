@@ -12,12 +12,12 @@ const placeSchema = new Schema({
     type: String,
     required: true,
   },
-  description:{
-    type:String,
-    required:true
+  description: {
+    type: String,
+    required: true,
   },
-  image:{
-      type:String,
+  image: {
+    type: String,
   },
   creator: {
     type: mongoose.Types.ObjectId,
@@ -36,36 +36,32 @@ const placeSchema = new Schema({
       rating: {
         type: Number,
       },
-      user:{
-          type: mongoose.Types.ObjectId,
-          ref: 'user'
-
-      }
+      user: {
+        type: mongoose.Types.ObjectId,
+        ref: "user",
+      },
     },
   ],
-  categories: [
-     {category:String}
-    ],
-  comments : [
+  categories: [{ category: String }],
+  comments: [
     {
-      creator:{
-      type: mongoose.Types.ObjectId,
-      ref: 'user'
+      creator: {
+        type: mongoose.Types.ObjectId,
+        ref: "user",
+      },
+      title: {
+        type: String,
+        required: true,
+      },
+      text: {
+        type: String,
+        required: true,
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
     },
-    title:{
-      type:String,
-      required:true
-    },
-    text:{
-      type:String,
-      required:true
-    },
-    createdAt:{
-      type:Date,
-      default: Date.now
-    }
-    
-  }
   ],
   createdAt: {
     type: Date,
@@ -73,4 +69,4 @@ const placeSchema = new Schema({
   },
 });
 
-module.exports = Place = mongoose.model("place", placeSchema);
+module.exports  = mongoose.model("place", placeSchema);

@@ -21,4 +21,4 @@ const notificationSchema = new Schema({
   },
 });
 
-module.exports = Notification = mongoose.model("user", notificationSchema);
+module.exports = mongoose.model("user", notificationSchema);

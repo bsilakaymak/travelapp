@@ -84,4 +84,4 @@ userSchema.methods.generatePasswordReset = function () {
   this.resetPasswordExpires = Date.now() + 3600000; //expires in an hour
 };
 
-module.exports = User = mongoose.model("user", userSchema);
+module.exports = mongoose.model("user", userSchema);

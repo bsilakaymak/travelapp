@@ -36,4 +36,4 @@ const placeListSchema = new Schema({
   ],
 });
 
-module.exports = PlaceList = mongoose.model("placeList", placeListSchema);
+module.exports = mongoose.model("placeList", placeListSchema);

@@ -29,10 +29,10 @@ route.post("/forgotpassword", usersControllers.forgotPassword);
 //reset password
 route.post('resetpassword', usersControllers.resetPassword)
 
-route.use(checkAuth);
-
 //create a user
 route.post("/", usersControllers.createUser);
+
+route.use(checkAuth);
 
 //update a user
 route.put("/:uid", usersControllers.updateUser);

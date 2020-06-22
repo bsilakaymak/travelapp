@@ -1,5 +1,5 @@
 const express = require('express');
-const {check} = require('express-validator');
+//const {check} = require('express-validator');
 const route = express.Router();
 const placeListControllers = require("../controllers/placeList-controllers");
 
@@ -16,7 +16,7 @@ route.post('/', placeListControllers.addPlaceList)
 route.put('/:plid', placeListControllers.updatePlaceList)
 
 //add place to placelist
-route.post('/:plid/places', placeListControllers.addPlaceToPlaceList)
+route.post('/:plid/places/:pid', placeListControllers.addPlaceToPlaceList)
 
 //remove place from placelist
 route.delete('/:plid/places/:pid', placeListControllers.removePlaceFromPlaceList)
@@ -24,10 +24,10 @@ route.delete('/:plid/places/:pid', placeListControllers.removePlaceFromPlaceList
 //delete placelist
 route.delete('/:plid', placeListControllers.deletePlaceList)
 
-//add follower to placelist
-route.post('/:plid/followers', placeListControllers.addFollowerToPlaceList)
+//follow placelist
+route.post('/:plid/followers', placeListControllers.followPlaceList)
 
-//remove follower from placelist
-route.delete('/:plid/followers/:fid', placeListControllers.removeFollowerFromPlaceList)
+//unfollow placelist
+route.delete('/:plid/followers', placeListControllers.unfollowPlaceList)
 
 module.exports = route

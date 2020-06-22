@@ -20,18 +20,14 @@ const placeListSchema = new Schema({
   },
   places: [
     {
-      place: {
-        type: mongoose.Types.ObjectId,
-        ref: "place",
-      },
+      type: mongoose.Types.ObjectId,
+      ref: "place",
     },
   ],
   followers: [
     {
-      user: {
         type: mongoose.Types.ObjectId,
         ref: "user",
-      },
     },
   ],
 });

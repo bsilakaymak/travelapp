@@ -11,12 +11,12 @@ route.post('/follow/:uid', userControllers.followUser)
 route.put('/follow/:uid', userControllers.unfollowUser)
 
 //add item to travel wishlist
-route.post('/wishlist/:uid', userControllers.addItemToTravelWishlist)
+route.post('/wishlist/', userControllers.addItemToTravelWishlist)
 
 //update item in travel wishlist
-route.put('/wishlist/:uid/:id', userControllers.updateItemInTravelWishlist)
+route.put('/wishlist/:pid', userControllers.updateItemInTravelWishlist)
 
 //delete item from travel wishlist
-route.delete('/wishlist/:uid/:id', userControllers.deleteItemFromTravelWishlist)
+route.delete('/wishlist/:pid', userControllers.deleteItemFromTravelWishlist)
 
 module.exports = route

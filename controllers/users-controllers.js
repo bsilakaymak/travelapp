@@ -1,24 +1,37 @@
 const { validationResult } = require("express-validator");
 const User = require("../models/User");
 
-const getUser = async(req, res,next) => {
-  
+const getUser = async(req, res) => {
+  const userId = req.params.uid
+  try {
+    const user = await User.findById(userId);
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(500).send('Server Error')
+  }
 };
-const getUsers = async(req,res, next) => {};
-const addUser = async(req,res, next) => {};
-const updateUser = async(req, res, next) => {};
-const login = async(req, res, next) => {};
-const signup = async(req, res, next) => {};
-const confirmAccount = async(req, res, next) => {};
-const forgotPassword = async(req, res, next) => {};
-const resetPassword = async(req, res, next) => {};
-const setPrivacy = async(req, res, next) => {};
-const deleteUser = async(req, res, next) => {};
+const getUsers = async(req,res) => {
+  try {
+    const users = await User.find();
+    res.status(200).send(users)
+  } catch (error) {
+    res.status(500).send('Server Error')
+  }
+};
+const createUser = async(req,res) => {};
+const updateUser = async(req, res) => {};
+const login = async(req, res) => {};
+const signup = async(req, res) => {};
+const confirmAccount = async(req, res) => {};
+const forgotPassword = async(req, res) => {};
+const resetPassword = async(req, res) => {};
+const setPrivacy = async(req, res) => {};
+const deleteUser = async(req, res) => {};
 
 module.exports = {
   getUser,
   getUsers,
-  addUser,
+  createUser,
   updateUser,
   login,
   signup,

@@ -32,7 +32,7 @@ route.post('resetpassword', usersControllers.resetPassword)
 route.use(checkAuth);
 
 //create a user
-route.post("/", usersControllers.addUser);
+route.post("/", usersControllers.createUser);
 
 //update a user
 route.put("/:uid", usersControllers.updateUser);

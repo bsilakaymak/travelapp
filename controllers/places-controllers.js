@@ -1,4 +1,4 @@
-const { validationResult } = require("express-validator");
+// const { validationResult } = require("express-validator");
 const Place = require("../models/Place");
 
 const getPlace = async(req, res) => {

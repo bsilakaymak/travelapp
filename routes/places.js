@@ -27,7 +27,7 @@ route.put("/:pid", placesControllers.ratePlace);
 route.delete("/:pid", placesControllers.deletePlace);
 
 //get comments
-route.put("/:pid/comments", placesControllers.getComments);
+route.get("/:pid/comments", placesControllers.getComments);
 
 //add comment
 route.put("/:pid/comments", placesControllers.addComment);
@@ -35,4 +35,4 @@ route.put("/:pid/comments", placesControllers.addComment);
 //delete comment
 route.put("/:pid/comments/:cid", placesControllers.deleteComment);
 
-module.exports = route
+module.exports = route;

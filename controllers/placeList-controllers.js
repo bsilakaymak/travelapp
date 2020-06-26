@@ -22,16 +22,18 @@ const getPlaceList = async (req, res) => {
 };
 const addPlaceList = async (req, res) => {
   try {
-    const user = await User.findById(req.userData.id);
+    const user = await User.findById(req.userData.userId);
+    console.log(user);
     const newPlaceList = {
       listName: req.body.listName,
       description: req.body.description || "No description is provided",
-      creator: user,
+      creator: user.id,
     };
-    const placeList = await new PlaceList(newPlaceList);
+    const placeList = new PlaceList(newPlaceList);
+    await placeList.save();
     res.status(200).send(placeList);
   } catch (error) {
-    res.status(500).send("Server Error");
+    res.status(500).send(error);
   }
 };
 const updatePlaceList = async (req, res) => {
@@ -39,11 +41,11 @@ const updatePlaceList = async (req, res) => {
   try {
     const placeList = await PlaceList.findById(plid);
     //check if the place list is created by the user
-    if (placeList.creator.toString() !== req.userData) {
-      res.send("User not authorized").status(401);
+    if (placeList.creator.toString() !== req.userData.userId) {
+      return res.send("User not authorized").status(401);
     }
     placeList.listName = req.body.listName;
-    placeList.description;
+    placeList.description = req.body.description;
     await placeList.save();
     res.status(200).send(placeList);
   } catch (error) {
@@ -52,7 +54,7 @@ const updatePlaceList = async (req, res) => {
 };
 const addPlaceToPlaceList = async (req, res) => {
   const pid = req.params.pid;
-  const plid = req.params.pid;
+  const plid = req.params.plid;
   try {
     const placeList = await PlaceList.findById(plid);
     const place = await Place.findById(pid);
@@ -60,7 +62,7 @@ const addPlaceToPlaceList = async (req, res) => {
     if (
       placeList.places.find((place) => place.toString() === pid) !== undefined
     ) {
-      res.send("Bad Request").status(400);
+      return res.send("Bad Request").status(400);
     }
     placeList.places.unshift(place);
     await placeList.save();
@@ -75,7 +77,7 @@ const removePlaceFromPlaceList = async (req, res) => {
   try {
     const placeList = await PlaceList.findById(plid);
     //check if user is authorized to remove place from the placelist
-    if (placeList.creator.toString() !== req.userData.id) {
+    if (placeList.creator.toString() !== req.userData.userId) {
       res.send("User not authorized").send(401);
     }
     //remove index
@@ -84,6 +86,7 @@ const removePlaceFromPlaceList = async (req, res) => {
       .indexOf(pid);
     // remove the place
     placeList.places.splice(removeIndex, 1);
+    await placeList.save();
     res.send(placeList.places).status(200);
   } catch (error) {
     res.status(500).send("Server Error");
@@ -95,7 +98,7 @@ const deletePlaceList = async (req, res) => {
     const placeList = await PlaceList.findById(plid);
     //check if user is authorized to delete the placelist
     if (placeList.creator.toString() !== req.userData.id) {
-      res.send("User is not authorized").status(401);
+      return res.send("User is not authorized").status(401);
     }
     await placeList.remove();
     res.send("Place removed").status(200);
@@ -106,15 +109,15 @@ const deletePlaceList = async (req, res) => {
 const followPlaceList = async (req, res) => {
   const plid = req.params.plid;
   try {
-    const user = await User.findById(req.userData.id);
+    const user = await User.findById(req.userData.userId);
     const placeList = await PlaceList.findById(plid);
     //check if the place list is already followed
     if (
       placeList.followers.find(
-        (follower) => follower.toString() === req.userData.id
+        (follower) => follower.toString() === req.userData.userId
       ) !== undefined
     ) {
-      res.send("Bad Request").status(400);
+      return res.send("Bad Request").status(400);
     }
     placeList.followers.unshift(user);
     await placeList.save();
@@ -129,11 +132,11 @@ const unfollowPlaceList = async (req, res) => {
     const placeList = await PlaceList.findById(plid);
     //check if the current user following the list
     if (
-      placeList.followers.find(
-        (follower) => follower.toString() === req.userData.id
-      ) !== undefined
+      placeList.followers.filter(
+        (follower) => follower === req.userData.userId
+      ).length !== 0
     ) {
-      res.send("Bad Request").status(400);
+      return res.send("Bad Request").status(400);
     }
     const removeIndex = placeList.followers
       .map((follower) => follower.toString())

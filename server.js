@@ -1,8 +1,14 @@
 const express = require('express');
+const connectDB = require('./config/db')
 
 const app = express();
+// connect db
+connectDB();
 
 //middleware initialization
+app.use(express.json());
+
+
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(

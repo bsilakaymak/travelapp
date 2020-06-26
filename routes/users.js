@@ -1,13 +1,10 @@
 const express = require("express");
 const { check } = require("express-validator");
 const route = express.Router();
-const checkAuth = require('../middleware/auth')
+const checkAuth = require("../middleware/auth");
 
 const usersControllers = require("../controllers/users-controllers");
 const fileUpload = require("../middleware/file-upload");
-
-//get a user
-route.get("/:uid", usersControllers.getUser);
 
 //get all users
 route.get("/all", usersControllers.getUsers);
@@ -18,7 +15,7 @@ route.post("/login", usersControllers.login);
 //social login
 
 //sign up
-route.post("/signup", usersControllers.signup);
+route.post("/signup", usersControllers.createUser);
 
 //confirm account
 route.get("/confirm/:token", usersControllers.confirmAccount);
@@ -27,20 +24,23 @@ route.get("/confirm/:token", usersControllers.confirmAccount);
 route.post("/forgotpassword", usersControllers.forgotPassword);
 
 //reset password
-route.post('resetpassword', usersControllers.resetPassword)
-
-//create a user
-route.post("/", usersControllers.createUser);
+route.post("resetpassword", usersControllers.resetPassword);
 
 route.use(checkAuth);
 
-//update a user
-route.put("/:uid", usersControllers.updateUser);
+//get current user
+route.get("/me", usersControllers.getCurrentUser);
+
+//get a user
+route.get("/:uid", usersControllers.getUser);
 
 //set privacy options
 route.put("/privacy", usersControllers.setPrivacy);
 
+//update a user
+route.put("/me", usersControllers.updateUser);
+
 //delete a user
 route.delete("/:uid"), usersControllers.deleteUser;
 
-module.exports = route
+module.exports = route;

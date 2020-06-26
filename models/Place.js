@@ -69,4 +69,4 @@ const placeSchema = new Schema({
   },
 });
 
-module.exports  = mongoose.model("place", placeSchema);
+module.exports = mongoose.model("place", placeSchema);

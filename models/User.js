@@ -27,16 +27,28 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  places: [{ type: mongoose.Types.ObjectId, ref: "place" }],
+
   followers: [
     {
-      type: mongoose.Types.ObjectId,
-      ref: "user",
+      user: {
+        type: mongoose.Types.ObjectId,
+        ref: "user",
+      },
+      name: {
+        type: String,
+      },
     },
   ],
   following: [
     {
-      type: mongoose.Types.ObjectId,
-      ref: "user",
+      user: {
+        type: mongoose.Types.ObjectId,
+        ref: "user",
+      },
+      name: {
+        type: String,
+      },
     },
   ],
   placeLists: [
@@ -66,10 +78,10 @@ const userSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: "place",
       },
-      isVisited :{
-        type:Boolean,
-        default:false
-      }
+      isVisited: {
+        type: Boolean,
+        default: false,
+      },
     },
   ],
 });

@@ -26,8 +26,8 @@ const placeListSchema = new Schema({
   ],
   followers: [
     {
-        type: mongoose.Types.ObjectId,
-        ref: "user",
+      type: mongoose.Types.ObjectId,
+      ref: "user",
     },
   ],
 });

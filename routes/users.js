@@ -10,12 +10,27 @@ const fileUpload = require("../middleware/file-upload");
 route.get("/all", usersControllers.getUsers);
 
 //login
-route.post("/login", usersControllers.login);
+route.post(
+  "/login",
+  [check("email", "Please eneter a valid email").isEmail().notEmpty()],
+  usersControllers.login
+);
 
 //social login
 
 //sign up
-route.post("/signup", usersControllers.createUser);
+route.post(
+  "/signup",
+  [
+    check("name", "Name is required.").not().isEmpty(),
+    check("email", "Please include a valid email.").isEmail(),
+    check(
+      "password",
+      "Please enter a password with 6 or more characters."
+    ).isLength({ min: 6 }),
+  ],
+  usersControllers.createUser
+);
 
 //confirm account
 route.get("/confirm/:token", usersControllers.confirmAccount);
@@ -38,7 +53,11 @@ route.get("/:uid", usersControllers.getUser);
 route.put("/privacy", usersControllers.setPrivacy);
 
 //update a user
-route.put("/me", usersControllers.updateUser);
+route.put(
+  "/me",
+  [check("name", "Please provide a name").not().isEmpty()],
+  usersControllers.updateUser
+);
 
 //delete a user
 route.delete("/:uid"), usersControllers.deleteUser;

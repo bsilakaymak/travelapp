@@ -31,6 +31,10 @@ const getCurrentUser = async (req, res) => {
   }
 };
 const createUser = async (req, res) => {
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
   const { name, email, password } = req.body;
   let createdUser;
   let token;
@@ -57,7 +61,7 @@ const createUser = async (req, res) => {
       { userId: createdUser.id, email: createdUser.email, token },
       JWT_KEY,
       {
-        expiresIn: "100h",
+        expiresIn: "1h",
       }
     );
     res
@@ -68,6 +72,10 @@ const createUser = async (req, res) => {
   }
 };
 const updateUser = async (req, res) => {
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
   try {
     const user = await User.findById(req.userData.userId);
     if (!user) {
@@ -81,6 +89,10 @@ const updateUser = async (req, res) => {
   }
 };
 const login = async (req, res) => {
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
   const { email, password } = req.body;
 
   let existingUser;
@@ -109,7 +121,7 @@ const login = async (req, res) => {
         { userId: existingUser.id, email: existingUser.email, token },
         JWT_KEY,
         {
-          expiresIn: "100h",
+          expiresIn: "1h",
         }
       );
     } catch (error) {

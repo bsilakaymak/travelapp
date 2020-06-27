@@ -1,4 +1,4 @@
-// const { validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 const PlaceList = require("../models/PlaceList");
 const User = require("../models/User");
 const Place = require("../models/Place");
@@ -21,6 +21,10 @@ const getPlaceList = async (req, res) => {
   }
 };
 const addPlaceList = async (req, res) => {
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
   try {
     const user = await User.findById(req.userData.userId);
     console.log(user);
@@ -37,6 +41,10 @@ const addPlaceList = async (req, res) => {
   }
 };
 const updatePlaceList = async (req, res) => {
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
   const plid = req.params.plid;
   try {
     const placeList = await PlaceList.findById(plid);

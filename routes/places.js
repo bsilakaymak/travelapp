@@ -15,10 +15,25 @@ route.get("/", placesControllers.getPlaces);
 route.use(checkAuth);
 
 //add place
-route.post("/", placesControllers.addPlace);
+route.post(
+  "/",
+  [
+    check("title", "Title is required").not().isEmpty(),
+    check("address", "Address is required").not().isEmpty(),
+    check("description", "Description is required").not().isEmpty(),
+  ],
+  placesControllers.addPlace
+);
 
 //update place
-route.post("/:pid", placesControllers.updatePlace);
+route.post(
+  "/:pid",
+  [
+    check("title", "Title is required").not().isEmpty(),
+    check("description", "Description is required").not().isEmpty(),
+  ],
+  placesControllers.updatePlace
+);
 
 //rate place
 route.put("/:pid", placesControllers.ratePlace);
@@ -30,7 +45,14 @@ route.delete("/:pid", placesControllers.deletePlace);
 route.get("/:pid/comments", placesControllers.getComments);
 
 //add comment
-route.put("/:pid/comments", placesControllers.addComment);
+route.put(
+  "/:pid/comments",
+  [
+    check("title", "Title is required").not().isEmpty(),
+    check("text", "Text is required").not().isEmpty(),
+  ],
+  placesControllers.addComment
+);
 
 //delete comment
 route.put("/:pid/comments/:cid", placesControllers.deleteComment);

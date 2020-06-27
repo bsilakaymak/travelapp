@@ -1,4 +1,4 @@
-// const { validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 const Place = require("../models/Place");
 const User = require("../models/User");
 
@@ -22,6 +22,10 @@ const getPlaces = async (req, res) => {
   }
 };
 const addPlace = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const user = await User.findById(req.userData.userId);
     const formData = {
@@ -43,6 +47,10 @@ const addPlace = async (req, res) => {
   }
 };
 const updatePlace = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const placeId = req.params.pid;
   try {
     const place = await Place.findById(placeId);
@@ -109,6 +117,10 @@ const getComments = async (req, res) => {
   }
 };
 const addComment = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const placeId = req.params.pid;
   try {
     const place = await Place.findById(placeId);

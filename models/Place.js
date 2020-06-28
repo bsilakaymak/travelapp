@@ -63,6 +63,17 @@ const placeSchema = new Schema({
       },
     },
   ],
+  placeListsAdded: [
+    {
+      listName: {
+        type: String,
+      },
+      listId: {
+        type: mongoose.Types.ObjectId,
+        ref: "placeList",
+      },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

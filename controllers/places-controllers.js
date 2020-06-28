@@ -1,10 +1,14 @@
 const { validationResult } = require("express-validator");
 const Place = require("../models/Place");
 const User = require("../models/User");
+const PlaceList = require("../models/PlaceList");
 
 const getPlace = async (req, res) => {
   try {
     const place = await Place.findById(req.params.pid);
+    if (!place) {
+      return res.send("Place not found").status(404);
+    }
     res.status(200).send(place);
   } catch (error) {
     res.status(500).send("Server Error");
@@ -98,9 +102,34 @@ const deletePlace = async (req, res) => {
     if (place.creator.toString() !== req.userData.userId) {
       return res.status(401).send("User not authorized");
     }
+
+    try {
+      const filteredPlaces = user.places.filter((place) => {
+        return place.toString() !== placeId.toString();
+      });
+      console.log(filteredPlaces);
+      user.places = filteredPlaces;
+
+      await user.save();
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+
+    // //make sure to delete the place from any place list it is added
+    try {
+      place.placeListsAdded.map(async (pla) => {
+        const placeList = await PlaceList.findById(pla.listId);
+        placeList.places = placeList.places.filter(
+          (place) => place.toString() !== placeId.toString()
+        );
+        console.log(placeList.places);
+        await placeList.save();
+      });
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+
     await place.remove();
-    user.places = user.places((place) => place.id.toString() !== placeId);
-    await user.save();
     res.status(200).send("Place removed");
   } catch (error) {
     res.send("Server Error").status(500);

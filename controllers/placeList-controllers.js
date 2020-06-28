@@ -22,9 +22,9 @@ const getPlaceList = async (req, res) => {
 };
 const addPlaceList = async (req, res) => {
   const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const user = await User.findById(req.userData.userId);
     console.log(user);
@@ -42,9 +42,9 @@ const addPlaceList = async (req, res) => {
 };
 const updatePlaceList = async (req, res) => {
   const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const plid = req.params.plid;
   try {
     const placeList = await PlaceList.findById(plid);
@@ -73,6 +73,11 @@ const addPlaceToPlaceList = async (req, res) => {
       return res.send("Bad Request").status(400);
     }
     placeList.places.unshift(place);
+    place.placeListsAdded.push({
+      listName: placeList.listName,
+      listId: plid,
+    });
+    await place.save();
     await placeList.save();
     res.send(placeList.places).status(200);
   } catch (error) {
@@ -84,6 +89,7 @@ const removePlaceFromPlaceList = async (req, res) => {
   const pid = req.params.pid;
   try {
     const placeList = await PlaceList.findById(plid);
+    const place = await Place.findById(pid);
     //check if user is authorized to remove place from the placelist
     if (placeList.creator.toString() !== req.userData.userId) {
       res.send("User not authorized").send(401);
@@ -95,6 +101,11 @@ const removePlaceFromPlaceList = async (req, res) => {
     // remove the place
     placeList.places.splice(removeIndex, 1);
     await placeList.save();
+    //also remove the place list from place model
+    place.placeListsAdded = place.placeListsAdded.filter(
+      (pla) => pla.listId.toString() !== plid
+    );
+    await place.save();
     res.send(placeList.places).status(200);
   } catch (error) {
     res.status(500).send("Server Error");
@@ -105,11 +116,24 @@ const deletePlaceList = async (req, res) => {
   try {
     const placeList = await PlaceList.findById(plid);
     //check if user is authorized to delete the placelist
-    if (placeList.creator.toString() !== req.userData.id) {
+    if (placeList.creator.toString() !== req.userData.userId) {
       return res.send("User is not authorized").status(401);
     }
+    //check and delete it from the place model it is added
+    try {
+      placeList.places.map(async (pid) => {
+        const currentPlace = await Place.findById(pid);
+        console.log(pid, currentPlace);
+        currentPlace.placeListsAdded = currentPlace.placeListsAdded.filter(
+          (pla) => pla.listId.toString() !== plid.toString()
+        );
+        await currentPlace.save();
+      });
+    } catch (error) {
+      return res.status(500).send(error);
+    }
     await placeList.remove();
-    res.send("Place removed").status(200);
+    res.send("Place list removed").status(200);
   } catch (error) {
     res.status(500).send("Server Error");
   }
@@ -140,9 +164,8 @@ const unfollowPlaceList = async (req, res) => {
     const placeList = await PlaceList.findById(plid);
     //check if the current user following the list
     if (
-      placeList.followers.filter(
-        (follower) => follower === req.userData.userId
-      ).length !== 0
+      placeList.followers.filter((follower) => follower === req.userData.userId)
+        .length !== 0
     ) {
       return res.send("Bad Request").status(400);
     }

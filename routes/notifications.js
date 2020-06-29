@@ -1,9 +1,7 @@
-const express = require('express');
-const {check} = require('express-validator');
-const route = express.Router();
-const notificationControllers = require("../controllers/notification-controllers");
-
-
+const express = require('express')
+const { check } = require('express-validator')
+const route = express.Router()
+const notificationControllers = require('../controllers/notification-controllers')
 
 //get notifications
 route.get('/', notificationControllers.getNotifications)

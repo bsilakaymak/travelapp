@@ -111,31 +111,24 @@ const deletePlace = async (req, res) => {
             return res.status(401).send('User not authorized')
         }
 
-        try {
-            const filteredPlaces = user.places.filter((place) => {
-                return place.toString() !== placeId.toString()
-            })
-            console.log(filteredPlaces)
-            user.places = filteredPlaces
+        const filteredPlaces = user.places.filter((place) => {
+            return place.toString() !== placeId.toString()
+        })
+        console.log(filteredPlaces)
+        user.places = filteredPlaces
 
-            await user.save()
-        } catch (error) {
-            return res.status(500).send(error)
-        }
+        await user.save()
 
         // //make sure to delete the place from any place list it is added
-        try {
-            place.placeListsAdded.map(async (pla) => {
-                const placeList = await PlaceList.findById(pla.listId)
-                placeList.places = placeList.places.filter(
-                    (place) => place.toString() !== placeId.toString()
-                )
-                console.log(placeList.places)
-                await placeList.save()
-            })
-        } catch (error) {
-            return res.status(500).send(error)
-        }
+
+        place.placeListsAdded.map(async (pla) => {
+            const placeList = await PlaceList.findById(pla.listId)
+            placeList.places = placeList.places.filter(
+                (place) => place.toString() !== placeId.toString()
+            )
+            console.log(placeList.places)
+            await placeList.save()
+        })
 
         await place.remove()
         res.status(200).send('Place removed')

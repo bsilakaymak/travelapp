@@ -1,5 +1,32 @@
-// const { validationResult } = require("express-validator");
 const User = require('../models/User')
+
+const getCurrentUser = async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.userData.userId)
+        res.status(200).send(currentUser)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+}
+
+const updateUser = async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+    const { name } = req.body
+    try {
+        const user = await User.findById(req.userData.userId)
+        if (!user) {
+            return res.send('User does not exist').status(422)
+        }
+        user.name = name
+        await user.save()
+        res.status(200).send(user)
+    } catch (err) {
+        res.send(err).status(500)
+    }
+}
 
 const followUser = async (req, res) => {
     const { uid: userId } = req.params
@@ -74,7 +101,7 @@ const deleteFollower = async (req, res) => {
         await user.save()
         const followedUser = await User.findById(followerId)
         followedUser.following = followedUser.following.filter(
-            (fllowiing) => fllowiing.user.toString() !== req.userData.userId
+            (following) => following.user.toString() !== req.userData.userId
         )
         await followedUser.save()
         res.send(user.followers).status(200)
@@ -133,6 +160,8 @@ const deleteItemFromTravelWishlist = async (req, res) => {
 }
 
 module.exports = {
+    getCurrentUser,
+    updateUser,
     followUser,
     unfollowUser,
     deleteFollower,

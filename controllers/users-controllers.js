@@ -23,15 +23,6 @@ const getUsers = async (req, res) => {
     }
 }
 
-const getCurrentUser = async (req, res) => {
-    try {
-        const currentUser = await User.findById(req.userData.userId)
-        res.status(200).send(currentUser)
-    } catch (error) {
-        res.status(500).send(error)
-    }
-}
-
 const createUser = async (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
@@ -75,25 +66,6 @@ const createUser = async (req, res) => {
         }).status(200)
     } catch (error) {
         res.send(error).status(500)
-    }
-}
-
-const updateUser = async (req, res) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() })
-    }
-    const { name } = req.body
-    try {
-        const user = await User.findById(req.userData.userId)
-        if (!user) {
-            return res.send('User does not exist').status(422)
-        }
-        user.name = name
-        await user.save()
-        res.status(200).send(user)
-    } catch (err) {
-        res.send(err).status(500)
     }
 }
 
@@ -159,12 +131,10 @@ module.exports = {
     getUser,
     getUsers,
     createUser,
-    updateUser,
     login,
     confirmAccount,
     forgotPassword,
     resetPassword,
     setPrivacy,
     deleteUser,
-    getCurrentUser,
 }

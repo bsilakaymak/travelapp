@@ -8,7 +8,7 @@ import {
     AUTH_ERROR,
     LOGIN_FAIL,
     LOGIN_SUCCESS,
-    LOGOUT
+    LOGOUT,
 } from './types'
 
 // get current user
@@ -24,6 +24,7 @@ export const loadUser = () => async (dispatch) => {
             payload: res.data,
         })
     } catch (error) {
+        console.log(error)
         dispatch({
             type: AUTH_ERROR,
         })
@@ -31,21 +32,27 @@ export const loadUser = () => async (dispatch) => {
 }
 
 // Register User
-export const register = ({ name, email, password }) => async (dispatch) => {
+export const register = (name, email, password, history) => async (
+    dispatch
+) => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
         },
     }
-    const body = JSON.stringify({ name, email, password })
+    const formData = {
+        name,
+        email,
+        password,
+    }
     try {
-        await axios.post('/api/users/signup', body, config)
-        const res = await axios.post('/api/users/signup', body, config)
+        const res = await axios.post('/api/users/signup', formData, config)
         dispatch({
             type: REGISTER_SUCCESS,
             payload: res.data,
         })
         dispatch(loadUser())
+        history.push('/dashboard')
     } catch (err) {
         const errors = err.response.data.errors
         if (errors) {
@@ -58,7 +65,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
 }
 
 // Login User
-export const login = (email, password) => async (dispatch) => {
+export const login = (email, password, history) => async (dispatch) => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -76,6 +83,7 @@ export const login = (email, password) => async (dispatch) => {
         })
 
         dispatch(loadUser())
+        history.push('/dashboard')
     } catch (err) {
         const errors = err.response.data.errors
 

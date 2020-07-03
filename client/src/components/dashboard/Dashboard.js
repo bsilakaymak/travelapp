@@ -62,19 +62,6 @@ const Dashboard = () => {
                 marginTop='1rem'
                 marginRight='1rem'
               >
-                <Icon
-                  color='#fff'
-                  mr='0.5rem'
-                  className='fas fa-user-friends'
-                ></Icon>
-                Follow
-              </Button>
-              <Button
-                small
-                background='#007bff'
-                marginTop='1rem'
-                marginRight='1rem'
-              >
                 My Places
               </Button>
               <Button small background='#007bff' marginTop='1rem'>

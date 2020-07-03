@@ -1,3 +1,4 @@
+import axios from 'axios'
 import {
     UPDATE_USER,
     UNFOLLOW_USER,

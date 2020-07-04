@@ -5,7 +5,10 @@ const PlaceList = require('../models/PlaceList')
 
 const getPlace = async (req, res) => {
     try {
-        const place = await Place.findById(req.params.pid).populate('comments.creator', 'name')
+        const place = await Place.findById(req.params.pid).populate(
+            'comments.creator',
+            'name'
+        )
         if (!place) {
             return res.send('Place not found').status(404)
         }
@@ -34,11 +37,16 @@ const addPlace = async (req, res) => {
     }
     const { title, address, description, categories = [] } = req.body
     try {
+        const imageSrc = {
+            imageUrl: req.file.url,
+            id: req.file.public_id,
+        }
         const user = await User.findById(req.userData.userId)
         const formData = {
             title,
             address,
             description,
+            image: imageSrc,
             creator: req.userData.userId,
             categories,
         }
@@ -89,11 +97,11 @@ const ratePlace = async (req, res) => {
         ) {
             return res.status(400).send('Already rated')
         }
-        const rating = {
-            rating,
+        const newRating = {
+            rating: rating,
             user: req.userData.userId,
         }
-        place.ratings.push(rating)
+        place.ratings.push(newRating)
         await place.save()
         res.status(200).send(place.ratings)
     } catch (error) {
@@ -140,7 +148,10 @@ const deletePlace = async (req, res) => {
 const getComments = async (req, res) => {
     const { pid: placeId } = req.params
     try {
-        const place = await Place.findById(placeId).populate('comments.creator', 'name')
+        const place = await Place.findById(placeId).populate(
+            'comments.creator',
+            'name'
+        )
         res.status(200).send(place.comments)
     } catch (error) {
         res.send('Server Error').status(500)

@@ -17,6 +17,7 @@ route.use(checkAuth)
 //add place
 route.post(
     '/',
+    fileUpload.single('image'),
     [
         check('title', 'Title is required').not().isEmpty(),
         check('address', 'Address is required').not().isEmpty(),

@@ -17,7 +17,15 @@ const placeSchema = new Schema({
         required: true,
     },
     image: {
-        type: String,
+        id: {
+            type: String,
+            required: true,
+        },
+        imageUrl: {
+            type: String,
+            required: true,
+            trim: true,
+        },
     },
     creator: {
         type: mongoose.Types.ObjectId,

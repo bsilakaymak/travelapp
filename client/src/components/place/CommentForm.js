@@ -52,7 +52,7 @@ const CommentForm = ({ placeId, place }) => {
                     <Label color="#244384">Add comment</Label>
                 </InputHolder>
             </CommentFormStyled>
-            {place && place.comments.length > 0 && (
+            {place && place.comments && place.comments.length > 0 && (
                 <CommentItemHolder>
                     {place.comments.map((comment) => (
                         <Card

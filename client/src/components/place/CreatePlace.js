@@ -23,6 +23,7 @@ const CreatePlace = () => {
         title: '',
         address: '',
         description: '',
+        image: {},
     })
     const dispatch = useDispatch()
     const [file, setFile] = useState(null)
@@ -37,10 +38,15 @@ const CreatePlace = () => {
     }, [file])
     const { title, address, description } = userData
     const onChangeCreatePlaceHandler = (e) => {
-        setUserData({ ...userData, [e.target.name]: e.target.value })
+        if (e.target.name === 'image') {
+            setUserData({ ...userData, image: { file } })
+        } else {
+            setUserData({ ...userData, [e.target.name]: e.target.value })
+        }
     }
     const onSubmitCreatPlaceFormHandler = (e) => {
         e.preventDefault()
+        console.log(file)
         dispatch(addPlace(userData, history))
     }
 
@@ -89,7 +95,10 @@ const CreatePlace = () => {
                     />
                     <Label>Description</Label>
                 </InputHolder>
-                <ImageUpload onChange={(e) => setFile(e.target.files[0])} />
+                <ImageUpload
+                    name="image"
+                    onChange={(e) => setFile(e.target.files[0])}
+                />
                 <Holder width="150px" height="150px">
                     {!previewUrl && <p>Please pick an image.</p>}
                     <Image src={previewUrl} alt="" />

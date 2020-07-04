@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom'
 import { Card, Title, Holder, Image, Divider, Button } from '../shared/Elements'
 
 import StarRating from '../shared/StarRating'
+import { useDispatch } from 'react-redux'
+import { ratePlace } from '../../actions/places'
 const PlaceItem = ({ place }) => {
     const { title, address, description, image, _id } = place
     const [rating, setRating] = useState(null)
+    const dispatch = useDispatch()
     console.log(rating)
     return (
         <Card marginTop="1rem" marginBottom="1rem">
@@ -23,7 +26,8 @@ const PlaceItem = ({ place }) => {
             <Divider gray marginTop="0.8rem" marginBottom="0.8rem" />
             <StarRating
                 onChange={(e) => {
-                    setRating(e.target.value)
+                    console.log(typeof e.target.value)
+                    dispatch(ratePlace(_id, { rating: parseInt(e.target.value) }))
                 }}
             />
             <Link to={`/place/${_id}`}>

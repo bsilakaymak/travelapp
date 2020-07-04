@@ -21,7 +21,16 @@ const updateUser = async (req, res) => {
         if (!user) {
             return res.send('User does not exist').status(422)
         }
-        user.name = name
+        if (name) {
+            user.name = req.body.name
+        } else {
+            user.name = user.name
+        }
+        if (req.file) {
+            user.image = req.file.url
+        } else {
+            user.image = user.image
+        }
         await user.save()
         res.status(200).send(user)
     } catch (err) {

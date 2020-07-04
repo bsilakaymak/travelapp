@@ -4,8 +4,13 @@ import styled from 'styled-components'
 import { Form, Input, Label, FormTitle, InputHolder } from '../shared/FormGroup'
 import { Divider, Button, Icon, Image, Holder } from '../shared/Elements'
 import ImageUpload from '../shared/ImageUpload'
+import { useDispatch } from 'react-redux'
+import { updateUser } from '../../actions/user'
+import { useHistory } from 'react-router-dom'
 
 const UpdateUser = ({ setShowEdit }) => {
+    const history = useHistory()
+    const dispatch = useDispatch()
     const [userData, setUserData] = useState({
         name: '',
     })
@@ -26,6 +31,8 @@ const UpdateUser = ({ setShowEdit }) => {
     }
     const onSubmitUserUpdateFormHandler = (e) => {
         e.preventDefault()
+        dispatch(updateUser(userData, history))
+        setShowEdit(false)
     }
     const { name } = userData
 

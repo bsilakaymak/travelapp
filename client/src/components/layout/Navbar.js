@@ -82,7 +82,7 @@ const Navbar = () => {
         <Link active={isActive('/') ? '#3F51B5' : '#fff'} to='/'>
           Home
         </Link>
-        <Link active={isActive('/place') ? '#3F51B5' : '#fff'} to='/place'>
+        <Link active={isActive('/places') ? '#3F51B5' : '#fff'} to='/places'>
           Places
         </Link>
 

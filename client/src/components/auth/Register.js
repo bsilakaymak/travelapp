@@ -20,8 +20,8 @@ const Register = () => {
         password: '',
         password2: '',
     })
-    const dispatch = useDispatch()
     const history = useHistory()
+    const dispatch = useDispatch();
     const { name, email, password, password2 } = userData
     const onChangeRegisterHandler = (e) => {
         setUserData({ ...userData, [e.target.name]: e.target.value })
@@ -32,7 +32,7 @@ const Register = () => {
             console.log('Passwords do not match')
             return
         } else {
-            dispatch(register(name, email, password, history));
+            dispatch(register(name, email, password, history))
         }
     }
     return (
@@ -79,7 +79,7 @@ const Register = () => {
                         value={password}
                         onChange={onChangeRegisterHandler}
                         autoComplete="off"
-                        type='password'
+                        type="password"
                         required
                     />
                     <Label>Password</Label>
@@ -91,7 +91,7 @@ const Register = () => {
                         name="password2"
                         value={password2}
                         onChange={onChangeRegisterHandler}
-                        type='password'
+                        type="password"
                         autoComplete="off"
                         required
                     />
@@ -110,5 +110,6 @@ const Register = () => {
         </LoginContainer>
     )
 }
+
 
 export default Register

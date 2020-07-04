@@ -5,7 +5,7 @@ const PlaceList = require('../models/PlaceList')
 
 const getPlace = async (req, res) => {
     try {
-        const place = await Place.findById(req.params.pid)
+        const place = await Place.findById(req.params.pid).populate('comments.creator', 'name')
         if (!place) {
             return res.send('Place not found').status(404)
         }
@@ -153,12 +153,11 @@ const addComment = async (req, res) => {
         return res.status(400).json({ errors: errors.array() })
     }
     const { pid: placeId } = req.params
-    const { title, text } = req.body
+    const { text } = req.body
     try {
         const place = await Place.findById(placeId)
         const newPlace = {
             creator: req.userData.userId,
-            title,
             text,
         }
         place.comments.push(newPlace)

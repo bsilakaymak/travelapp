@@ -6,6 +6,7 @@ import {
     COMMENT_PLACE,
     DELETE_COMMENT_PLACE,
     RATE_PLACE,
+    ADD_PLACE,
 } from '../actions/types'
 
 const initialState = {

@@ -1,91 +1,104 @@
-import React, { useState } from 'react';
-import Moment from 'react-moment';
-import styled from 'styled-components';
-import * as uuid from 'uuid';
-import { Input, Form, Label, InputHolder } from '../shared/FormGroup';
-import { Card, Title, Icon, Holder } from '../shared/Elements';
-import { DUMMY_DATA } from '../../UsersData';
+import React, { useState } from 'react'
+import Moment from 'react-moment'
+import styled from 'styled-components'
+import * as uuid from 'uuid'
+import { Input, Form, Label, InputHolder } from '../shared/FormGroup'
+import { Card, Title, Icon, Holder } from '../shared/Elements'
+import { useDispatch, useSelector } from 'react-redux'
+import { addComment, deleteComment } from '../../actions/places'
 
 const CommentFormStyled = styled(Form)`
-  background: none;
-  padding: 10px 20px;
-  box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.2);
-  margin-bottom: 0.8rem;
-  margin-top: 0.8rem;
+    background: none;
+    padding: 10px 20px;
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.2);
+    margin-bottom: 0.8rem;
+    margin-top: 0.8rem;
 
-  @media (min-width: 576px) {
-    width: 100%;
-  }
-`;
+    @media (min-width: 576px) {
+        width: 100%;
+    }
+`
 const CommentItemHolder = styled.div`
-  background: #eee;
-  padding: 1.5rem;
-`;
+    background: #eee;
+    padding: 1.5rem;
+`
 const CommenterNameHolder = styled.div`
-  display: flex;
-  width: 100%;
-  margin-bottom: 5px;
-`;
+    display: flex;
+    width: 100%;
+    margin-bottom: 5px;
+`
 
-const CommentForm = ({ placeId }) => {
-  const [comment, setComment] = useState('');
-  const [newComment, setNewComment] = useState([]);
+const CommentForm = ({ placeId, place }) => {
+    const userId = useSelector((state) => state.auth.user._id)
+    const dispatch = useDispatch()
+    const [comment, setComment] = useState('')
 
-  const onSubmitCommentHandler = (e) => {
-    e.preventDefault();
+    const onSubmitCommentHandler = (e) => {
+        e.preventDefault()
+        dispatch(addComment(placeId, { text: comment }))
+    }
 
-    const place = DUMMY_DATA.filter((place) => place.id === placeId);
+    return (
+        <>
+            <CommentFormStyled onSubmit={onSubmitCommentHandler}>
+                <InputHolder>
+                    <Input
+                        borderColor="#244384"
+                        onChange={(e) => setComment(e.target.value)}
+                        value={comment}
+                        autoComplete="off"
+                        required
+                    />
+                    <Label color="#244384">Add comment</Label>
+                </InputHolder>
+            </CommentFormStyled>
+            {place && place.comments.length > 0 && (
+                <CommentItemHolder>
+                    {place.comments.map((comment) => (
+                        <Card
+                            key={comment._id}
+                            marginTop="0.25rem"
+                            marginBottom="0.25rem"
+                        >
+                            <CommenterNameHolder>
+                                <Title marginRight="10px">{comment.user}</Title>
+                                <span>
+                                    <Moment format="h:mm a">
+                                        {comment.createdAt}
+                                    </Moment>
+                                </span>
+                                <Holder
+                                    ml="auto"
+                                    direction="inherit"
+                                    width="10%"
+                                >
+                                    {comment.creator._id === userId && (
+                                        <Icon
+                                            mr="5px"
+                                            className="far fa-trash-alt"
+                                            onClick={() =>
+                                                dispatch(
+                                                    deleteComment(
+                                                        placeId,
+                                                        comment._id
+                                                    )
+                                                )
+                                            }
+                                        ></Icon>
+                                    )}
+                                </Holder>
+                                <div>
+                                    <p>by: {comment.creator.name}</p>
+                                </div>
+                            </CommenterNameHolder>
 
-    place[0].comments.push({
-      commentId: uuid(),
-      user: 'test',
-      comment,
-      createAt: Date.now(),
-    });
-    setNewComment(place[0].comments);
-    setComment('');
-  };
+                            <p>{comment.text}</p>
+                        </Card>
+                    ))}
+                </CommentItemHolder>
+            )}
+        </>
+    )
+}
 
-  return (
-    <>
-      <CommentFormStyled onSubmit={onSubmitCommentHandler}>
-        <InputHolder>
-          <Input
-            borderColor='#244384'
-            onChange={(e) => setComment(e.target.value)}
-            value={comment}
-            autoComplete='off'
-            required
-          />
-          <Label color='#244384'>Add comment</Label>
-        </InputHolder>
-      </CommentFormStyled>
-      {newComment.length > 0 && (
-        <CommentItemHolder>
-          {newComment.map((comment) => (
-            <Card
-              key={comment.commentId}
-              marginTop='0.25rem'
-              marginBottom='0.25rem'
-            >
-              <CommenterNameHolder>
-                <Title marginRight='10px'>{comment.user}</Title>
-                <span>
-                  <Moment format='h:mm a'>{comment.createAt}</Moment>
-                </span>
-                <Holder ml='auto' direction='inherit' width='10%'>
-                  <Icon mr='5px' className='far fa-trash-alt'></Icon>
-                  <Icon className='far fa-edit'></Icon>
-                </Holder>
-              </CommenterNameHolder>
-
-              <p>{comment.comment}</p>
-            </Card>
-          ))}
-        </CommentItemHolder>
-      )}
-    </>
-  );
-};
-
-export default CommentForm;
+export default CommentForm

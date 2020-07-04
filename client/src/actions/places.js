@@ -33,7 +33,7 @@ export const getPlace = (placeId) => async (dispatch) => {
 }
 
 // add place
-export const addPlace = (formData) => async (dispatch) => {
+export const addPlace = (formData, history) => async (dispatch) => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -45,6 +45,7 @@ export const addPlace = (formData) => async (dispatch) => {
             type: ADD_PLACE,
             payload: res.data,
         })
+        history.push('/places')
     } catch (error) {}
 }
 
@@ -66,13 +67,14 @@ export const updatePlace = (placeId, formData) => async (dispatch) => {
 }
 
 // delete place
-export const deletePlace = (placeId) => async (dispatch) => {
+export const deletePlace = (placeId,history) => async (dispatch) => {
     try {
         const res = await axios.delete(`/api/places/${placeId}`)
         dispatch({
             type: DELETE_PLACE,
             payload: placeId,
         })
+        history.push('/places')
     } catch (error) {}
 }
 
@@ -84,7 +86,7 @@ export const addComment = (placeId, formData) => async (dispatch) => {
         },
     }
     try {
-        const res = await axios.post(
+        const res = await axios.put(
             `/api/places/${placeId}/comments`,
             formData,
             config
@@ -99,7 +101,7 @@ export const addComment = (placeId, formData) => async (dispatch) => {
 // delete comment
 export const deleteComment = (placeId, commentId) => async (dispatch) => {
     try {
-        const res = await axios.delete(
+        const res = await axios.put(
             `/api/places/${placeId}/comments/${commentId}`
         )
         dispatch({

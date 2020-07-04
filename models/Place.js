@@ -49,10 +49,6 @@ const placeSchema = new Schema({
                 type: mongoose.Types.ObjectId,
                 ref: 'user',
             },
-            title: {
-                type: String,
-                required: true,
-            },
             text: {
                 type: String,
                 required: true,

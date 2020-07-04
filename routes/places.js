@@ -47,10 +47,7 @@ route.get('/:pid/comments', placesControllers.getComments)
 //add comment
 route.put(
     '/:pid/comments',
-    [
-        check('title', 'Title is required').not().isEmpty(),
-        check('text', 'Text is required').not().isEmpty(),
-    ],
+    [check('text', 'Text is required').not().isEmpty()],
     placesControllers.addComment
 )
 

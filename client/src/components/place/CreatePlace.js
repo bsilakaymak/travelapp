@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Form, Input, Label, FormTitle, InputHolder } from '../shared/FormGroup'
 import { Divider, Button, Icon, Image, Holder } from '../shared/Elements'
 import ImageUpload from '../shared/ImageUpload'
@@ -18,6 +18,7 @@ const CreatePlaceContainer = styled.div`
     left: 0;
 `
 const CreatePlace = () => {
+    const history = useHistory()
     const [userData, setUserData] = useState({
         title: '',
         address: '',
@@ -40,7 +41,7 @@ const CreatePlace = () => {
     }
     const onSubmitCreatPlaceFormHandler = (e) => {
         e.preventDefault()
-        dispatch(addPlace(userData))
+        dispatch(addPlace(userData, history))
     }
 
     return (

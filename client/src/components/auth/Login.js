@@ -10,7 +10,11 @@ const LoginContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 5rem;
+    min-height: calc(100% - 50px);
+    background: #3e497b;
+    position: absolute;
+    right: 0;
+    left: 0;
 `
 const ForgetPasswordBtn = styled(Link)`
     color: #fff;
@@ -33,13 +37,6 @@ const Login = () => {
     }
     return (
         <LoginContainer>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                <path
-                    fill="#000b76"
-                    fillOpacity="1"
-                    d="M0,224L48,186.7C96,149,192,75,288,58.7C384,43,480,85,576,128C672,171,768,213,864,213.3C960,213,1056,171,1152,133.3C1248,96,1344,64,1392,48L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-                ></path>
-            </svg>
             <Form right onSubmit={onSubmitAuthFormHandler}>
                 <FormTitle>Login</FormTitle>
                 <Divider marginBottom="0.8rem" />
@@ -64,7 +61,7 @@ const Login = () => {
                         value={password}
                         onChange={onChangeRegisterHandler}
                         autoComplete="off"
-                        type='password'
+                        type="password"
                         required
                     />
                     <Label>Password</Label>

@@ -9,7 +9,7 @@ import { DUMMY_DATA } from '../../UsersData'
 import 'react-responsive-modal/styles.css'
 import { Modal } from 'react-responsive-modal'
 import Map from '../shared/Map'
-
+import { ImageHolder } from '../shared/Map'
 const PlaceItem = () => {
     const [open, setOpen] = useState(false)
     const placeId = useParams().placeId
@@ -26,21 +26,12 @@ const PlaceItem = () => {
                 onClose={() => setOpen(false)}
                 center
             >
-                <Holder width="500px" height="500px">
-                    <Title center>{address}</Title>
-                    <Divider gray margin="0.8rem" />
-
-                    <Map center={location} zoom={16} />
-                    <Divider gray marginTop="0.8rem" />
-                    <Button
-                        onClick={() => setOpen(false)}
-                        small
-                        background="#004C7F"
-                        marginTop="0.8rem"
-                    >
-                        Close
-                    </Button>
-                </Holder>
+                <Map
+                    center={location}
+                    zoom={16}
+                    title={address}
+                    onClick={() => setOpen(false)}
+                />
             </Modal>
             <Container>
                 <Row center>

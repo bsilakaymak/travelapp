@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator')
 const Place = require('../models/Place')
 const User = require('../models/User')
 const PlaceList = require('../models/PlaceList')
-
+const getCoordsForAddress = require('../utils/location')
 const getPlace = async (req, res) => {
     try {
         const place = await Place.findById(req.params.pid)
@@ -33,12 +33,18 @@ const addPlace = async (req, res) => {
         return res.status(400).json({ errors: errors.array() })
     }
     const { title, address, description, categories = [] } = req.body
+
     try {
         const user = await User.findById(req.userData.userId)
+        const coordinates = await getCoordsForAddress(address)
         const formData = {
             title,
             address,
             description,
+            location: {
+                lat: coordinates[1],
+                lon: coordinates[0],
+            },
             creator: req.userData.userId,
             categories,
         }

@@ -24,8 +24,8 @@ const Register = () => {
         password: '',
         password2: '',
     })
-    const dispatch = useDispatch()
     const history = useHistory()
+    const dispatch = useDispatch();
     const { name, email, password, password2 } = userData
     const onChangeRegisterHandler = (e) => {
         setUserData({ ...userData, [e.target.name]: e.target.value })
@@ -107,5 +107,6 @@ const Register = () => {
         </LoginContainer>
     )
 }
+
 
 export default Register

@@ -3,8 +3,8 @@ import LandingPage from '../layout/LandingPage'
 import Register from '../auth/Register'
 import Login from '../auth/Login'
 import Dashboard from '../dashboard/Dashboard'
-import Place from '../place/Place'
-import PlaceItem from '../place/PlaceItem'
+import Places from '../place/Places'
+import PlaceDetails from '../place/PlaceDetails'
 import Navbar from '../layout/Navbar'
 import CreatePlace from '../place/CreatePlace'
 import setAuthToken from '../../utils/setAuthToken';
@@ -19,8 +19,8 @@ if (localStorage.token) {
     setAuthToken(localStorage.token);
   }
 function Routes() {
-    // const dispatch = useDispatch()
-    // useEffect(()=>{dispatch(loadUser())},[])
+     const dispatch = useDispatch()
+     useEffect(()=>{dispatch(loadUser())},[dispatch])
     return (
             <Router>
                 <Navbar />
@@ -29,9 +29,9 @@ function Routes() {
                     <Route exact path="/signup" component={Register} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/dashboard" component={Dashboard} />
-                    <Route exact path="/place" component={Place} />
+                    <Route exact path="/places" component={Places} />
                     <Route exact path="/create-place" component={CreatePlace} />
-                    <Route exact path="/place/:placeId" component={PlaceItem} />
+                    <Route exact path="/place/:placeId" component={PlaceDetails} />
                 </Switch>
             </Router>
     )

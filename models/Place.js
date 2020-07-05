@@ -16,9 +16,17 @@ const placeSchema = new Schema({
         type: String,
         required: true,
     },
-    image: {
-        type: String,
-    },
+    // image: {
+    //     id: {
+    //         type: String,
+    //         required: true,
+    //     },
+    //     imageUrl: {
+    //         type: String,
+    //         required: true,
+    //         trim: true,
+    //     },
+    // },
     creator: {
         type: mongoose.Types.ObjectId,
         ref: 'user',
@@ -48,10 +56,6 @@ const placeSchema = new Schema({
             creator: {
                 type: mongoose.Types.ObjectId,
                 ref: 'user',
-            },
-            title: {
-                type: String,
-                required: true,
             },
             text: {
                 type: String,

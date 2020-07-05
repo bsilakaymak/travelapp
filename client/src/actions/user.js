@@ -9,26 +9,28 @@ import {
     DELETE_PLACE_WL,
 } from './types'
 
+
 // update current user
-export const updateUser = (formData) => async (dispatch) => {
+export const updateUser = (formData, history) => async (dispatch) => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
         },
     }
     try {
-        const res = await axios.put('/api/users/me', formData, config)
+        const res = await axios.put('/api/user/me', formData, config)
         dispatch({
             type: UPDATE_USER,
             payload: res.data,
         })
+        history.push('/dashboard')
     } catch (error) {}
 }
 
 //follow user
 export const followUser = (userId) => async (dispatch) => {
     try {
-        const res = await axios.post(`/api/user/${userId}`)
+        const res = await axios.post(`/api/follow/${userId}`)
         dispatch({
             type: FOLLOW_USER,
             payload: res.data,
@@ -39,7 +41,7 @@ export const followUser = (userId) => async (dispatch) => {
 //unfollow user
 export const unfollowUser = (userId) => async (dispatch) => {
     try {
-        const res = await axios.put(`/api/user/${userId}`)
+        const res = await axios.put(`/api/follow/${userId}`)
         dispatch({
             type: UNFOLLOW_USER,
             payload: res.data,
@@ -49,7 +51,7 @@ export const unfollowUser = (userId) => async (dispatch) => {
 //delete follower
 export const deleteFollower = (userId) => async (dispatch) => {
     try {
-        const res = await axios.delete(`/api/user/${userId}`)
+        const res = await axios.delete(`/api/follow/${userId}`)
         dispatch({
             type: DELETE_FOLLOWER,
             payload: res.data,
@@ -59,7 +61,7 @@ export const deleteFollower = (userId) => async (dispatch) => {
 //add item to wishlist
 export const addItemToWishlist = (placeId) => async (dispatch) => {
     try {
-        const res = await axios.post(`/api/user/${placeId}`)
+        const res = await axios.post(`/api/wishlist/${placeId}`)
         dispatch({
             type: ADD_PLACE_WL,
             payload: res.data,
@@ -74,7 +76,7 @@ export const updateItemInWishlist = (placeId, formData) => async (dispatch) => {
         },
     }
     try {
-        const res = await axios.put(`/api/user/${placeId}`, formData, config)
+        const res = await axios.put(`/api/wishlist/${placeId}`, formData, config)
         dispatch({
             type: UPDATE_PLACE_WL,
             payload: res.data,
@@ -82,9 +84,9 @@ export const updateItemInWishlist = (placeId, formData) => async (dispatch) => {
     } catch (error) {}
 }
 //remove item form wishlist
-export const removeItemFromWishlist = (formData) => async (dispatch) => {
+export const removeItemFromWishlist = (placeId) => async (dispatch) => {
     try {
-        const res = await axios.post(`/api/user/${placeId}`)
+        const res = await axios.post(`/api/wishlist/${placeId}`)
         dispatch({
             type: DELETE_PLACE_WL,
             payload: res.data,

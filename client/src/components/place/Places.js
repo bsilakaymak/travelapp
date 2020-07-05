@@ -1,14 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { Container, Row, Grid } from '../shared/GridSystem'
 import { Card, Title, Divider, Button, Icon } from '../shared/Elements'
 import Checkbox from '../shared/Checkbox'
 import { Input, InputHolder, Label } from '../shared/FormGroup'
-import PlacesList from './PlacesList'
-import { DUMMY_DATA } from '../../UsersData'
-const Place = () => {
+import PlaceItem from './PlaceItem'
+import { useDispatch, useSelector } from 'react-redux'
+import { getPlaces } from '../../actions/places'
+const Places = () => {
     const isAuth = useSelector((state) => state.auth.isAuthenticated)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(getPlaces())
+    }, [])
+    const places = useSelector((state) => state.places.places)
     return (
         <Container>
             <Row center>
@@ -45,8 +50,9 @@ const Place = () => {
                             </Button>
                         </Link>
                     )}
-                    {DUMMY_DATA.map((place) => (
-                        <PlacesList place={place} key={place.id} />
+
+                    {places.map((place) => (
+                        <PlaceItem place={place} key={place.id} />
                     ))}
                 </Grid>
             </Row>
@@ -54,4 +60,4 @@ const Place = () => {
     )
 }
 
-export default Place
+export default Places

@@ -16,6 +16,7 @@ const ImageUpload = (props) => {
         accept='.jpg,.png,.jpeg'
         onChange={props.onChange}
         value={props.value}
+        name={props.name}
       />
 
       <Button

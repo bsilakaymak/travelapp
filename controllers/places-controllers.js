@@ -5,7 +5,10 @@ const PlaceList = require('../models/PlaceList')
 const getCoordsForAddress = require('../utils/location')
 const getPlace = async (req, res) => {
     try {
-        const place = await Place.findById(req.params.pid)
+        const place = await Place.findById(req.params.pid).populate(
+            'comments.creator',
+            'name'
+        )
         if (!place) {
             return res.send('Place not found').status(404)
         }
@@ -95,14 +98,15 @@ const ratePlace = async (req, res) => {
         ) {
             return res.status(400).send('Already rated')
         }
-        const rating = {
-            rating,
+        const newRating = {
+            rating: rating,
             user: req.userData.userId,
         }
-        place.ratings.push(rating)
+        place.ratings.push(newRating)
         await place.save()
         res.status(200).send(place.ratings)
     } catch (error) {
+        console.error(error)
         res.send('Server Error').status(500)
     }
 }
@@ -146,7 +150,10 @@ const deletePlace = async (req, res) => {
 const getComments = async (req, res) => {
     const { pid: placeId } = req.params
     try {
-        const place = await Place.findById(placeId)
+        const place = await Place.findById(placeId).populate(
+            'comments.creator',
+            'name'
+        )
         res.status(200).send(place.comments)
     } catch (error) {
         res.send('Server Error').status(500)
@@ -159,15 +166,17 @@ const addComment = async (req, res) => {
         return res.status(400).json({ errors: errors.array() })
     }
     const { pid: placeId } = req.params
-    const { title, text } = req.body
+    const { text } = req.body
     try {
-        const place = await Place.findById(placeId)
-        const newPlace = {
+        const place = await Place.findById(placeId).populate(
+            'comments.creator',
+            'name'
+        )
+        const newComment = {
             creator: req.userData.userId,
-            title,
             text,
         }
-        place.comments.push(newPlace)
+        place.comments.push(newComment)
         await place.save()
         res.send(place.comments).status(200)
     } catch (error) {
@@ -178,7 +187,10 @@ const addComment = async (req, res) => {
 const deleteComment = async (req, res) => {
     const { pid: placeId, cid: commentId } = req.params
     try {
-        const place = await Place.findById(placeId)
+        const place = await Place.findById(placeId).populate(
+            'comments.creator',
+            'name'
+        )
         //get the comment
         const comment = place.comments.find(
             (comment) => comment.id.toString() === commentId
@@ -188,7 +200,7 @@ const deleteComment = async (req, res) => {
             return res.status(404).json({ msg: 'Comment does not exist' })
         }
         // check if the current user is authorized
-        if (comment.creator.toString() !== req.userData.userId) {
+        if (comment.creator._id.toString() !== req.userData.userId) {
             return res.status(401).json({ msg: 'User not Authorized' })
         }
         //remove index

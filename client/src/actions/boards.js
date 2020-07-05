@@ -14,7 +14,7 @@ import {
 //get board
 export const getPlaceList = (boardId) => async (dispatch) => {
     try {
-        const res = await axios.get(`/api/boards/${boardId}`, formData, config)
+        const res = await axios.get(`/api/boards/${boardId}`)
         dispatch({
             type: GET_BOARD,
             payload: res.data,
@@ -66,7 +66,7 @@ export const updateBoard = (boardId, formData) => async (dispatch) => {
 //delete board
 export const deleteBoard = (boardId) => async (dispatch) => {
     try {
-        const res = await axios.delete(`/api/boards/${boardId}`)
+        await axios.delete(`/api/boards/${boardId}`)
         dispatch({
             type: DELETE_BOARD,
             payload: boardId,
@@ -110,7 +110,7 @@ export const followBoard = (boardId) => async (dispatch) => {
 }
 
 //unfollow board
-export const getPlaceList = (boardId) => async (dispatch) => {
+export const unfollowBoard = (boardId) => async (dispatch) => {
     try {
         const res = await axios.delete(`/api/boards/${boardId}/followers`)
         dispatch({

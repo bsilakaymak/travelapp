@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Container, Grid, Row } from '../shared/GridSystem'
 import { Title, Divider, Image, Holder, Button, Icon } from '../shared/Elements'
 import { USER_DUMMY_DATA } from '../../UsersData'
 import UserUpdate from './UserUpdate'
+import { useSelector } from 'react-redux'
 const { name, avatar, id, followers, following } = USER_DUMMY_DATA
 const UserInfoContent = styled.div`
     background: rgba(0, 0, 0, 0.3);
@@ -23,57 +24,62 @@ const DashboardContainer = styled.div`
     left: 0;
 `
 const Dashboard = () => {
+    const user = useSelector((state) => state.auth.user)
     const [showEdit, setShowEdit] = useState(false)
     return (
         <DashboardContainer>
-            <Container>
-                <Row center>
-                    <Grid md={4}>
-                        {showEdit ? (
-                            <UserUpdate setShowEdit={setShowEdit} />
-                        ) : (
-                            <UserInfoContent>
-                                <Icon
-                                    color="#fff"
-                                    className="fas fa-user-edit"
-                                    float="right"
-                                    onClick={(e) => setShowEdit(!showEdit)}
-                                />
-                                <Holder width="150px" height="150px">
-                                    <Image src={avatar} alt={name} />
-                                </Holder>
-                                <Title marginTop="1rem">
-                                    <span>Name : </span> {name}
-                                </Title>
-                                <Divider width="100%" marginTop="5px" />
-                                <Title marginTop="1rem">
-                                    <span>Followers : </span> {followers}
-                                </Title>
-                                <Divider width="100%" marginTop="5px" />
-                                <Title marginTop="1rem">
-                                    <span>Following : </span> {following}
-                                </Title>
-                                <Divider width="100%" marginTop="5px" />
-                                <Button
-                                    small
-                                    background="#007bff"
-                                    marginTop="1rem"
-                                    marginRight="1rem"
-                                >
-                                    My Places
-                                </Button>
-                                <Button
-                                    small
-                                    background="#007bff"
-                                    marginTop="1rem"
-                                >
-                                    My Boards
-                                </Button>
-                            </UserInfoContent>
-                        )}
-                    </Grid>
-                </Row>
-            </Container>
+            {user && (
+                <Container>
+                    <Row center>
+                        <Grid md={4}>
+                            {showEdit ? (
+                                <UserUpdate setShowEdit={setShowEdit} />
+                            ) : (
+                                <UserInfoContent>
+                                    <Icon
+                                        color="#fff"
+                                        className="fas fa-user-edit"
+                                        float="right"
+                                        onClick={(e) => setShowEdit(!showEdit)}
+                                    />
+                                    <Holder width="150px" height="150px">
+                                        <Image src={avatar} alt={user.name} />
+                                    </Holder>
+                                    <Title marginTop="1rem">
+                                        <span>Name : </span> {user.name}
+                                    </Title>
+                                    <Divider width="100%" marginTop="5px" />
+                                    <Title marginTop="1rem">
+                                        <span>Followers : </span>{' '}
+                                        {user.followers.length}
+                                    </Title>
+                                    <Divider width="100%" marginTop="5px" />
+                                    <Title marginTop="1rem">
+                                        <span>Following : </span>{' '}
+                                        {user.following.length}
+                                    </Title>
+                                    <Divider width="100%" marginTop="5px" />
+                                    <Button
+                                        small
+                                        background="#007bff"
+                                        marginTop="1rem"
+                                        marginRight="1rem"
+                                    >
+                                        My Places
+                                    </Button>
+                                    <Button
+                                        small
+                                        background="#007bff"
+                                        marginTop="1rem"
+                                    >
+                                        My Boards
+                                    </Button>
+                                </UserInfoContent>
+                            )}
+                        </Grid>
+                    </Row>
+                </Container>
+            )}
         </DashboardContainer>
     )
 }

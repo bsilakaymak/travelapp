@@ -20,7 +20,7 @@ if (localStorage.token) {
   }
 function Routes() {
      const dispatch = useDispatch()
-     useEffect(()=>{dispatch(loadUser())},[])
+     useEffect(()=>{dispatch(loadUser())},[dispatch])
     return (
             <Router>
                 <Navbar />

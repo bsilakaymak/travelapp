@@ -69,7 +69,7 @@ export const updatePlace = (placeId, formData) => async (dispatch) => {
 // delete place
 export const deletePlace = (placeId,history) => async (dispatch) => {
     try {
-        const res = await axios.delete(`/api/places/${placeId}`)
+        await axios.delete(`/api/places/${placeId}`)
         dispatch({
             type: DELETE_PLACE,
             payload: placeId,

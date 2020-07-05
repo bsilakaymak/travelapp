@@ -41,12 +41,11 @@ const createUser = async (req, res) => {
         }
 
         const salt = await bcrypt.genSalt(10)
-        con
         const hashedPassword = await bcrypt.hash(password, salt)
         createdUser = new User({
             name,
             email,
-            image: req.file.url,
+            image: '',
             password: hashedPassword,
         })
 
@@ -120,7 +119,7 @@ const login = async (req, res) => {
         res.send('Server Error').status(500)
     }
 }
-
+/* eslint-disable no-unused-vars */
 const confirmAccount = async (req, res) => {}
 const forgotPassword = async (req, res) => {}
 const resetPassword = async (req, res) => {}

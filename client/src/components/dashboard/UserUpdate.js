@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import React, { useState } from 'react'
 
 import { Form, Input, Label, FormTitle, InputHolder } from '../shared/FormGroup'
 import { Divider, Button, Icon, Image, Holder } from '../shared/Elements'
@@ -13,28 +12,25 @@ const UpdateUser = ({ setShowEdit }) => {
     const dispatch = useDispatch()
     const [userData, setUserData] = useState({
         name: '',
+        image: null,
     })
-
-    const [file, setFile] = useState(null)
     const [previewUrl, setPreviewUrl] = useState()
-    useEffect(() => {
-        if (!file) return
-        const fileReader = new FileReader()
-        fileReader.onload = () => {
-            setPreviewUrl(fileReader.result)
-        }
-        fileReader.readAsDataURL(file)
-    }, [file])
 
+    const { name, image } = userData
+    const updateUserInfo = { name, image }
     const onChangeUserUpdateHandler = (e) => {
-        setUserData({ ...userData, [e.target.name]: e.target.value })
+        if (e.target.name === 'image') {
+            setUserData({ ...userData, image: e.target.files[0] })
+            setPreviewUrl(window.URL.createObjectURL(e.target.files[0]))
+        } else {
+            setUserData({ ...userData, [e.target.name]: e.target.value })
+        }
     }
     const onSubmitUserUpdateFormHandler = (e) => {
         e.preventDefault()
-        dispatch(updateUser(userData, history))
+        dispatch(updateUser(updateUserInfo, history))
         setShowEdit(false)
     }
-    const { name } = userData
 
     return (
         <>
@@ -59,7 +55,10 @@ const UpdateUser = ({ setShowEdit }) => {
                     <Label>Name</Label>
                 </InputHolder>
 
-                <ImageUpload onChange={(e) => setFile(e.target.files[0])} />
+                <ImageUpload
+                    name="image"
+                    onChange={onChangeUserUpdateHandler}
+                />
                 <Holder width="150px" height="150px">
                     {!previewUrl && <p>Please pick an image.</p>}
                     <Image src={previewUrl} alt="" />

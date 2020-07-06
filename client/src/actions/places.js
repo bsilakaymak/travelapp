@@ -33,7 +33,12 @@ export const getPlace = (placeId) => async (dispatch) => {
 }
 
 // add place
-export const addPlace = (formData, history) => async (dispatch) => {
+export const addPlace = (placeData, history) => async (dispatch) => {
+    const formData = new FormData()
+    formData.append('title', placeData.title)
+    formData.append('image', placeData.image)
+    formData.append('address', placeData.address)
+    formData.append('description', placeData.description)
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -67,7 +72,7 @@ export const updatePlace = (placeId, formData) => async (dispatch) => {
 }
 
 // delete place
-export const deletePlace = (placeId,history) => async (dispatch) => {
+export const deletePlace = (placeId, history) => async (dispatch) => {
     try {
         await axios.delete(`/api/places/${placeId}`)
         dispatch({

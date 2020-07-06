@@ -3,7 +3,7 @@ const { check } = require('express-validator')
 const route = express.Router()
 
 const placesControllers = require('../controllers/places-controllers')
-const fileUpload = require('../middleware/file-upload')
+const multerUploads = require('../middleware/file-upload')
 const checkAuth = require('../middleware/auth')
 
 //get place
@@ -17,7 +17,7 @@ route.use(checkAuth)
 //add place
 route.post(
     '/',
-    fileUpload.single('image'),
+    multerUploads(500, 500),
     [
         check('title', 'Title is required').not().isEmpty(),
         check('address', 'Address is required').not().isEmpty(),

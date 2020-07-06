@@ -9,9 +9,12 @@ import {
     DELETE_PLACE_WL,
 } from './types'
 
-
 // update current user
-export const updateUser = (formData, history) => async (dispatch) => {
+export const updateUser = (newUserData, history) => async (dispatch) => {
+    const formData = new FormData()
+    formData.append('name', newUserData.name)
+    formData.append('image', newUserData.image)
+
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -76,7 +79,11 @@ export const updateItemInWishlist = (placeId, formData) => async (dispatch) => {
         },
     }
     try {
-        const res = await axios.put(`/api/wishlist/${placeId}`, formData, config)
+        const res = await axios.put(
+            `/api/wishlist/${placeId}`,
+            formData,
+            config
+        )
         dispatch({
             type: UPDATE_PLACE_WL,
             payload: res.data,

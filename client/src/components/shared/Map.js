@@ -13,7 +13,7 @@ const ImageHolder = styled.div`
     height: 500px;
     width: 500px;
     @media (max-width: 576px) {
-        width: 100%;
+        width: 248px;
         height: 400px;
     }
 `

@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator')
+const cloudinary = require('../uploads/cloudinary')
 const Place = require('../models/Place')
 const User = require('../models/User')
 const PlaceList = require('../models/PlaceList')
@@ -50,6 +51,8 @@ const addPlace = async (req, res) => {
             },
             creator: req.userData.userId,
             categories,
+            image: req.file.path,
+            imageId: req.file.filename,
         }
         const place = new Place(formData)
         await place.save()
@@ -136,9 +139,17 @@ const deletePlace = async (req, res) => {
             placeList.places = placeList.places.filter(
                 (place) => place.toString() !== placeId.toString()
             )
-            console.log(placeList.places)
+
             await placeList.save()
         })
+
+        // Remove the image from cloudinary by id before add the new image
+        if (place.imageId) {
+            const public_id = place.imageId
+            cloudinary.uploader.destroy(public_id, function (result) {
+                console.log(result)
+            })
+        }
 
         await place.remove()
         res.status(200).send('Place removed')

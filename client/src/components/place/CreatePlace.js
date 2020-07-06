@@ -19,35 +19,30 @@ const CreatePlaceContainer = styled.div`
 `
 const CreatePlace = () => {
     const history = useHistory()
-    const [userData, setUserData] = useState({
+    const [placeData, setPlaceData] = useState({
         title: '',
         address: '',
         description: '',
-        image: {},
+        image: null,
     })
     const dispatch = useDispatch()
-    const [file, setFile] = useState(null)
+
     const [previewUrl, setPreviewUrl] = useState()
-    useEffect(() => {
-        if (!file) return
-        const fileReader = new FileReader()
-        fileReader.onload = () => {
-            setPreviewUrl(fileReader.result)
-        }
-        fileReader.readAsDataURL(file)
-    }, [file])
-    const { title, address, description } = userData
+
+    const { title, address, description, image } = placeData
     const onChangeCreatePlaceHandler = (e) => {
         if (e.target.name === 'image') {
-            setUserData({ ...userData, image: { file } })
+            setPlaceData({ ...placeData, image: e.target.files[0] })
+            setPreviewUrl(window.URL.createObjectURL(e.target.files[0]))
         } else {
-            setUserData({ ...userData, [e.target.name]: e.target.value })
+            setPlaceData({ ...placeData, [e.target.name]: e.target.value })
         }
     }
     const onSubmitCreatPlaceFormHandler = (e) => {
+        const placeFormData = { image, title, address, description }
         e.preventDefault()
-        console.log(file)
-        dispatch(addPlace(userData, history))
+
+        dispatch(addPlace(placeFormData, history))
     }
 
     return (
@@ -97,7 +92,7 @@ const CreatePlace = () => {
                 </InputHolder>
                 <ImageUpload
                     name="image"
-                    onChange={(e) => setFile(e.target.files[0])}
+                    onChange={onChangeCreatePlaceHandler}
                 />
                 <Holder width="150px" height="150px">
                     {!previewUrl && <p>Please pick an image.</p>}

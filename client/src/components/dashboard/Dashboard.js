@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Container, Grid, Row } from '../shared/GridSystem'
 import { Title, Divider, Image, Holder, Button, Icon } from '../shared/Elements'
-import { USER_DUMMY_DATA } from '../../UsersData'
+
 import UserUpdate from './UserUpdate'
 import { useSelector } from 'react-redux'
-const { name, avatar, id, followers, following } = USER_DUMMY_DATA
+
 const UserInfoContent = styled.div`
     background: rgba(0, 0, 0, 0.3);
     color: #fff;
@@ -24,7 +24,8 @@ const DashboardContainer = styled.div`
     left: 0;
 `
 const Dashboard = () => {
-    const user = useSelector((state) => state.auth.user)
+    const { user } = useSelector((state) => state.auth)
+
     const [showEdit, setShowEdit] = useState(false)
 
     return (
@@ -44,7 +45,10 @@ const Dashboard = () => {
                                         onClick={(e) => setShowEdit(!showEdit)}
                                     />
                                     <Holder width="150px" height="150px">
-                                        <Image src={avatar} alt={user.name} />
+                                        <Image
+                                            src={user.image}
+                                            alt={user.name}
+                                        />
                                     </Holder>
                                     <Title marginTop="1rem">
                                         <span>Name : </span> {user.name}

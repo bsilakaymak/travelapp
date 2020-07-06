@@ -20,7 +20,7 @@ async function getCoordsForAddress(address) {
     }
 
     const coordinates = data.features[0].geometry.coordinates
-    console.log(data.features[0].geometry)
+
     return coordinates
 }
 

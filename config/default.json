@@ -1,4 +1,7 @@
 {
     "mongoURI": "mongodb+srv://sila:silasila@cluster0-yejtc.mongodb.net/test?retryWrites=true&w=majority",
-    "MAPBOX_API_KEY": "pk.eyJ1IjoiYWxpa2FkaGltIiwiYSI6ImNrNnVqZmY2YTA1bnQzZW9hOGl5c3owd3gifQ.0nam2ATvhX9r9KW4G36mSg"
+    "MAPBOX_API_KEY": "pk.eyJ1IjoiYWxpa2FkaGltIiwiYSI6ImNrNnVqZmY2YTA1bnQzZW9hOGl5c3owd3gifQ.0nam2ATvhX9r9KW4G36mSg",
+    "CLOUDINARY_CLOUD_NAME": "dhxl0sgqp",
+    "CLOUDINARY_KEY": "212733853267281",
+    "CLOUDINARY_API_SECRET": "KOyAWdYFDxouHrwdNf8-efXziK4"
 }

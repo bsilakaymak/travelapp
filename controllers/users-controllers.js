@@ -78,6 +78,7 @@ const login = async (req, res) => {
     try {
         try {
             existingUser = await User.findOne({ email })
+
             if (!existingUser) {
                 return res
                     .status(401)
@@ -99,7 +100,7 @@ const login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userId: existingUser.id, email: existingUser.email, token },
+            { userId: existingUser.id, email: existingUser.email },
             JWT_KEY,
             {
                 expiresIn: '1h',

@@ -8,7 +8,7 @@ const getPlaceLists = async (req, res) => {
         const placeLists = await PlaceList.find()
         res.status(200).send(placeLists)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -18,7 +18,7 @@ const getPlaceList = async (req, res) => {
         const placeList = await PlaceList.findById(plid)
         res.send(placeList).status(200)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -39,7 +39,7 @@ const addPlaceList = async (req, res) => {
         await placeList.save()
         res.status(200).send(placeList)
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -54,14 +54,16 @@ const updatePlaceList = async (req, res) => {
         const placeList = await PlaceList.findById(plid)
         //check if the place list is created by the user
         if (placeList.creator.toString() !== req.userData.userId) {
-            return res.send('User not authorized').status(401)
+            return res
+                .status(401)
+                .json({ errors: [{ msg: 'User not authorized' }] })
         }
         placeList.listName = listName
         placeList.description = description
         await placeList.save()
         res.status(200).send(placeList)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -75,7 +77,9 @@ const addPlaceToPlaceList = async (req, res) => {
             placeList.places.find((place) => place.toString() === pid) !==
             undefined
         ) {
-            return res.send('Bad Request').status(400)
+            return res
+                .status(403)
+                .json({ errors: [{ msg: 'Place is already in the list' }] })
         }
         placeList.places.unshift(place)
         place.placeListsAdded.push({
@@ -86,7 +90,7 @@ const addPlaceToPlaceList = async (req, res) => {
         await placeList.save()
         res.send(placeList.places).status(200)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -97,7 +101,9 @@ const removePlaceFromPlaceList = async (req, res) => {
         const place = await Place.findById(pid)
         //check if user is authorized to remove place from the placelist
         if (placeList.creator.toString() !== req.userData.userId) {
-            res.send('User not authorized').send(401)
+            return res
+                .status(401)
+                .json({ errors: [{ msg: 'User not authorized' }] })
         }
         //remove index
         const removeIndex = placeList.places
@@ -113,7 +119,7 @@ const removePlaceFromPlaceList = async (req, res) => {
         await place.save()
         res.send(placeList.places).status(200)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -123,7 +129,9 @@ const deletePlaceList = async (req, res) => {
         const placeList = await PlaceList.findById(plid)
         //check if user is authorized to delete the placelist
         if (placeList.creator.toString() !== req.userData.userId) {
-            return res.send('User is not authorized').status(401)
+            return res
+                .status(401)
+                .json({ errors: [{ msg: 'User not authorized' }] })
         }
         //check and delete it from the place model it is added
         try {
@@ -141,7 +149,7 @@ const deletePlaceList = async (req, res) => {
         await placeList.remove()
         res.send('Place list removed').status(200)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -156,13 +164,15 @@ const followPlaceList = async (req, res) => {
                 (follower) => follower.toString() === req.userData.userId
             ) !== undefined
         ) {
-            return res.send('Bad Request').status(400)
+            return res
+                .status(403)
+                .json({ errors: [{ msg: 'Board is already followed' }] })
         }
         placeList.followers.unshift(user)
         await placeList.save()
         res.send(placeList.followers).status(200)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -176,7 +186,9 @@ const unfollowPlaceList = async (req, res) => {
                 (follower) => follower === req.userData.userId
             ).length !== 0
         ) {
-            return res.send('Bad Request').status(400)
+            return res
+                .status(403)
+                .json({ errors: [{ msg: 'User is not a follower' }] })
         }
         const removeIndex = placeList.followers
             .map((follower) => follower.toString())
@@ -186,7 +198,7 @@ const unfollowPlaceList = async (req, res) => {
         await placeList.save()
         res.send(placeList.followers).status(200)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 

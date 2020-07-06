@@ -12,7 +12,10 @@ route.get('/all', usersControllers.getUsers)
 //login
 route.post(
     '/login',
-    [check('email', 'Please enter a valid email').isEmail().notEmpty()],
+    [
+        check('email', 'Please enter a valid email').isEmail().notEmpty(),
+        check('password', 'Password field cannot be empty').not().isEmpty(),
+    ],
     usersControllers.login
 )
 

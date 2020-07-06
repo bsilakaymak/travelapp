@@ -10,11 +10,13 @@ const getPlace = async (req, res) => {
             'name'
         )
         if (!place) {
-            return res.send('Place not found').status(404)
+            return res
+                .status(404)
+                .json({ errors: [{ msg: 'Place not found' }] })
         }
         res.status(200).send(place)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -22,11 +24,13 @@ const getPlaces = async (req, res) => {
     try {
         const places = await Place.find()
         if (places.length === 0) {
-            return res.send('No place found').status(404)
+            return res
+                .status(404)
+                .json({ errors: [{ msg: 'Place not found' }] })
         }
         res.status(200).send(places)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -58,8 +62,7 @@ const addPlace = async (req, res) => {
         await user.save()
         res.status(200).send(place)
     } catch (error) {
-        console.log(error)
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -74,14 +77,16 @@ const updatePlace = async (req, res) => {
         const place = await Place.findById(placeId)
         // first check if user is authorized to update the place
         if (place.creator.toString() !== req.userData.userId) {
-            return res.status(401).send('User not authorized')
+            return res
+                .status(401)
+                .json({ errors: [{ msg: 'User Not Authorized' }] })
         }
         place.title = title
         place.description = description
         await place.save()
         res.send(place).status(200)
     } catch (error) {
-        res.send('Server Error').status(500)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -96,7 +101,9 @@ const ratePlace = async (req, res) => {
                 (rating) => rating.user.toString() === req.userData.userId
             ) !== undefined
         ) {
-            return res.status(400).send('Already rated')
+            return res
+                .status(403)
+                .json({ errors: [{ msg: 'Place not found' }] })
         }
         const newRating = {
             rating: rating,
@@ -107,7 +114,7 @@ const ratePlace = async (req, res) => {
         res.status(200).send(place.ratings)
     } catch (error) {
         console.error(error)
-        res.send('Server Error').status(500)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -118,7 +125,9 @@ const deletePlace = async (req, res) => {
         const user = await User.findById(req.userData.userId)
         //check if the user is authorized to delete the place
         if (place.creator.toString() !== req.userData.userId) {
-            return res.status(401).send('User not authorized')
+            return res
+                .status(401)
+                .json({ errors: [{ msg: 'User not authorized' }] })
         }
 
         const filteredPlaces = user.places.filter((place) => {
@@ -143,7 +152,7 @@ const deletePlace = async (req, res) => {
         await place.remove()
         res.status(200).send('Place removed')
     } catch (error) {
-        res.send('Server Error').status(500)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -156,7 +165,7 @@ const getComments = async (req, res) => {
         )
         res.status(200).send(place.comments)
     } catch (error) {
-        res.send('Server Error').status(500)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -180,7 +189,7 @@ const addComment = async (req, res) => {
         await place.save()
         res.send(place.comments).status(200)
     } catch (error) {
-        res.send('Server Error').status(500)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -197,11 +206,15 @@ const deleteComment = async (req, res) => {
         )
         //  Make sure post exists
         if (!comment) {
-            return res.status(404).json({ msg: 'Comment does not exist' })
+            return res
+                .status(404)
+                .json({ errors: [{ msg: 'Comment not found' }] })
         }
         // check if the current user is authorized
         if (comment.creator._id.toString() !== req.userData.userId) {
-            return res.status(401).json({ msg: 'User not Authorized' })
+            return res
+                .status(401)
+                .json({ errors: [{ msg: ' User not Authorized' }] })
         }
         //remove index
         const removeIndex = place.comments
@@ -212,7 +225,7 @@ const deleteComment = async (req, res) => {
         await place.save()
         res.send(place.comments).status(200)
     } catch (error) {
-        res.send('Server Error').status(500)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 

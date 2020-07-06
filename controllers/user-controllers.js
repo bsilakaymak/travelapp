@@ -6,7 +6,7 @@ const getCurrentUser = async (req, res) => {
         const currentUser = await User.findById(req.userData.userId)
         res.status(200).send(currentUser)
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -19,7 +19,9 @@ const updateUser = async (req, res) => {
     try {
         const user = await User.findById(req.userData.userId)
         if (!user) {
-            return res.send('User does not exist').status(422)
+            return res
+                .status(422)
+                .json({ errors: [{ msg: 'User does not exist' }] })
         }
         if (name) {
             user.name = req.body.name
@@ -34,7 +36,7 @@ const updateUser = async (req, res) => {
         await user.save()
         res.status(200).send(user)
     } catch (err) {
-        res.send(err).status(500)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -66,7 +68,7 @@ const followUser = async (req, res) => {
         await user.save()
         res.send(currentUser.following).status(200)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -81,7 +83,9 @@ const unfollowUser = async (req, res) => {
                 (follower) => follower.toString() === req.userData.userId
             ).length !== 0
         ) {
-            return res.status(400).send('Bad Request')
+            return res
+                .status(403)
+                .json({ errors: [{ msg: 'User is already followed' }] })
         }
         try {
             currentUser.following = currentUser.following.filter(
@@ -97,7 +101,7 @@ const unfollowUser = async (req, res) => {
         await user.save()
         res.send(currentUser.following).status(200)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -116,7 +120,7 @@ const deleteFollower = async (req, res) => {
         await followedUser.save()
         res.send(user.followers).status(200)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -133,7 +137,7 @@ const addItemToTravelWishlist = async (req, res) => {
         await user.save()
         res.status(200).send(user.travelWishList)
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -149,7 +153,7 @@ const updateItemInTravelWishlist = async (req, res) => {
         await user.save()
         res.status(200).send(user.travelWishList)
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -165,7 +169,7 @@ const deleteItemFromTravelWishlist = async (req, res) => {
         await user.save()
         res.status(200).send(user.travelWishList)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 

@@ -10,7 +10,7 @@ const getUser = async (req, res) => {
         const user = await User.findById(userId).select('-password')
         res.status(200).send(user)
     } catch (error) {
-        res.status(500).send('Server Error')
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -19,7 +19,7 @@ const getUsers = async (req, res) => {
         const users = await User.find()
         res.status(200).send(users)
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -35,11 +35,10 @@ const createUser = async (req, res) => {
         const existingUser = await User.findOne({ email: email })
 
         if (existingUser) {
-            return res
-                .send('User already exists, please login instead.')
-                .status(422)
+            return res.status(422).json({
+                errors: [{ msg: 'User already exists, please login instead.' }],
+            })
         }
-
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
         createdUser = new User({
@@ -64,7 +63,7 @@ const createUser = async (req, res) => {
             token,
         }).status(200)
     } catch (error) {
-        res.send(error).status(500)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
@@ -81,7 +80,7 @@ const login = async (req, res) => {
             existingUser = await User.findOne({ email })
             if (!existingUser) {
                 return res
-                    .status(400)
+                    .status(401)
                     .json({ errors: [{ msg: 'Invalid Credentials' }] })
             }
 
@@ -92,31 +91,28 @@ const login = async (req, res) => {
 
             if (!isMatch) {
                 return res
-                    .status(400)
+                    .status(401)
                     .json({ errors: [{ msg: 'Invalid Credentials' }] })
             }
         } catch (error) {
             return res.send(error).status(422)
         }
-        let token
-        try {
-            token = jwt.sign(
-                { userId: existingUser.id, email: existingUser.email, token },
-                JWT_KEY,
-                {
-                    expiresIn: '1h',
-                }
-            )
-        } catch (error) {
-            res.send('Login failed').status(500)
-        }
+
+        const token = jwt.sign(
+            { userId: existingUser.id, email: existingUser.email, token },
+            JWT_KEY,
+            {
+                expiresIn: '1h',
+            }
+        )
+
         res.status(201).json({
             userId: existingUser.id,
             email: existingUser.email,
             token,
         })
     } catch (error) {
-        res.send('Server Error').status(500)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 /* eslint-disable no-unused-vars */

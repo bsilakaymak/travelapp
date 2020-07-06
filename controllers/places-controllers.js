@@ -133,9 +133,7 @@ const deletePlace = async (req, res) => {
         const filteredPlaces = user.places.filter((place) => {
             return place.toString() !== placeId.toString()
         })
-        console.log(filteredPlaces)
         user.places = filteredPlaces
-
         await user.save()
 
         // //make sure to delete the place from any place list it is added

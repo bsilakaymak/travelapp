@@ -1,9 +1,6 @@
 import axios from 'axios'
 import { setAlert } from './alert'
-import {
-    GET_USER,
-    GET_USERS,
-} from './types'
+import { GET_USER, GET_USERS } from './types'
 
 // Get all users
 export const getUsers = () => async (dispatch) => {
@@ -14,7 +11,10 @@ export const getUsers = () => async (dispatch) => {
             payload: res.data,
         })
     } catch (error) {
-        
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
     }
 }
 
@@ -27,7 +27,9 @@ export const getUser = (userId) => async (dispatch) => {
             payload: res.data,
         })
     } catch (error) {
-       
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
     }
 }
-

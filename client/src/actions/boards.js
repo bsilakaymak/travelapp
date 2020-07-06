@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { setAlert } from './alert'
+
 import {
     GET_BOARDS,
     GET_BOARD,
@@ -19,7 +21,12 @@ export const getPlaceList = (boardId) => async (dispatch) => {
             type: GET_BOARD,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 //get boards
 export const getBoards = () => async (dispatch) => {
@@ -29,7 +36,12 @@ export const getBoards = () => async (dispatch) => {
             type: GET_BOARDS,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 //add board
 export const addBoard = (formData) => async (dispatch) => {
@@ -44,7 +56,12 @@ export const addBoard = (formData) => async (dispatch) => {
             type: ADD_BOARD,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 //update board
@@ -60,7 +77,12 @@ export const updateBoard = (boardId, formData) => async (dispatch) => {
             type: UPDATE_BOARD,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 //delete board
@@ -71,7 +93,12 @@ export const deleteBoard = (boardId) => async (dispatch) => {
             type: DELETE_BOARD,
             payload: boardId,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 //add place to board
@@ -82,7 +109,12 @@ export const addPlaceToBoard = (boardId, placeId) => async (dispatch) => {
             type: ADD_PLACE_B,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 //remove place from board
@@ -95,7 +127,12 @@ export const removePlaceFromBoard = (boardId, placeId) => async (dispatch) => {
             type: DELETE_PLACE_B,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 //follow board
@@ -106,7 +143,12 @@ export const followBoard = (boardId) => async (dispatch) => {
             type: FOLLOW_BOARD,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 //unfollow board
@@ -117,5 +159,10 @@ export const unfollowBoard = (boardId) => async (dispatch) => {
             type: UNFOLLOW_BOARD,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }

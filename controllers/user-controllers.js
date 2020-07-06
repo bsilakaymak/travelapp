@@ -47,11 +47,13 @@ const followUser = async (req, res) => {
         const currentUser = await User.findById(req.userData.userId)
         //check if user is already followed
         if (
-            user.followers.filter(
-                (flw) => flw.toString() === req.userData.userId
-            ).length !== 0
+            user.followers.find(
+                (follower) => follower.toString() === req.userData.userId
+            )
         ) {
-            return res.send('Bad request').status(400)
+            return res
+                .status(403)
+                .json({ errors: [{ msg: 'User is already followed' }] })
         }
         console.log(user)
 
@@ -79,9 +81,9 @@ const unfollowUser = async (req, res) => {
         const currentUser = await User.findById(req.userData.userId)
         //check if user is among followed
         if (
-            user.followers.filter(
+            user.followers.find(
                 (follower) => follower.toString() === req.userData.userId
-            ).length !== 0
+            )
         ) {
             return res
                 .status(403)

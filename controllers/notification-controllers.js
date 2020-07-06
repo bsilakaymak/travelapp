@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const { validationResult } = require('express-validator')
 const Notification = require('../models/Notification')
 

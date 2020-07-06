@@ -182,9 +182,9 @@ const unfollowPlaceList = async (req, res) => {
         const placeList = await PlaceList.findById(plid)
         //check if the current user following the list
         if (
-            placeList.followers.filter(
+            placeList.followers.find(
                 (follower) => follower === req.userData.userId
-            ).length !== 0
+            )
         ) {
             return res
                 .status(403)

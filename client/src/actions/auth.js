@@ -24,7 +24,11 @@ export const loadUser = () => async (dispatch) => {
             payload: res.data,
         })
     } catch (error) {
-        console.log(error)
+        const errors = error.response.data.errors
+
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
         dispatch({
             type: AUTH_ERROR,
         })
@@ -53,8 +57,8 @@ export const register = (name, email, password, history) => async (
         })
         dispatch(loadUser())
         history.push('/dashboard')
-    } catch (err) {
-        const errors = err.response.data.errors
+    } catch (error) {
+        const errors = error.response.data.errors
         if (errors) {
             errors.forEach((err) => dispatch(setAlert(err.msg, 'danger')))
         }
@@ -84,8 +88,8 @@ export const login = (email, password, history) => async (dispatch) => {
 
         dispatch(loadUser())
         history.push('/dashboard')
-    } catch (err) {
-        const errors = err.response.data.errors
+    } catch (error) {
+        const errors = error.response.data.errors
 
         if (errors) {
             errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))

@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { setAlert } from './alert'
+
 import {
     GET_PLACE,
     GET_PLACES,
@@ -18,7 +20,12 @@ export const getPlaces = () => async (dispatch) => {
             type: GET_PLACES,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 // get place
@@ -29,7 +36,12 @@ export const getPlace = (placeId) => async (dispatch) => {
             type: GET_PLACE,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 // add place
@@ -46,7 +58,12 @@ export const addPlace = (formData, history) => async (dispatch) => {
             payload: res.data,
         })
         history.push('/places')
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 // update place
@@ -63,11 +80,16 @@ export const updatePlace = (placeId, formData) => async (dispatch) => {
             type: UPDATE_PLACE,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 // delete place
-export const deletePlace = (placeId,history) => async (dispatch) => {
+export const deletePlace = (placeId, history) => async (dispatch) => {
     try {
         await axios.delete(`/api/places/${placeId}`)
         dispatch({
@@ -75,7 +97,12 @@ export const deletePlace = (placeId,history) => async (dispatch) => {
             payload: placeId,
         })
         history.push('/places')
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 // add comment
@@ -95,7 +122,12 @@ export const addComment = (placeId, formData) => async (dispatch) => {
             type: COMMENT_PLACE,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 // delete comment
@@ -108,7 +140,12 @@ export const deleteComment = (placeId, commentId) => async (dispatch) => {
             type: DELETE_COMMENT_PLACE,
             payload: res.data,
         })
-    } catch (error) {}
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
 }
 
 // rate place
@@ -125,6 +162,9 @@ export const ratePlace = (placeId, formData) => async (dispatch) => {
             payload: res.data,
         })
     } catch (error) {
-        console.log(error)
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
     }
 }

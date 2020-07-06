@@ -4,7 +4,7 @@ const route = express.Router()
 const checkAuth = require('../middleware/auth')
 
 const usersControllers = require('../controllers/users-controllers')
-const fileUpload = require('../middleware/file-upload')
+// const fileUpload = require('../middleware/file-upload')
 
 //get all users
 route.get('/all', usersControllers.getUsers)

@@ -26,6 +26,7 @@ const DashboardContainer = styled.div`
 const Dashboard = () => {
     const user = useSelector((state) => state.auth.user)
     const [showEdit, setShowEdit] = useState(false)
+
     return (
         <DashboardContainer>
             {user && (

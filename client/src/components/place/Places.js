@@ -13,7 +13,9 @@ const Places = () => {
     useEffect(() => {
         dispatch(getPlaces())
     }, [])
+
     const places = useSelector((state) => state.places.places)
+
     return (
         <Container>
             <Row center>
@@ -52,7 +54,7 @@ const Places = () => {
                     )}
 
                     {places.map((place) => (
-                        <PlaceItem place={place} key={place.id} />
+                        <PlaceItem place={place} key={place._id} />
                     ))}
                 </Grid>
             </Row>

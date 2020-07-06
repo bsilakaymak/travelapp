@@ -16,17 +16,14 @@ const placeSchema = new Schema({
         type: String,
         required: true,
     },
-    // image: {
-    //     id: {
-    //         type: String,
-    //         required: true,
-    //     },
-    //     imageUrl: {
-    //         type: String,
-    //         required: true,
-    //         trim: true,
-    //     },
-    // },
+    image: {
+        type: String,
+        required: true,
+    },
+    imageId: {
+        type: String,
+        required: true,
+    },
     creator: {
         type: mongoose.Types.ObjectId,
         ref: 'user',

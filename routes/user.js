@@ -3,7 +3,7 @@ const { check } = require('express-validator')
 const route = express.Router()
 const userControllers = require('../controllers/user-controllers')
 const checkAuth = require('../middleware/auth')
-
+const multerUploads = require('../middleware/file-upload')
 route.use(checkAuth)
 
 //get current user
@@ -12,6 +12,7 @@ route.get('/me', userControllers.getCurrentUser)
 //update a user
 route.put(
     '/me',
+    multerUploads(200, 200),
     [check('name', 'Please provide a name').not().isEmpty()],
     userControllers.updateUser
 )

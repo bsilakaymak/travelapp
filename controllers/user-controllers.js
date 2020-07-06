@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const cloudinary = require('../uploads/cloudinary')
 const { validationResult } = require('express-validator')
 
 const getCurrentUser = async (req, res) => {
@@ -25,13 +26,19 @@ const updateUser = async (req, res) => {
         }
         if (name) {
             user.name = req.body.name
-        } else {
-            user.name = user.name
         }
         if (req.file) {
-            user.image = req.file.url
-        } else {
-            user.image = user.image
+            if (user.imageId) {
+                // Remove the image from cloudinary by id before add the new image
+                const public_id = user.imageId
+
+                cloudinary.uploader.destroy(public_id, function (result) {
+                    console.log(result)
+                })
+            }
+
+            user.image = req.file.path
+            user.imageId = req.file.filename
         }
         await user.save()
         res.status(200).send(user)

@@ -5,10 +5,15 @@ import App from './App'
 import GlobalStyle from './GlobalStyle'
 import * as serviceWorker from './serviceWorker'
 
+import { Provider } from 'react-redux'
+import store from './store'
+
 ReactDOM.render(
     <React.StrictMode>
         <GlobalStyle />
-        <App />
+        <Provider store={store}>
+            <App />
+        </Provider>
     </React.StrictMode>,
     document.getElementById('root')
 )

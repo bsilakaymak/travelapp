@@ -1,7 +1,20 @@
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import thunk from 'redux-thunk'
 import rootReducer from './reducers'
+
+
+function createThunkMiddleware(extraArgument) {
+    return ({ dispatch, getState }) => (next) => (action) => {
+      if (typeof action === 'function') {
+        return action(dispatch, getState, extraArgument);
+      }
+  
+      return next(action);
+    };
+  }
+  
+  const thunk = createThunkMiddleware();
+  
 
 const initialState = {}
 

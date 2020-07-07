@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react'
-
-import { Provider } from 'react-redux'
-import store from './store'
 import Routes from './components/routes/Routes'
+import { loadUser } from '../src/actions/auth'
+import setAuthToken from '../src/utils/setAuthToken'
 
+import { useDispatch } from 'react-redux'
+if (localStorage.token) {
+    setAuthToken(localStorage.token)
+}
 function App() {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(loadUser())
+    }, [dispatch])
     return (
-        <Provider store={store}>
             <Routes />
-        </Provider>
     )
 }
 

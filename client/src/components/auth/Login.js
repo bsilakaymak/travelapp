@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { Form, Input, Label, FormTitle, InputHolder } from '../shared/FormGroup'
 import { Divider, Button } from '../shared/Elements'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../actions/auth'
 
 const LoginContainer = styled.div`
@@ -21,20 +21,21 @@ const ForgetPasswordBtn = styled(Link)`
     text-decoration: none;
 `
 const Login = () => {
+    const { isAuthenticated } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const [userData, setUserData] = useState({
         email: '',
         password: '',
     })
-    const history = useHistory()
     const { email, password } = userData
     const onChangeRegisterHandler = (e) => {
         setUserData({ ...userData, [e.target.name]: e.target.value })
     }
     const onSubmitAuthFormHandler = (e) => {
         e.preventDefault()
-        dispatch(login(email, password, history))
+        dispatch(login(email, password))
     }
+    if (isAuthenticated) return <Redirect to="/dashboard" />
     return (
         <LoginContainer>
             <Form right onSubmit={onSubmitAuthFormHandler}>

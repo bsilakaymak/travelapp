@@ -25,7 +25,6 @@ export const loadUser = () => async (dispatch) => {
         })
     } catch (error) {
         const errors = error.response.data.errors
-
         if (errors) {
             errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
         }
@@ -36,7 +35,7 @@ export const loadUser = () => async (dispatch) => {
 }
 
 // Register User
-export const register = (name, email, password, history) => async (
+export const register = (name, email, password) => async (
     dispatch
 ) => {
     const config = {
@@ -56,7 +55,6 @@ export const register = (name, email, password, history) => async (
             payload: res.data,
         })
         dispatch(loadUser())
-        history.push('/dashboard')
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -69,7 +67,7 @@ export const register = (name, email, password, history) => async (
 }
 
 // Login User
-export const login = (email, password, history) => async (dispatch) => {
+export const login = (email, password) => async (dispatch) => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -87,7 +85,6 @@ export const login = (email, password, history) => async (dispatch) => {
         })
 
         dispatch(loadUser())
-        history.push('/dashboard')
     } catch (error) {
         const errors = error.response.data.errors
 

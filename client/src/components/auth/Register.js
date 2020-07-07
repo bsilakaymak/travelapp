@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { Form, Input, Label, FormTitle, InputHolder } from '../shared/FormGroup'
 import { Divider, Button } from '../shared/Elements'
 import { register } from '../../actions/auth'
-import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 const LoginContainer = styled.div`
     display: flex;
@@ -18,14 +18,14 @@ const LoginContainer = styled.div`
 `
 
 const Register = () => {
+    const { isAuthenticated } = useSelector((state) => state.auth)
     const [userData, setUserData] = useState({
         name: '',
         email: '',
         password: '',
         password2: '',
     })
-    const history = useHistory()
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
     const { name, email, password, password2 } = userData
     const onChangeRegisterHandler = (e) => {
         setUserData({ ...userData, [e.target.name]: e.target.value })
@@ -36,9 +36,10 @@ const Register = () => {
             console.log('Passwords do not match')
             return
         } else {
-            dispatch(register(name, email, password, history))
+            dispatch(register(name, email, password))
         }
     }
+    if (isAuthenticated) return <Redirect to="/dashboard" />
     return (
         <LoginContainer>
             <Form right onSubmit={onSubmitAuthFormHandler}>
@@ -107,6 +108,5 @@ const Register = () => {
         </LoginContainer>
     )
 }
-
 
 export default Register

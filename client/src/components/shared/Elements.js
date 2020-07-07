@@ -43,6 +43,7 @@ export const Button = styled.button`
         width: 100%;
     }
     cursor: pointer;
+    font-size:${(props) => props.fontSize};
     position: relative;
     z-index: 1;
     float: ${(props) => props.right && 'right'};
@@ -78,6 +79,7 @@ export const Card = styled.div`
     width: 100%;
     background:${(props) => props.background};
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0.19), 0 0px 7px rgba(0, 0, 0, 0.23);
+    text-align:${(props) => props.textAlign}
 `
 export const Title = styled.h4`
     text-align: ${(props) => props.center && 'center'};

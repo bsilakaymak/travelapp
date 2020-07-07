@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const StyledAlert = styled.div`
     padding: 0.8rem;
     opacity: 0.9;
-    background: #c61d1d;
+    background: ${(props) => (props.success ? 'green' : '#c61d1d')};
     color: white;
 `
 
@@ -17,7 +17,12 @@ const Alert = () => {
                 alerts !== null &&
                 alerts.length > 0 &&
                 alerts.map((alert) => (
-                    <StyledAlert key={alert.id}>{alert.msg}</StyledAlert>
+                    <StyledAlert
+                        key={alert.id}
+                        success={alert.alertType === 'success'}
+                    >
+                        {alert.msg}
+                    </StyledAlert>
                 ))}
         </div>
     )

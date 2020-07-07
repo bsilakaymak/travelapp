@@ -29,6 +29,7 @@ const CreateBoard = () => {
     const onSubmitCreateBoardFormHandler = (e) => {
         e.preventDefault()
         dispatch(addBoard(boardData))
+        return <Redirect to={`/boards`} />
     }
 
     return (

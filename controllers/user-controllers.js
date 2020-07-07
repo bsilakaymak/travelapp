@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator')
 const getCurrentUser = async (req, res) => {
     try {
         const currentUser = await User.findById(req.userData.userId)
-            .populate('places', 'title description')
+            .populate(['placeLists', 'places'])
         res.status(200).send(currentUser)
     } catch (error) {
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })

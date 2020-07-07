@@ -15,7 +15,7 @@ const getPlaceLists = async (req, res) => {
 const getPlaceList = async (req, res) => {
     const { plid } = req.params
     try {
-        const placeList = await PlaceList.findById(plid)
+        const placeList = await PlaceList.findById(plid).populate('places')
         res.send(placeList).status(200)
     } catch (error) {
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
@@ -36,11 +36,13 @@ const addPlaceList = async (req, res) => {
             creator: user.id,
         }
         const placeList = new PlaceList(newPlaceList)
-        user.placeLists.push(placeList)
         await placeList.save()
+
+        user.placeLists.push(placeList)
         await user.save()
         res.status(200).send(placeList)
     } catch (error) {
+        console.error(error)
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import React, { useEffect, useState, Fragment } from 'react'
+import { useParams, useHistory, Redirect } from 'react-router-dom'
 import 'react-responsive-modal/styles.css'
 import { Modal } from 'react-responsive-modal'
 import {
@@ -59,6 +59,8 @@ const PlaceDetails = () => {
                             {place.title}
                         </Title>
                         <Divider gray marginBottom="0.8rem" />
+                        <Image src={place.image} />
+                        <Divider gray marginBottom="0.8rem" />
                         <Holder>
                             <Image src={''} alt="" />
                         </Holder>
@@ -74,7 +76,7 @@ const PlaceDetails = () => {
                         <Button
                             small
                             background="#004C7F"
-                            margin="0 0 10px 0"
+                            margin="5px"
                             onClick={() => setOpen(true)}
                         >
                             Map
@@ -82,7 +84,8 @@ const PlaceDetails = () => {
                         <Button
                             small
                             background="#004C7F"
-                            margin="0 0 10px 0"
+                            margin="5px"
+                            fontSize="0.98rem"
                             onClick={() => setIsBoardsOpen(true)}
                         >
                             Add to your board
@@ -93,23 +96,51 @@ const PlaceDetails = () => {
                             onClose={() => setIsBoardsOpen}
                         >
                             <div>
+                                <Title marginBottom="1rem" center>
+                                    Your Boards
+                                </Title>
                                 {user &&
                                     user.placeLists &&
                                     user.placeLists.map((placelist) => (
-                                        <Button
-                                            onClick={() =>
-                                                dispatch(
-                                                    addPlaceToBoard(
-                                                        placelist._id,
-                                                        placeId
+                                        <Fragment>
+                                            <Button
+                                                background="#004C7F"
+                                                onClick={() => {
+                                                    dispatch(
+                                                        addPlaceToBoard(
+                                                            placelist._id,
+                                                            placeId
+                                                        )
                                                     )
-                                                )
-                                            }
-                                        >
-                                            {placelist.listName}
-                                        </Button>
+                                                    return (
+                                                        <Redirect
+                                                            to={`/boards/${placelist._id}`}
+                                                        />
+                                                    )
+                                                }}
+                                            >
+                                                {placelist.listName}
+                                            </Button>
+                                            <Divider
+                                                dark
+                                                marginBottom="0.5rem"
+                                                marginTop="0.5rem"
+                                            ></Divider>
+                                        </Fragment>
                                     ))}
                             </div>
+                            <Button
+                                small
+                                fontSize="0.75rem"
+                                marginTop="1rem"
+                                background=""
+                                wheat
+                                onClick={() => {
+                                    setIsBoardsOpen(false)
+                                }}
+                            >
+                                Close
+                            </Button>
                         </Modal>
                     </Card>
                     {isAuth && (

@@ -54,14 +54,8 @@ const userSchema = new Schema({
             },
         },
     ],
-    placeLists: [
-        {
-            placeList: {
-                type: mongoose.Types.ObjectId,
-                ref: 'placeList',
-            },
-        },
-    ],
+    placeLists: [{ type: mongoose.Types.ObjectId, ref: 'placeList' }],
+
     privacyOptions: {},
     social: {
         google: { type: String, default: null },

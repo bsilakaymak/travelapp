@@ -205,10 +205,7 @@ const addComment = async (req, res) => {
 const deleteComment = async (req, res) => {
     const { pid: placeId, cid: commentId } = req.params
     try {
-        const place = await Place.findById(placeId).populate(
-            'comments.creator',
-            'name'
-        )
+        const place = await Place.findById(placeId).populate('comments.creator')
         //get the comment
         const comment = place.comments.find(
             (comment) => comment.id.toString() === commentId

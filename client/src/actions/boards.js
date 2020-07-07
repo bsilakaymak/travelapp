@@ -130,7 +130,7 @@ export const removePlaceFromBoard = (boardId, placeId) => async (dispatch) => {
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
-            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+            errors.forEach((error) => dispatch(setAlert(error.msg)))
         }
     }
 }
@@ -143,10 +143,11 @@ export const followBoard = (boardId) => async (dispatch) => {
             type: FOLLOW_BOARD,
             payload: res.data,
         })
+        dispatch(setAlert('Board Followed', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
-            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+            errors.forEach((error) => dispatch(setAlert(error.msg,)))
         }
     }
 }
@@ -162,7 +163,7 @@ export const unfollowBoard = (boardId) => async (dispatch) => {
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
-            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+            errors.forEach((error) => dispatch(setAlert(error.msg,)))
         }
     }
 }

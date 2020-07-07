@@ -14,7 +14,7 @@ import {
 } from './types'
 
 //get board
-export const getPlaceList = (boardId) => async (dispatch) => {
+export const getBoard = (boardId) => async (dispatch) => {
     try {
         const res = await axios.get(`/api/boards/${boardId}`)
         dispatch({

@@ -30,7 +30,6 @@ const createUser = async (req, res) => {
     }
     const { name, email, password } = req.body
     let createdUser
-    let token
     try {
         const existingUser = await User.findOne({ email: email })
 
@@ -50,8 +49,8 @@ const createUser = async (req, res) => {
 
         await createdUser.save()
 
-        token = jwt.sign(
-            { userId: createdUser.id, email: createdUser.email, token },
+        const token = jwt.sign(
+            { userId: createdUser.id, email: createdUser.email },
             JWT_KEY,
             {
                 expiresIn: '1h',

@@ -10,26 +10,40 @@ import CreatePlace from '../place/CreatePlace'
 import PrivateRoute from './PrivateRoute'
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-
-
+import BoardList from '../boards/BoardList'
+import BoardDetails from '../boards/BoardDetails'
+import CreateBoard from '../boards/CreateBoard'
+import Alert from '../layout/Alert'
 
 function Routes() {
-
     return (
         <Router>
             <Navbar />
+            <Alert />
             <Switch>
                 <Route exact path="/" component={LandingPage} />
                 <Route exact path="/signup" component={Register} />
                 <Route exact path="/login" component={Login} />
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
-                <Route exact path="/places" component={Places} />
+                <PrivateRoute
+                    exact
+                    path="/createboard"
+                    component={CreateBoard}
+                />
                 <PrivateRoute
                     exact
                     path="/create-place"
                     component={CreatePlace}
                 />
+                <Route exact path="/places" component={Places} />
+
                 <Route exact path="/place/:placeId" component={PlaceDetails} />
+                <Route exact path="/boards" component={BoardList} />
+                <Route
+                    exact
+                    path={`/boards/:boardId`}
+                    component={BoardDetails}
+                />
             </Switch>
         </Router>
     )

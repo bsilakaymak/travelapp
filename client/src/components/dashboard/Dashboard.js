@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Container, Grid, Row } from '../shared/GridSystem'
 import { Title, Divider, Image, Holder, Button, Icon } from '../shared/Elements'
+import { Modal } from 'react-responsive-modal'
 
 import UserUpdate from './UserUpdate'
+import UserBoards from './UserBoards'
 import { useSelector } from 'react-redux'
+import UserPlaces from './UserPlaces'
 
 const UserInfoContent = styled.div`
     background: rgba(0, 0, 0, 0.3);
@@ -25,8 +28,9 @@ const DashboardContainer = styled.div`
 `
 const Dashboard = () => {
     const { user } = useSelector((state) => state.auth)
-
     const [showEdit, setShowEdit] = useState(false)
+    const [isBoardsOpen, setIsBoardsOpen] = useState(false)
+    const [isPlacesOpen, setIsPlacesOpen] = useState(false)
 
     return (
         <DashboardContainer>
@@ -44,7 +48,7 @@ const Dashboard = () => {
                                         float="right"
                                         onClick={(e) => setShowEdit(!showEdit)}
                                     />
-                                    <Holder width="150px" height="150px">
+                                    <Holder width="150px">
                                         <Image
                                             src={user.image}
                                             alt={user.name}
@@ -69,6 +73,9 @@ const Dashboard = () => {
                                         background="#007bff"
                                         marginTop="1rem"
                                         marginRight="1rem"
+                                        onClick={() =>
+                                            setIsPlacesOpen(!isBoardsOpen)
+                                        }
                                     >
                                         My Places
                                     </Button>
@@ -76,6 +83,9 @@ const Dashboard = () => {
                                         small
                                         background="#007bff"
                                         marginTop="1rem"
+                                        onClick={() =>
+                                            setIsBoardsOpen(!isBoardsOpen)
+                                        }
                                     >
                                         My Boards
                                     </Button>
@@ -83,6 +93,21 @@ const Dashboard = () => {
                             )}
                         </Grid>
                     </Row>
+
+                    <Modal
+                        center
+                        open={isBoardsOpen}
+                        onClose={() => setIsBoardsOpen(false)}
+                    >
+                        <UserBoards boards={user.placeLists} />
+                    </Modal>
+                    <Modal
+                        center
+                        open={isPlacesOpen}
+                        onClose={() => setIsPlacesOpen(false)}
+                    >
+                        <UserPlaces places={user.places} />
+                    </Modal>
                 </Container>
             )}
         </DashboardContainer>

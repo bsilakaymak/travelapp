@@ -12,6 +12,11 @@ const BoardListDiv = styled.div`
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 2%;
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 `
 
 const CreateBoardLink = styled(Link)`
@@ -25,19 +30,22 @@ const BoardList = () => {
         dispatch(getBoards())
     }, [dispatch])
     const { boards } = useSelector((state) => state.boards)
+    const { isAuthenticated } = useSelector((state) => state.auth)
     return (
         <>
-            <CreateBoardLink to={'/createboard'}>
-                <Button
-                    small
-                    background="#3f51b5;"
-                    marginTop="0.5rem"
-                    marginBottom="0.5rem"
-                >
-                    <Icon mr="0.25rem" className="fas fa-plus" />
-                    Create a board
-                </Button>
-            </CreateBoardLink>
+            {isAuthenticated && (
+                <CreateBoardLink to={'/createboard'}>
+                    <Button
+                        small
+                        background="#004C7F;"
+                        marginTop="0.5rem"
+                        marginBottom="0.5rem"
+                    >
+                        <Icon mr="0.25rem" className="fas fa-plus" />
+                        Create a board
+                    </Button>
+                </CreateBoardLink>
+            )}
             <BoardListDiv>
                 {boards.map((board) => (
                     <BoardItem board={board} key={board._id} />

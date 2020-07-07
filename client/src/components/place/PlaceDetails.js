@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getPlace, deletePlace } from '../../actions/places'
 
 import Map from '../../components/shared/Map'
+import { addPlaceToBoard } from '../../actions/boards'
 const PlaceDetails = () => {
     const isAuth = useSelector((state) => state.auth.isAuthenticated)
     const history = useHistory()
@@ -30,6 +31,7 @@ const PlaceDetails = () => {
     const location = { lat: '52.08889', lon: '5.11556' }
 
     const [open, setOpen] = useState(false)
+    const [isBoardsOpen, setIsBoardsOpen] = useState(false)
     if (!place) return <h4>Loading</h4>
     return (
         <Container>
@@ -77,6 +79,38 @@ const PlaceDetails = () => {
                         >
                             Map
                         </Button>
+                        <Button
+                            small
+                            background="#004C7F"
+                            margin="0 0 10px 0"
+                            onClick={() => setIsBoardsOpen(true)}
+                        >
+                            Add to your board
+                        </Button>
+                        <Modal
+                            center
+                            open={isBoardsOpen}
+                            onClose={() => setIsBoardsOpen}
+                        >
+                            <div>
+                                {user &&
+                                    user.placeLists &&
+                                    user.placeLists.map((placelist) => (
+                                        <Button
+                                            onClick={() =>
+                                                dispatch(
+                                                    addPlaceToBoard(
+                                                        placelist._id,
+                                                        placeId
+                                                    )
+                                                )
+                                            }
+                                        >
+                                            {placelist.listName}
+                                        </Button>
+                                    ))}
+                            </div>
+                        </Modal>
                     </Card>
                     {isAuth && (
                         <CommentForm placeId={place._id} place={place} />

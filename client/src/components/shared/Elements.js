@@ -76,6 +76,7 @@ export const Card = styled.div`
     position: relative;
     padding: 1.2rem;
     width: 100%;
+    background:${(props) => props.background};
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0.19), 0 0px 7px rgba(0, 0, 0, 0.23);
 `
 export const Title = styled.h4`
@@ -88,6 +89,7 @@ export const Title = styled.h4`
 `
 export const Image = styled.img`
     width: 100%;
+    
 `
 export const Holder = styled.div`
     display: flex;

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Link, useHistory, Redirect } from 'react-router-dom'
+import { useHistory, Redirect } from 'react-router-dom'
 import { Form, Input, Label, FormTitle, InputHolder } from '../shared/FormGroup'
 import { Divider, Button, Icon, Image, Holder } from '../shared/Elements'
 import ImageUpload from '../shared/ImageUpload'

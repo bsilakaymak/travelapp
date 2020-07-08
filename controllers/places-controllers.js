@@ -186,10 +186,7 @@ const addComment = async (req, res) => {
     const { pid: placeId } = req.params
     const { text } = req.body
     try {
-        const place = await Place.findById(placeId).populate(
-            'comments.creator',
-            'name'
-        )
+        const place = await Place.findById(placeId).populate('comments.creator')
         const newComment = {
             creator: req.userData.userId,
             text,

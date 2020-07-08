@@ -12,7 +12,7 @@ const Places = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getPlaces())
-    }, [])
+    }, [dispatch])
 
     const places = useSelector((state) => state.places.places)
 

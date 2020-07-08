@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Container, Grid, Row } from '../shared/GridSystem'
 import { Title, Divider, Image, Holder, Button, Icon } from '../shared/Elements'

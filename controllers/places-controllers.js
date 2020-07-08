@@ -4,6 +4,7 @@ const Place = require('../models/Place')
 const User = require('../models/User')
 const PlaceList = require('../models/PlaceList')
 const getCoordsForAddress = require('../utils/location')
+const escapeRegex = require('../utils/escapeRegex')
 const getPlace = async (req, res) => {
     try {
         const place = await Place.findById(req.params.pid).populate(
@@ -22,6 +23,8 @@ const getPlace = async (req, res) => {
 }
 
 const getPlaces = async (req, res) => {
+    const search = req.query.search
+
     try {
         const places = await Place.find()
         if (places.length === 0) {
@@ -29,7 +32,14 @@ const getPlaces = async (req, res) => {
                 .status(404)
                 .json({ errors: [{ msg: 'Place not found' }] })
         }
-        res.status(200).send(places)
+        if (search) {
+            const regex = new RegExp(escapeRegex(search), 'gi')
+            const searchPlaces = await Place.find({ title: regex })
+
+            res.status(200).send(searchPlaces)
+        } else {
+            res.status(200).send(places)
+        }
     } catch (error) {
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }

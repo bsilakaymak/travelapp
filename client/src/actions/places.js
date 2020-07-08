@@ -13,9 +13,11 @@ import {
 } from './types'
 
 // get places
-export const getPlaces = () => async (dispatch) => {
+export const getPlaces = (search) => async (dispatch) => {
     try {
-        const res = await axios.get('/api/places/')
+        const res = await axios.get(
+            `/api/places/?search=${search !== null ? search : ''}`
+        )
         dispatch({
             type: GET_PLACES,
             payload: res.data,

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Row, Grid } from '../shared/GridSystem'
 import { Card, Title, Divider, Button, Icon } from '../shared/Elements'
@@ -8,11 +8,12 @@ import PlaceItem from './PlaceItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPlaces } from '../../actions/places'
 const Places = () => {
+    const [search, setSearch] = useState(null)
     const isAuth = useSelector((state) => state.auth.isAuthenticated)
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(getPlaces())
-    }, [dispatch])
+        dispatch(getPlaces(search))
+    }, [dispatch, search])
 
     const places = useSelector((state) => state.places.places)
 
@@ -30,6 +31,7 @@ const Places = () => {
                                 autocomplete="off"
                                 required
                                 borderColor="#244384"
+                                onChange={(e) => setSearch(e.target.value)}
                             />
                             <Label color="#244384">search places</Label>
                         </InputHolder>

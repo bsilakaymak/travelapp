@@ -9,7 +9,7 @@ import {
 } from '../actions/types'
 
 const initialState = {
-    places: [],
+    places: null,
     place: null,
     comments: [],
     loading: true,

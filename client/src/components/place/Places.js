@@ -16,7 +16,7 @@ const Places = () => {
     }, [dispatch, search])
 
     const places = useSelector((state) => state.places.places)
-
+    console.log(places)
     return (
         <Container>
             <Row center>
@@ -55,9 +55,16 @@ const Places = () => {
                         </Link>
                     )}
 
-                    {places.map((place) => (
-                        <PlaceItem place={place} key={place._id} />
-                    ))}
+                    {places !== null && places.length === 0 ? (
+                        <Card marginTop="1rem" textAlign="center">
+                            No place
+                        </Card>
+                    ) : (
+                        places !== null &&
+                        places.map((place) => (
+                            <PlaceItem place={place} key={place._id} />
+                        ))
+                    )}
                 </Grid>
             </Row>
         </Container>

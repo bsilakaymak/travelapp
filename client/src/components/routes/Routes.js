@@ -14,7 +14,8 @@ import BoardList from '../boards/BoardList'
 import BoardDetails from '../boards/BoardDetails'
 import CreateBoard from '../boards/CreateBoard'
 import Alert from '../layout/Alert'
-
+import SendEmail from '../forgetPassword/SendEmail'
+import ResetPassword from '../forgetPassword/ResetPassword'
 function Routes() {
     return (
         <Router>
@@ -43,6 +44,12 @@ function Routes() {
                     exact
                     path={`/boards/:boardId`}
                     component={BoardDetails}
+                />
+                <Route exact path="/forgetpassword" component={SendEmail} />
+                <Route
+                    exact
+                    path="/resetpassword/:token"
+                    component={ResetPassword}
                 />
             </Switch>
         </Router>

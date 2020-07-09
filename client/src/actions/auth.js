@@ -35,9 +35,7 @@ export const loadUser = () => async (dispatch) => {
 }
 
 // Register User
-export const register = (name, email, password) => async (
-    dispatch
-) => {
+export const register = (name, email, password) => async (dispatch) => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -97,7 +95,56 @@ export const login = (email, password) => async (dispatch) => {
         })
     }
 }
+export const forgetPassword = (email) => async (dispatch) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }
 
+    const body = JSON.stringify({ email })
+    try {
+        const res = await axios.post('/api/users/forgotpassword', body, config)
+
+        if (res.data) {
+            return dispatch(setAlert(res.data.message, 'success'))
+        }
+    } catch (error) {
+        const errors = error.response.data.errors
+
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
+}
+export const resetPassword = (password, token) => async (dispatch) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }
+
+    const body = JSON.stringify({ password })
+    try {
+        const res = await axios.post(
+            `/api/users/resetpassword/${token}`,
+            body,
+            config
+        )
+
+        if (res.data) {
+            return dispatch(setAlert(res.data.message, 'success'))
+        }
+        dispatch(loadUser())
+    } catch (error) {
+        console.log(error.response.data)
+        const errors = error.response.data.errors
+
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
+}
 // Logout /Clear Profile
 
 export const logout = () => (dispatch) => {

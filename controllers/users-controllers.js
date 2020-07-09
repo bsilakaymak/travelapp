@@ -3,7 +3,7 @@ const User = require('../models/User')
 const JWT_KEY = 'sila_secret_key'
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-
+const { forgetPasswordEmail, resetPasswordEmail } = require('../emails/account')
 const getUser = async (req, res) => {
     const { uid: userId } = req.params
     try {
@@ -117,8 +117,75 @@ const login = async (req, res) => {
 }
 /* eslint-disable no-unused-vars */
 const confirmAccount = async (req, res) => {}
-const forgotPassword = async (req, res) => {}
-const resetPassword = async (req, res) => {}
+const forgotPassword = async (req, res) => {
+    console.log(`test`)
+    const { email } = req.body
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+    try {
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res
+                .status(401)
+                .json({ errors: [{ msg: 'Invalid Email, Please signup' }] })
+        }
+        user.generatePasswordReset()
+        await user.save()
+
+        let link =
+            'http://localhost:3000' +
+            '/resetpassword/' +
+            user.resetPasswordToken
+
+        forgetPasswordEmail(user.name, user.email, link)
+        res.status(200).json({
+            message: 'A reset e-mail has been sent to ' + user.email + '.',
+        })
+    } catch (error) {
+        console.error(error.message)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
+    }
+}
+const resetPassword = async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+    try {
+        const user = await User.findOne({
+            resetPasswordToken: req.params.token,
+            resetPasswordExpires: { $gt: Date.now() },
+        })
+
+        if (!user) {
+            return res.status(401).json({
+                errors: [
+                    {
+                        msg: 'Password reset token is invalid or has expired.',
+                    },
+                ],
+            })
+        }
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(req.body.password, salt)
+
+        user.password = hashedPassword
+
+        user.resetPasswordToken = undefined
+        user.resetPasswordExpires = undefined
+
+        await user.save()
+
+        resetPasswordEmail(user.name, user.email)
+
+        res.status(200).json({ message: 'Your password has been updated.' })
+    } catch (error) {
+        console.error(error.message)
+        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
+    }
+}
 const setPrivacy = async (req, res) => {}
 const deleteUser = async (req, res) => {}
 

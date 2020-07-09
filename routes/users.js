@@ -39,10 +39,21 @@ route.post(
 route.get('/confirm/:token', usersControllers.confirmAccount)
 
 //request password reset
-route.post('/forgotpassword', usersControllers.forgotPassword)
+route.post(
+    '/forgotpassword',
+    check('email', 'Please include a valid email.').isEmail(),
+    usersControllers.forgotPassword
+)
 
 //reset password
-route.post('resetpassword', usersControllers.resetPassword)
+route.post(
+    '/resetpassword/:token',
+    check('password', 'Please enter a password with 6 or more characters.')
+        .isLength({ min: 6 })
+        .not()
+        .isEmpty(),
+    usersControllers.resetPassword
+)
 
 route.use(checkAuth)
 

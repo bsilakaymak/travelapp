@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Link, Redirect } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { Form, Input, Label, FormTitle, InputHolder } from '../shared/FormGroup'
 import { Divider, Button } from '../shared/Elements'
-import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../../actions/auth'
+import { useDispatch } from 'react-redux'
+import { resetPassword } from '../../actions/auth'
+import { setAlert } from '../../actions/alert'
 
-const LoginContainer = styled.div`
+const ResetContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,44 +17,40 @@ const LoginContainer = styled.div`
     right: 0;
     left: 0;
 `
-const ForgetPasswordBtn = styled(Link)`
-    color: #fff;
-    text-decoration: none;
-`
-const Login = () => {
-    const { isAuthenticated } = useSelector((state) => state.auth)
+
+const ResetPassword = () => {
+    const token = useParams().token
+    const location = useHistory()
+
     const dispatch = useDispatch()
     const [userData, setUserData] = useState({
-        email: '',
         password: '',
+        password2: '',
     })
-    const { email, password } = userData
+    const { password, password2 } = userData
     const onChangeRegisterHandler = (e) => {
         setUserData({ ...userData, [e.target.name]: e.target.value })
     }
     const onSubmitAuthFormHandler = (e) => {
         e.preventDefault()
-        dispatch(login(email, password))
-    }
-    if (isAuthenticated) return <Redirect to="/dashboard" />
-    return (
-        <LoginContainer>
-            <Form right onSubmit={onSubmitAuthFormHandler}>
-                <FormTitle>Login</FormTitle>
-                <Divider marginBottom="0.8rem" />
+        if (password !== password2) {
+            return dispatch(
+                setAlert(
+                    'The password and confirmation password do not match.',
+                    'danger'
+                )
+            )
+        }
 
-                <InputHolder>
-                    <Input
-                        background="none"
-                        color="#fff"
-                        name="email"
-                        value={email}
-                        onChange={onChangeRegisterHandler}
-                        autoComplete="off"
-                        required
-                    />
-                    <Label>Email</Label>
-                </InputHolder>
+        dispatch(resetPassword(password, token))
+        location.push('/login')
+    }
+
+    return (
+        <ResetContainer>
+            <Form onSubmit={onSubmitAuthFormHandler}>
+                <FormTitle>Rest Password</FormTitle>
+                <Divider marginBottom="0.8rem" />
                 <InputHolder>
                     <Input
                         background="none"
@@ -65,7 +62,20 @@ const Login = () => {
                         type="password"
                         required
                     />
-                    <Label>Password</Label>
+                    <Label>password</Label>
+                </InputHolder>
+                <InputHolder>
+                    <Input
+                        background="none"
+                        color="#fff"
+                        name="password2"
+                        value={password2}
+                        onChange={onChangeRegisterHandler}
+                        autoComplete="off"
+                        type="password"
+                        required
+                    />
+                    <Label>Password confirm</Label>
                 </InputHolder>
 
                 <Button
@@ -73,15 +83,11 @@ const Login = () => {
                     marginTop="0.5rem"
                     marginBottom="0.5rem"
                 >
-                    {' '}
-                    Login{' '}
+                    Submit
                 </Button>
-                <ForgetPasswordBtn to="/forgetpassword">
-                    Forget password
-                </ForgetPasswordBtn>
             </Form>
-        </LoginContainer>
+        </ResetContainer>
     )
 }
 
-export default Login
+export default ResetPassword

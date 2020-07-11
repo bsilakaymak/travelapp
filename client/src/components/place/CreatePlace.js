@@ -11,11 +11,8 @@ const CreatePlaceContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100% - 50px);
+    min-height: 100%;
     background: #3e497b;
-    position: absolute;
-    right: 0;
-    left: 0;
 `
 const CreatePlace = () => {
     const history = useHistory()

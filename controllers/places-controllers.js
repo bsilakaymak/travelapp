@@ -24,23 +24,32 @@ const getPlace = async (req, res) => {
 
 const getPlaces = async (req, res) => {
     const search = req.query.search
-
+    const tagFilter = req.query.tagFilter
+    let places
     try {
-        const places = await Place.find()
+        places = await Place.find()
         if (places.length === 0) {
             return res
                 .status(404)
                 .json({ errors: [{ msg: 'Place not found' }] })
         }
+        if (tagFilter) {
+            places = await Place.find({
+                tags: { $in: tagFilter.split(',') },
+            })
+
+            return res.status(200).send(places)
+        }
         if (search) {
             const regex = new RegExp(escapeRegex(search), 'gi')
-            const searchPlaces = await Place.find({ title: regex })
+            places = await Place.find({ title: regex })
 
-            res.status(200).send(searchPlaces)
+            res.status(200).send(places)
         } else {
             res.status(200).send(places)
         }
     } catch (error) {
+        console.error(error.message)
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
@@ -50,8 +59,9 @@ const addPlace = async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
     }
-    const { title, address, description, categories = [] } = req.body
-
+    const { title, address, description, tags } = req.body
+    const tagsSplitted = tags.split(',')
+    console.log(tagsSplitted)
     try {
         const user = await User.findById(req.userData.userId)
         const coordinates = await getCoordsForAddress(address)
@@ -64,9 +74,9 @@ const addPlace = async (req, res) => {
                 lon: coordinates[0],
             },
             creator: req.userData.userId,
-            categories,
             image: req.file.path,
             imageId: req.file.filename,
+            tags: tagsSplitted,
         }
         const place = new Place(formData)
         await place.save()
@@ -75,6 +85,7 @@ const addPlace = async (req, res) => {
         await user.save()
         res.status(200).send(place)
     } catch (error) {
+        console.log(error.message)
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }

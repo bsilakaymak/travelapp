@@ -47,7 +47,14 @@ const placeSchema = new Schema({
             },
         },
     ],
-    categories: [{ category: String }],
+    tags: {
+        type: [
+            {
+                type: String,
+            },
+        ],
+        default: [],
+    },
     comments: [
         {
             creator: {

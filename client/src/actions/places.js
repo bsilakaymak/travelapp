@@ -13,10 +13,12 @@ import {
 } from './types'
 
 // get places
-export const getPlaces = (search) => async (dispatch) => {
+export const getPlaces = (search, tags) => async (dispatch) => {
     try {
         const res = await axios.get(
-            `/api/places/?search=${search !== null ? search : ''}`
+            `/api/places/?search=${
+                search !== null ? search : ''
+            }&tagFilter=${tags}`
         )
         dispatch({
             type: GET_PLACES,
@@ -48,11 +50,13 @@ export const getPlace = (placeId) => async (dispatch) => {
 
 // add place
 export const addPlace = (placeData, history) => async (dispatch) => {
+    const { title, image, address, description, tags } = placeData
     const formData = new FormData()
-    formData.append('title', placeData.title)
-    formData.append('image', placeData.image)
-    formData.append('address', placeData.address)
-    formData.append('description', placeData.description)
+    formData.append('title', title)
+    formData.append('image', image)
+    formData.append('address', address)
+    formData.append('description', description)
+    formData.append('tags', tags)
     const config = {
         headers: {
             'Content-Type': 'application/json',

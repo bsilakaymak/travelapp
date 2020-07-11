@@ -9,14 +9,50 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getPlaces } from '../../actions/places'
 const Places = () => {
     const [search, setSearch] = useState(null)
+    const [tags, setTags] = useState([])
     const isAuth = useSelector((state) => state.auth.isAuthenticated)
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(getPlaces(search))
-    }, [dispatch, search])
+        dispatch(getPlaces(search, tags.join(',')))
+    }, [search, tags])
+
 
     const places = useSelector((state) => state.places.places)
-    console.log(places)
+
+    const checkboxHandler = (event) => {
+        const tagName = event.target.value
+        const checked = event.target.checked
+
+        if (checked) {
+            setTags((oldTags) => {
+                return oldTags.includes(tagName)
+                    ? oldTags
+                    : [...oldTags, tagName]
+            })
+        } else {
+            setTags((oldTags) => {
+                return oldTags.includes(tagName)
+                    ? oldTags.filter((tag) => tag !== tagName)
+                    : oldTags
+            })
+        }
+    }
+
+    const checkbox = ['Natural', 'Historical', 'Outdoor', 'Touristic'].map(
+        (att, i) => {
+            return (
+                <Checkbox
+                    key={i}
+                    label={att}
+                    htmlFor={att}
+                    id={att}
+                    value={att}
+                    onChange={checkboxHandler}
+                />
+            )
+        }
+    )
+
     return (
         <Container>
             <Row center>
@@ -35,14 +71,7 @@ const Places = () => {
                             />
                             <Label color="#244384">search places</Label>
                         </InputHolder>
-
-                        <Checkbox label="Test one" htmlFor="one" id="one" />
-                        <Checkbox label="Test two" htmlFor="two" id="two" />
-                        <Checkbox
-                            label="Test three"
-                            htmlFor="three"
-                            id="three"
-                        />
+                        {checkbox}
                     </Card>
                 </Grid>
                 <Grid lg={4} md={8}>

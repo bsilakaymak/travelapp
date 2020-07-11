@@ -6,7 +6,7 @@ import { Divider, Button, Icon, Image, Holder } from '../shared/Elements'
 import ImageUpload from '../shared/ImageUpload'
 import { useDispatch } from 'react-redux'
 import { addPlace } from '../../actions/places'
-
+import Checkbox from '../shared/Checkbox'
 const CreatePlaceContainer = styled.div`
     display: flex;
     justify-content: center;
@@ -16,6 +16,8 @@ const CreatePlaceContainer = styled.div`
 `
 const CreatePlace = () => {
     const history = useHistory()
+    const [tags, setTags] = useState([])
+
     const [placeData, setPlaceData] = useState({
         title: '',
         address: '',
@@ -36,11 +38,45 @@ const CreatePlace = () => {
         }
     }
     const onSubmitCreatPlaceFormHandler = (e) => {
-        const placeFormData = { image, title, address, description }
+        const placeFormData = { image, title, address, description, tags }
         e.preventDefault()
         dispatch(addPlace(placeFormData, history))
+
         return <Redirect to={`/places`} />
     }
+    const checkboxHandler = (event) => {
+        const tagName = event.target.value
+        const checked = event.target.checked
+
+        if (checked) {
+            setTags((oldTags) => {
+                return oldTags.includes(tagName)
+                    ? oldTags
+                    : [...oldTags, tagName]
+            })
+        } else {
+            setTags((oldTags) => {
+                return oldTags.includes(tagName)
+                    ? oldTags.filter((tag) => tag !== tagName)
+                    : oldTags
+            })
+        }
+    }
+
+    const checkbox = ['Natural', 'Historical', 'Outdoor', 'Touristic'].map(
+        (att, i) => {
+            return (
+                <Checkbox
+                    key={i}
+                    label={att}
+                    htmlFor={att}
+                    id={att}
+                    value={att}
+                    onChange={checkboxHandler}
+                />
+            )
+        }
+    )
 
     return (
         <CreatePlaceContainer>
@@ -105,6 +141,7 @@ const CreatePlace = () => {
                     <Icon mr="0.25rem" className="fas fa-plus" />
                     Create
                 </Button>
+                {checkbox}
             </Form>
         </CreatePlaceContainer>
     )

@@ -16,6 +16,7 @@ const Places = () => {
         dispatch(getPlaces(search, tags.join(',')))
     }, [search, tags])
 
+
     const places = useSelector((state) => state.places.places)
 
     const checkboxHandler = (event) => {

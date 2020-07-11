@@ -15,7 +15,7 @@ const getPlaceLists = async (req, res) => {
 const getPlaceList = async (req, res) => {
     const { plid } = req.params
     try {
-        const placeList = await PlaceList.findById(plid).populate('places')
+        const placeList = await PlaceList.findById(plid).populate(['places', 'followers'])
         res.send(placeList).status(200)
     } catch (error) {
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })

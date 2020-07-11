@@ -7,6 +7,7 @@ const StyledAlert = styled.div`
     opacity: 0.9;
     background: ${(props) => (props.success ? 'green' : '#c61d1d')};
     color: white;
+    text-align:center;
 `
 
 const Alert = () => {

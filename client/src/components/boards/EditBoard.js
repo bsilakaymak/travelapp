@@ -1,51 +1,49 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { Form, Input, Label, FormTitle, InputHolder } from '../shared/FormGroup'
 import { Divider, Button, Icon } from '../shared/Elements'
 import { useDispatch } from 'react-redux'
-import { addBoard } from '../../actions/boards'
+import { updateBoard } from '../../actions/boards'
 
-const CreateBoardContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100%;
-    background: #3e497b;
-`
-const CreateBoard = () => {
+const EditBoard = () => {
     const [boardData, setBoardData] = useState({
         listName: '',
         description: '',
     })
     const history = useHistory()
     const dispatch = useDispatch()
+    const { boardId } = useParams()
     const { listName, description } = boardData
-    const onChangeCreateBoardHandler = (e) => {
+    const onChangeUpdateHandler = (e) => {
         setBoardData({ ...boardData, [e.target.name]: e.target.value })
     }
-    const onSubmitCreateBoardFormHandler = (e) => {
+    const onClickUpdateHandler = (e) => {
         e.preventDefault()
-        dispatch(addBoard(boardData))
+        dispatch(updateBoard(boardId, boardData))
         history.push('/boards')
     }
 
     return (
-        <CreateBoardContainer>
+        <div>
             <Form
                 marginTop="0.8rem"
                 marginBottom="0.8rem"
-                onSubmit={onSubmitCreateBoardFormHandler}
+                onSubmit={onClickUpdateHandler}
+                width="100%"
+                md="100%"
+                bg="white"
+                color="black"
             >
-                <FormTitle>Create a Board</FormTitle>
+                <FormTitle>Update a Board</FormTitle>
                 <Divider marginBottom="0.8rem" />
                 <InputHolder>
                     <Input
                         background="none"
-                        color="#fff"
+                        color="black"
                         name="listName"
+                        placeholder="board name"
                         value={listName}
-                        onChange={onChangeCreateBoardHandler}
+                        onChange={onChangeUpdateHandler}
                         autoComplete="off"
                         required
                     />
@@ -54,10 +52,11 @@ const CreateBoard = () => {
                 <InputHolder>
                     <Input
                         background="none"
-                        color="#fff"
+                        placeholder="board description"
+                        color="black"
                         name="description"
                         value={description}
-                        onChange={onChangeCreateBoardHandler}
+                        onChange={onChangeUpdateHandler}
                         autoComplete="off"
                         required
                     />
@@ -71,11 +70,11 @@ const CreateBoard = () => {
                     marginBottom="0.5rem"
                 >
                     <Icon mr="0.25rem" className="fas fa-plus" />
-                    Create
+                    Update
                 </Button>
             </Form>
-        </CreateBoardContainer>
+        </div>
     )
 }
 
-export default CreateBoard
+export default EditBoard

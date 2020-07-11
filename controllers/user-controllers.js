@@ -4,8 +4,10 @@ const { validationResult } = require('express-validator')
 
 const getCurrentUser = async (req, res) => {
     try {
-        const currentUser = await User.findById(req.userData.userId)
-            .populate(['placeLists', 'places'])
+        const currentUser = await User.findById(req.userData.userId).populate([
+            'placeLists',
+            'places',
+        ])
         res.status(200).send(currentUser)
     } catch (error) {
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
@@ -19,7 +21,10 @@ const updateUser = async (req, res) => {
     }
     const { name } = req.body
     try {
-        const user = await User.findById(req.userData.userId)
+        const user = await User.findById(req.userData.userId).populate([
+            'places',
+            'boards',
+        ])
         if (!user) {
             return res
                 .status(422)

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { Card, Title, Holder, Image, Divider, Button } from '../shared/Elements'
+import { Card, Title,Divider, Button } from '../shared/Elements'
 const BoardItemDiv = styled.div`
 width:30%;
 display:flex;

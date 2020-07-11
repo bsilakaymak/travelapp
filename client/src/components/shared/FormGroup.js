@@ -38,7 +38,7 @@ export const InputHolder = styled.div`
 `
 export const Form = styled.form`
     z-index: 1;
-    color: #fff;
+    color: ${({ color }) => (color ? color : '#fff')};
     flex-direction: column;
     display: flex;
     padding: 1rem;
@@ -50,8 +50,9 @@ export const Form = styled.form`
     border-radius: 7px;
     border: 1px solid #fff;
     width: ${({ width }) => (width ? width : '81%')};
-    background: rgba(0, 0, 0, 0.3);
-    @media (min-width: 576px) {
+    background: ${({ bg }) => (bg ? bg : 'rgba(0, 0, 0, 0.3)')} @media
+        (min-width: 576px) {
+
     }
     @media (min-width: 768px) {
         width: ${({ md }) => (md ? md : '30%')};

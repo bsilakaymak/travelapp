@@ -13,7 +13,7 @@ const Places = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getPlaces(search))
-    }, [search])
+    }, [dispatch, search])
 
     const places = useSelector((state) => state.places.places)
     console.log(places)

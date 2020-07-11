@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Moment from 'react-moment'
 import styled from 'styled-components'
-import * as uuid from 'uuid'
+
 import { Input, Form, Label, InputHolder } from '../shared/FormGroup'
 import { Card, Title, Icon, Holder } from '../shared/Elements'
 import { useDispatch, useSelector } from 'react-redux'

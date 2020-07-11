@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Container, Grid, Row } from '../shared/GridSystem'
 import { Title, Divider, Image, Holder, Button, Icon } from '../shared/Elements'
@@ -20,11 +20,8 @@ const DashboardContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100% - 50px);
+    min-height: 100%;
     background: #3e497b;
-    position: absolute;
-    right: 0;
-    left: 0;
 `
 const Dashboard = () => {
     const { user } = useSelector((state) => state.auth)

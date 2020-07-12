@@ -11,7 +11,7 @@ const CreatePlaceContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100%;
+    min-height: calc(100% - 48px);
     background: #3e497b;
 `
 const CreatePlace = () => {
@@ -64,10 +64,10 @@ const CreatePlace = () => {
     }
 
     const checkbox = ['Natural', 'Historical', 'Outdoor', 'Touristic'].map(
-        (att, i) => {
+        (att) => {
             return (
                 <Checkbox
-                    key={i}
+                    key={att}
                     label={att}
                     htmlFor={att}
                     id={att}

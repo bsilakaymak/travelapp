@@ -1,3 +1,4 @@
+const gravatar = require('gravatar')
 const { validationResult } = require('express-validator')
 const User = require('../models/User')
 const JWT_KEY = 'sila_secret_key'
@@ -31,6 +32,12 @@ const createUser = async (req, res) => {
     const { name, email, password } = req.body
     let createdUser
     try {
+        const secureUrl = gravatar.url(
+            email,
+            { s: '200', r: 'x', d: 'retro' },
+            true
+        )
+
         const existingUser = await User.findOne({ email: email })
 
         if (existingUser) {
@@ -43,7 +50,7 @@ const createUser = async (req, res) => {
         createdUser = new User({
             name,
             email,
-            image: '',
+            image: secureUrl,
             password: hashedPassword,
         })
 

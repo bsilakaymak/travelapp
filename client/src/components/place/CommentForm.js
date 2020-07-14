@@ -46,7 +46,6 @@ const CommentForm = ({ placeId, place }) => {
                         borderColor="#244384"
                         onChange={(e) => setComment(e.target.value)}
                         value={comment}
-                        autoComplete="off"
                         required
                     />
                     <Label color="#244384">Add comment</Label>

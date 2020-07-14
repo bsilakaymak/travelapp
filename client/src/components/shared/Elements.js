@@ -24,14 +24,29 @@ export const Divider = styled.div`
     border-radius: 10px;
 `
 export const Button = styled.button`
-    background-color: ${(props) => props.background};
+    ${(props) => {
+        if (props.darkGray) {
+            return `background-color:rgba(0,0,0,.75);;
+           color:white;`
+        } else if (props.red) {
+            return `background-color:#e84118;
+            color:white;`
+        } else if (props.gray) {
+            return `background-color:gray;
+            color:white;`
+        } else {
+            return `background-color:#3f51b5;
+         color:white;`
+        }
+    }};
     border: none;
-    color: white;
+
     padding: 10px 10px;
     margin: ${(props) => props.margin};
-    margin-top: ${(props) => props.marginTop};
+    margin-top: ${({ marginTop }) => (marginTop ? marginTop : '0.5rem')};
     margin-right: ${(props) => props.marginRight};
-    margin-bottom: ${(props) => props.marginBottom};
+    margin-bottom: ${({ marginBottom }) =>
+        marginBottom ? marginBottom : '0.5rem'};
     margin-left: ${(props) => props.marginLeft};
     text-align: center;
     text-decoration: none;

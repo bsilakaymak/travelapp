@@ -40,20 +40,12 @@ const SendEmail = () => {
                         name="email"
                         value={email}
                         onChange={onChangeRegisterHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Email</Label>
                 </InputHolder>
 
-                <Button
-                    background="#3f51b5;"
-                    marginTop="0.5rem"
-                    marginBottom="0.5rem"
-                >
-                    {' '}
-                    Send Email{' '}
-                </Button>
+                <Button> Send Email </Button>
             </Form>
         </SendContainer>
     )

@@ -76,7 +76,6 @@ const PlaceDetails = () => {
                         />
                         <Button
                             small
-                            background="#004C7F"
                             margin="5px"
                             onClick={() => setOpen(true)}
                         >
@@ -84,7 +83,6 @@ const PlaceDetails = () => {
                         </Button>
                         <Button
                             small
-                            background="#004C7F"
                             margin="5px"
                             fontSize="0.98rem"
                             onClick={() => setIsBoardsOpen(true)}
@@ -105,7 +103,6 @@ const PlaceDetails = () => {
                                     user.placeLists.map((placelist) => (
                                         <Fragment>
                                             <Button
-                                                background="#004C7F"
                                                 onClick={() => {
                                                     dispatch(
                                                         addPlaceToBoard(
@@ -122,11 +119,7 @@ const PlaceDetails = () => {
                                             >
                                                 {placelist.listName}
                                             </Button>
-                                            <Divider
-                                                dark
-                                                marginBottom="0.5rem"
-                                                marginTop="0.5rem"
-                                            ></Divider>
+                                            <Divider dark></Divider>
                                         </Fragment>
                                     ))}
                             </div>
@@ -134,11 +127,11 @@ const PlaceDetails = () => {
                                 small
                                 fontSize="0.75rem"
                                 marginTop="1rem"
-                                background=""
                                 wheat
                                 onClick={() => {
                                     setIsBoardsOpen(false)
                                 }}
+                                darkGray
                             >
                                 Close
                             </Button>

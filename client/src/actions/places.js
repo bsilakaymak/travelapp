@@ -172,6 +172,7 @@ export const ratePlace = (placeId, formData) => async (dispatch) => {
             type: RATE_PLACE,
             payload: res.data,
         })
+        console.log(res.data)
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {

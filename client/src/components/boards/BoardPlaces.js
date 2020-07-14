@@ -56,7 +56,7 @@ const BoardPlaces = ({ places, boardId, creator }) => {
                                         DELETE
                                     </Button>
                                     <Button
-                                        background="#004C7F"
+                                        gray
                                         small
                                         onClick={() => setShowDelete(false)}
                                     >

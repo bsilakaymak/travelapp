@@ -2,10 +2,17 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Icon } from '../shared/Elements'
 const StarRatingHolder = styled.div`
-    width: 150px;
-    display: inline-block;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
 `
-
+const RatingsCount = styled.span`
+    color: gray;
+    margin-left: 10px;
+    line-height: 1.9;
+    font-size: 14px;
+`
 const RadioInput = styled.input`
     display: none;
 `
@@ -43,6 +50,7 @@ const StarRating = (props) => {
                     </label>
                 )
             })}
+            <RatingsCount>{props.ratings} </RatingsCount>
         </StarRatingHolder>
     )
 }

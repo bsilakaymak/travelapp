@@ -20,7 +20,7 @@ const DashboardContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100% - 48px);
+    min-height: 100%;
     background: #3e497b;
 `
 const Dashboard = () => {

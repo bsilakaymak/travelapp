@@ -68,7 +68,7 @@ const Logo = styled(Link)`
     margin: -10px 0 0px 13px;
 `
 const Navbar = () => {
-    const isAuth = useSelector((state) => state.auth.isAuthenticated)
+    const { isAuthenticated } = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const router = useLocation()
     function isActive(route) {
@@ -77,13 +77,13 @@ const Navbar = () => {
     const [open, toggle] = useState(false)
     return (
         <Menu show={open ? 'visible' : 'hidden'}>
-            <Logo to="/">Travel App</Logo>
+            <Logo to={isAuthenticated ? '#!' : '/'}>Travel App</Logo>
             <HamburgerButton
                 onClick={(e) => toggle(!open)}
                 className="fas fa-bars"
             ></HamburgerButton>
             <Ul>
-                {!isAuth && (
+                {!isAuthenticated && (
                     <Link active={isActive('/') ? '#3F51B5' : '#fff'} to="/">
                         Home
                     </Link>
@@ -101,7 +101,7 @@ const Navbar = () => {
                 >
                     Boards
                 </Link>
-                {isAuth && (
+                {isAuthenticated && (
                     <Link
                         active={isActive('/dashboard') ? '#3F51B5' : '#fff'}
                         to="/dashboard"
@@ -109,7 +109,7 @@ const Navbar = () => {
                         Dashboard
                     </Link>
                 )}
-                {isAuth && (
+                {isAuthenticated && (
                     <Link to="#!" onClick={(e) => dispatch(logout())}>
                         Logout
                     </Link>

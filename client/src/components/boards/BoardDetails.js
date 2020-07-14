@@ -82,7 +82,7 @@ const BoardDetails = () => {
                                     Are you sure you want to delete this board?
                                 </p>
                                 <Button
-                                    background="#c61d1d"
+                                    red
                                     small
                                     onClick={() => {
                                         dispatch(deleteBoard(boardId))
@@ -93,7 +93,7 @@ const BoardDetails = () => {
                                     DELETE
                                 </Button>
                                 <Button
-                                    background="#004C7F"
+                                    darkGray
                                     small
                                     onClick={() => setShowDelete(false)}
                                 >

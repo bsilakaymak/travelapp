@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Card, Title, Holder, Image, Divider, Button } from '../shared/Elements'
-
+import { avgRating } from '../../utils/avgRating'
 import StarRating from '../shared/StarRating'
 import { useDispatch } from 'react-redux'
 import { ratePlace } from '../../actions/places'
@@ -14,7 +14,8 @@ const TagContent = styled.div`
     font-size: 15px;
 `
 const PlaceItem = ({ place }) => {
-    const { title, address, description, image, _id, tags } = place
+    const { title, address, description, image, _id, tags, ratings } = place
+
     const dispatch = useDispatch()
     return (
         <Card marginTop="1rem" marginBottom="1rem">
@@ -36,8 +37,8 @@ const PlaceItem = ({ place }) => {
             <p>{description}</p>
             <Divider gray marginTop="0.8rem" marginBottom="0.8rem" />
             <StarRating
+                count={avgRating(ratings)}
                 onChange={(e) => {
-                    console.log(typeof e.target.value)
                     dispatch(
                         ratePlace(_id, { rating: parseInt(e.target.value) })
                     )

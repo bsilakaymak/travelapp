@@ -5,6 +5,7 @@ const User = require('../models/User')
 const PlaceList = require('../models/PlaceList')
 const getCoordsForAddress = require('../utils/location')
 const escapeRegex = require('../utils/escapeRegex')
+
 const getPlace = async (req, res) => {
     try {
         const place = await Place.findById(req.params.pid).populate(
@@ -61,7 +62,7 @@ const addPlace = async (req, res) => {
     }
     const { title, address, description, tags } = req.body
     const tagsSplitted = tags.split(',')
-    console.log(tagsSplitted)
+
     try {
         const user = await User.findById(req.userData.userId)
         const coordinates = await getCoordsForAddress(address)
@@ -85,7 +86,7 @@ const addPlace = async (req, res) => {
         await user.save()
         res.status(200).send(place)
     } catch (error) {
-        console.log(error.message)
+        console.error(error.message)
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
@@ -118,23 +119,26 @@ const ratePlace = async (req, res) => {
     const { pid: placeId } = req.params
     const { rating } = req.body
     let place
+
     try {
         place = await Place.findById(placeId)
-        if (
-            place.ratings.find(
-                (rating) => rating.user.toString() === req.userData.userId
-            ) !== undefined
-        ) {
-            return res
-                .status(403)
-                .json({ errors: [{ msg: 'Place not found' }] })
+
+        const ratedUser = place.ratings.find(
+            (rating) => rating.user.toString() === req.userData.userId
+        )
+
+        if (ratedUser) {
+            ratedUser.rating = rating
+        } else {
+            const newRating = {
+                rating: rating,
+                user: req.userData.userId,
+            }
+            place.ratings.push(newRating)
         }
-        const newRating = {
-            rating: rating,
-            user: req.userData.userId,
-        }
-        place.ratings.push(newRating)
+
         await place.save()
+
         res.status(200).send(place.ratings)
     } catch (error) {
         console.error(error)

@@ -30,7 +30,8 @@ const PlaceItem = ({ place }) => {
             </Title>
             <Divider gray marginTop="0.8rem" marginBottom="0.8rem" />
             <Holder direction="inherit" justifyContent="center">
-                {tags && tags.map((tag) => <TagContent>{tag}</TagContent>)}
+                {tags &&
+                    tags.map((tag) => <TagContent key={tag}>{tag}</TagContent>)}
             </Holder>
             <p>{description}</p>
             <Divider gray marginTop="0.8rem" marginBottom="0.8rem" />

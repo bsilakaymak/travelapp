@@ -28,17 +28,18 @@ const PlaceDetails = () => {
     }, [placeId, dispatch])
     const place = useSelector((state) => state.places.place)
     const user = useSelector((state) => state.auth.user)
-    const location = { lat: '52.08889', lon: '5.11556' }
 
     const [open, setOpen] = useState(false)
     const [isBoardsOpen, setIsBoardsOpen] = useState(false)
+
     if (!place) return <h4>Loading</h4>
+
     return (
         <Container>
             <Row center>
                 <Modal center open={open} onClose={() => setOpen(false)}>
                     <Map
-                        center={location}
+                        center={place.location}
                         zoom={16}
                         title={place.address}
                         onClick={() => setOpen(false)}

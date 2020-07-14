@@ -19,13 +19,7 @@ const ImageUpload = (props) => {
                 name={props.name}
             />
 
-            <Button
-                small
-                background="#3f51b5;"
-                marginTop="0.5rem"
-                marginBottom="0.5rem"
-                onClick={pickImageHandler}
-            >
+            <Button small onClick={pickImageHandler}>
                 PICK IMAGE
             </Button>
         </>

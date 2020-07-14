@@ -44,7 +44,6 @@ const EditBoard = () => {
                         placeholder="board name"
                         value={listName}
                         onChange={onChangeUpdateHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Board Name</Label>
@@ -57,18 +56,12 @@ const EditBoard = () => {
                         name="description"
                         value={description}
                         onChange={onChangeUpdateHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Description</Label>
                 </InputHolder>
 
-                <Button
-                    small
-                    background="#3f51b5;"
-                    marginTop="0.5rem"
-                    marginBottom="0.5rem"
-                >
+                <Button small>
                     <Icon mr="0.25rem" className="fas fa-plus" />
                     Update
                 </Button>

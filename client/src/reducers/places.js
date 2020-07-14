@@ -50,7 +50,7 @@ export default function (state = initialState, action) {
         case RATE_PLACE:
             return {
                 ...state,
-                place: { ...state.place, ratings: payload },
+                place: { ...state.place, ratings: payload.ratings },
                 loading: false,
             }
         default:

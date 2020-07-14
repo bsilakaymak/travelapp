@@ -10,7 +10,7 @@ const LoginContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100% - 48px);
+    height: 100%;
     background: #3e497b;
 `
 
@@ -49,7 +49,6 @@ const Register = () => {
                         name="name"
                         value={name}
                         onChange={onChangeRegisterHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Name</Label>
@@ -61,7 +60,6 @@ const Register = () => {
                         name="email"
                         value={email}
                         onChange={onChangeRegisterHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Email</Label>
@@ -73,7 +71,6 @@ const Register = () => {
                         name="password"
                         value={password}
                         onChange={onChangeRegisterHandler}
-                        autoComplete="off"
                         type="password"
                         required
                     />
@@ -87,20 +84,12 @@ const Register = () => {
                         value={password2}
                         onChange={onChangeRegisterHandler}
                         type="password"
-                        autoComplete="off"
                         required
                     />
                     <Label>Confirm password</Label>
                 </InputHolder>
 
-                <Button
-                    background="#3f51b5;"
-                    marginTop="0.5rem"
-                    marginBottom="0.5rem"
-                >
-                    {' '}
-                    Register{' '}
-                </Button>
+                <Button> Register </Button>
             </Form>
         </LoginContainer>
     )

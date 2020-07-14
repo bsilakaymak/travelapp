@@ -49,7 +49,6 @@ const UpdateUser = ({ setShowEdit }) => {
                         name="name"
                         value={name}
                         onChange={onChangeUserUpdateHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Name</Label>
@@ -64,22 +63,11 @@ const UpdateUser = ({ setShowEdit }) => {
                     <Image src={previewUrl} alt="" />
                 </Holder>
 
-                <Button
-                    small
-                    background="#3f51b5;"
-                    marginTop="0.5rem"
-                    marginBottom="0.5rem"
-                >
+                <Button small>
                     <Icon mr="0.25rem" className="far fa-edit" />
                     Update
                 </Button>
-                <Button
-                    small
-                    background="#3f51b5;"
-                    marginTop="0.5rem"
-                    marginBottom="0.5rem"
-                    onClick={(e) => setShowEdit(false)}
-                >
+                <Button small gray onClick={(e) => setShowEdit(false)}>
                     Cancel
                 </Button>
             </Form>

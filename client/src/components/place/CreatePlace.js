@@ -11,7 +11,7 @@ const CreatePlaceContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100% - 48px);
+    min-height: 100%;
     background: #3e497b;
 `
 const CreatePlace = () => {
@@ -94,7 +94,6 @@ const CreatePlace = () => {
                         name="title"
                         value={title}
                         onChange={onChangeCreatePlaceHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Title</Label>
@@ -106,7 +105,6 @@ const CreatePlace = () => {
                         name="address"
                         value={address}
                         onChange={onChangeCreatePlaceHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Address</Label>
@@ -118,7 +116,6 @@ const CreatePlace = () => {
                         name="description"
                         value={description}
                         onChange={onChangeCreatePlaceHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Description</Label>
@@ -132,12 +129,7 @@ const CreatePlace = () => {
                     <Image src={previewUrl} alt="" />
                 </Holder>
 
-                <Button
-                    small
-                    background="#3f51b5;"
-                    marginTop="0.5rem"
-                    marginBottom="0.5rem"
-                >
+                <Button small>
                     <Icon mr="0.25rem" className="fas fa-plus" />
                     Create
                 </Button>

@@ -35,12 +35,7 @@ const BoardList = () => {
         <>
             {isAuthenticated && (
                 <CreateBoardLink to={'/createboard'}>
-                    <Button
-                        small
-                        background="#004C7F;"
-                        marginTop="0.5rem"
-                        marginBottom="0.5rem"
-                    >
+                    <Button small>
                         <Icon mr="0.25rem" className="fas fa-plus" />
                         Create a board
                     </Button>

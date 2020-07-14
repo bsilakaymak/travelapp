@@ -13,7 +13,9 @@ export const FormTitle = styled.h3`
     margin-top: 0.6rem;
     text-align: center;
 `
-export const Input = styled.input`
+export const Input = styled.input.attrs((props) => ({
+    autoComplete: 'off',
+}))`
     width: ${({ small }) => (small ? '50%;' : '100%')};
     padding: 10px 20px;
     margin: 8px 0;
@@ -50,9 +52,8 @@ export const Form = styled.form`
     border-radius: 7px;
     border: 1px solid #fff;
     width: ${({ width }) => (width ? width : '81%')};
-    background: ${({ bg }) => (bg ? bg : 'rgba(0, 0, 0, 0.3)')} @media
-        (min-width: 576px) {
-
+    background: ${({ bg }) => (bg ? bg : 'rgba(0, 0, 0, 0.3)')};
+    @media (min-width: 576px) {
     }
     @media (min-width: 768px) {
         width: ${({ md }) => (md ? md : '30%')};

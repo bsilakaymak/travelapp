@@ -16,7 +16,6 @@ const Places = () => {
         dispatch(getPlaces(search, tags.join(',')))
     }, [search, tags])
 
-
     const places = useSelector((state) => state.places.places)
 
     const checkboxHandler = (event) => {
@@ -64,7 +63,6 @@ const Places = () => {
                         <Divider gray marginBottom="0.8rem" />
                         <InputHolder>
                             <Input
-                                autocomplete="off"
                                 required
                                 borderColor="#244384"
                                 onChange={(e) => setSearch(e.target.value)}
@@ -77,7 +75,7 @@ const Places = () => {
                 <Grid lg={4} md={8}>
                     {isAuth && (
                         <Link to="/create-place">
-                            <Button background="#004C7F" marginTop="0.5rem">
+                            <Button>
                                 <Icon mr="0.25rem" className="fas fa-plus" />
                                 Create place
                             </Button>

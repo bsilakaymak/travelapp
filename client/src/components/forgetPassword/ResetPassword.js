@@ -55,7 +55,6 @@ const ResetPassword = () => {
                         name="password"
                         value={password}
                         onChange={onChangeRegisterHandler}
-                        autoComplete="off"
                         type="password"
                         required
                     />
@@ -68,20 +67,13 @@ const ResetPassword = () => {
                         name="password2"
                         value={password2}
                         onChange={onChangeRegisterHandler}
-                        autoComplete="off"
                         type="password"
                         required
                     />
                     <Label>Password confirm</Label>
                 </InputHolder>
 
-                <Button
-                    background="#3f51b5;"
-                    marginTop="0.5rem"
-                    marginBottom="0.5rem"
-                >
-                    Submit
-                </Button>
+                <Button>Submit</Button>
             </Form>
         </ResetContainer>
     )

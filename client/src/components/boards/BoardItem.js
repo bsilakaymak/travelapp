@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { Card, Title,Divider, Button } from '../shared/Elements'
+import { Card, Title, Divider, Button } from '../shared/Elements'
 const BoardItemDiv = styled.div`
 width:30%;
 display:flex;
@@ -39,9 +39,7 @@ const BoardItem = ({ board }) => {
                         <p>Followers: {board.followers.length}</p>
                         <Divider blue marginTop="1rem" marginBottom="1rem" />
                         <BoardLink to={`/boards/${board._id}`}>
-                            <Button small background="#3f51b5;">
-                                DETAILS
-                            </Button>
+                            <Button small>DETAILS</Button>
                         </BoardLink>
                     </Card>
                 </Fragment>

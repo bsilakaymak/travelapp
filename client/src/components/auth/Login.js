@@ -10,7 +10,7 @@ const LoginContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100% - 48px);
+    height: 100%;
     background: #3e497b;
 `
 const ForgetPasswordBtn = styled(Link)`
@@ -35,7 +35,7 @@ const Login = () => {
     if (isAuthenticated) return <Redirect to="/dashboard" />
     return (
         <LoginContainer>
-            <Form right onSubmit={onSubmitAuthFormHandler}>
+            <Form onSubmit={onSubmitAuthFormHandler}>
                 <FormTitle>Login</FormTitle>
                 <Divider marginBottom="0.8rem" />
 
@@ -46,7 +46,6 @@ const Login = () => {
                         name="email"
                         value={email}
                         onChange={onChangeRegisterHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Email</Label>
@@ -58,21 +57,13 @@ const Login = () => {
                         name="password"
                         value={password}
                         onChange={onChangeRegisterHandler}
-                        autoComplete="off"
                         type="password"
                         required
                     />
                     <Label>Password</Label>
                 </InputHolder>
 
-                <Button
-                    background="#3f51b5;"
-                    marginTop="0.5rem"
-                    marginBottom="0.5rem"
-                >
-                    {' '}
-                    Login{' '}
-                </Button>
+                <Button> Login </Button>
                 <ForgetPasswordBtn to="/forgetpassword">
                     Forget password
                 </ForgetPasswordBtn>

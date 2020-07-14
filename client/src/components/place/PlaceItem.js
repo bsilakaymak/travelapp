@@ -15,7 +15,7 @@ const TagContent = styled.div`
 `
 const PlaceItem = ({ place }) => {
     const { title, address, description, image, _id, tags, ratings } = place
-
+    console.log(place)
     const dispatch = useDispatch()
     return (
         <Card marginTop="1rem" marginBottom="1rem">
@@ -34,6 +34,7 @@ const PlaceItem = ({ place }) => {
                 {tags &&
                     tags.map((tag) => <TagContent key={tag}>{tag}</TagContent>)}
             </Holder>
+            <Divider gray marginTop="0.8rem" marginBottom="0.8rem" />
             <p>{description}</p>
             <Divider gray marginTop="0.8rem" marginBottom="0.8rem" />
             <StarRating
@@ -43,9 +44,10 @@ const PlaceItem = ({ place }) => {
                         ratePlace(_id, { rating: parseInt(e.target.value) })
                     )
                 }}
+                ratings={`(${ratings.length} ratings)`}
             />
             <Link to={`/place/${_id}`}>
-                <Button right small background="#004C7F" margin="0 0 10px 0">
+                <Button small margin="0 0 10px 0">
                     Details
                 </Button>
             </Link>

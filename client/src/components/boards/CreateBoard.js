@@ -46,7 +46,6 @@ const CreateBoard = () => {
                         name="listName"
                         value={listName}
                         onChange={onChangeCreateBoardHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Board Name</Label>
@@ -58,18 +57,12 @@ const CreateBoard = () => {
                         name="description"
                         value={description}
                         onChange={onChangeCreateBoardHandler}
-                        autoComplete="off"
                         required
                     />
                     <Label>Description</Label>
                 </InputHolder>
 
-                <Button
-                    small
-                    background="#3f51b5;"
-                    marginTop="0.5rem"
-                    marginBottom="0.5rem"
-                >
+                <Button small>
                     <Icon mr="0.25rem" className="fas fa-plus" />
                     Create
                 </Button>

@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useHistory, Redirect } from 'react-router-dom'
 import { Form, Input, Label, FormTitle, InputHolder } from '../shared/FormGroup'
-import { Divider, Button, Icon, Image, Holder } from '../shared/Elements'
+import { Divider, Button, Icon } from '../shared/Elements'
 import ImageUpload from '../shared/ImageUpload'
 import { useDispatch } from 'react-redux'
 import { addPlace } from '../../actions/places'
 import Checkbox from '../shared/Checkbox'
+import { setAlert } from '../../actions/alert'
 const CreatePlaceContainer = styled.div`
     display: flex;
     justify-content: center;
@@ -38,8 +39,18 @@ const CreatePlace = () => {
         }
     }
     const onSubmitCreatPlaceFormHandler = (e) => {
-        const placeFormData = { image, title, address, description, tags }
         e.preventDefault()
+        const placeFormData = { image, title, address, description, tags }
+        if (
+            image === null ||
+            title.trim() === '' ||
+            address.trim() === '' ||
+            description.trim() === '' ||
+            tags.length === 0
+        ) {
+            return dispatch(setAlert(' All fields are required', 'danger'))
+        }
+
         dispatch(addPlace(placeFormData, history))
 
         return <Redirect to={`/places`} />
@@ -123,12 +134,8 @@ const CreatePlace = () => {
                 <ImageUpload
                     name="image"
                     onChange={onChangeCreatePlaceHandler}
+                    previewImage={previewUrl}
                 />
-                <Holder width="150px" height="150px">
-                    {!previewUrl && <p>Please pick an image.</p>}
-                    <Image src={previewUrl} alt="" />
-                </Holder>
-
                 <Button small>
                     <Icon mr="0.25rem" className="fas fa-plus" />
                     Create

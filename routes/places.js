@@ -22,6 +22,7 @@ route.post(
         check('title', 'Title is required').not().isEmpty(),
         check('address', 'Address is required').not().isEmpty(),
         check('description', 'Description is required').not().isEmpty(),
+        check('tags', 'Tags are required').not().isEmpty(),
     ],
     placesControllers.addPlace
 )

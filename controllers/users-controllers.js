@@ -8,7 +8,14 @@ const { forgetPasswordEmail, resetPasswordEmail } = require('../emails/account')
 const getUser = async (req, res) => {
     const { uid: userId } = req.params
     try {
-        const user = await User.findById(userId).select('-password')
+        const user = await User.findById(userId)
+            .select('-password')
+            .populate('places')
+        if (!user) {
+            return res.status(404).json({
+                errors: [{ msg: 'User not found.' }],
+            })
+        }
         res.status(200).send(user)
     } catch (error) {
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
@@ -17,7 +24,12 @@ const getUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
     try {
-        const users = await User.find()
+        const users = await User.find().select('-password').populate('places')
+        if (!users) {
+            return res.status(422).json({
+                errors: [{ msg: 'No Users Found' }],
+            })
+        }
         res.status(200).send(users)
     } catch (error) {
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
@@ -82,27 +94,20 @@ const login = async (req, res) => {
 
     let existingUser
     try {
-        try {
-            existingUser = await User.findOne({ email })
+        existingUser = await User.findOne({ email })
 
-            if (!existingUser) {
-                return res
-                    .status(401)
-                    .json({ errors: [{ msg: 'Invalid Credentials' }] })
-            }
+        if (!existingUser) {
+            return res
+                .status(401)
+                .json({ errors: [{ msg: 'Invalid Credentials' }] })
+        }
 
-            const isMatch = await bcrypt.compare(
-                password,
-                existingUser.password
-            )
+        const isMatch = await bcrypt.compare(password, existingUser.password)
 
-            if (!isMatch) {
-                return res
-                    .status(401)
-                    .json({ errors: [{ msg: 'Invalid Credentials' }] })
-            }
-        } catch (error) {
-            return res.send(error).status(422)
+        if (!isMatch) {
+            return res
+                .status(401)
+                .json({ errors: [{ msg: 'Invalid Credentials' }] })
         }
 
         const token = jwt.sign(

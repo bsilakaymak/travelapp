@@ -109,6 +109,14 @@ const Navbar = () => {
                         Dashboard
                     </Link>
                 )}
+
+                <Link
+                    active={isActive('/users') ? '#3F51B5' : '#fff'}
+                    to="/users"
+                >
+                    Users
+                </Link>
+
                 {isAuthenticated && (
                     <Link to="#!" onClick={(e) => dispatch(logout())}>
                         Logout

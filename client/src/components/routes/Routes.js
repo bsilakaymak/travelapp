@@ -16,6 +16,7 @@ import CreateBoard from '../boards/CreateBoard'
 import Alert from '../layout/Alert'
 import SendEmail from '../forgetPassword/SendEmail'
 import ResetPassword from '../forgetPassword/ResetPassword'
+import Users from '../users/Users'
 function Routes() {
     return (
         <Router>
@@ -37,6 +38,7 @@ function Routes() {
                     component={CreatePlace}
                 />
                 <Route exact path="/places" component={Places} />
+                <Route exact path="/users" component={Users} />
 
                 <Route exact path="/place/:placeId" component={PlaceDetails} />
                 <Route exact path="/boards" component={BoardList} />

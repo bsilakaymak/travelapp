@@ -5,7 +5,7 @@ import { GET_USER, GET_USERS } from './types'
 // Get all users
 export const getUsers = () => async (dispatch) => {
     try {
-        const res = await axios.get('/api/users/')
+        const res = await axios.get('/api/users/all')
         dispatch({
             type: GET_USERS,
             payload: res.data,

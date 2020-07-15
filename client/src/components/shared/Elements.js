@@ -83,7 +83,7 @@ export const Button = styled.button`
 export const Card = styled.div`
     background: #fff;
     border-radius: 2px;
-    display: inline-block;
+    display: ${({ display }) => (display ? display : 'inline-block')};
     margin: ${(props) => props.margin};
     margin-top: ${(props) => props.marginTop};
     margin-right: ${(props) => props.marginRight};
@@ -103,6 +103,7 @@ export const Title = styled.h4`
     margin-right: ${(props) => props.marginRight};
     margin-bottom: ${(props) => props.marginBottom};
     margin-left: ${(props) => props.marginLeft};
+    font-size: ${(props) => props.fontSize};
 `
 export const Image = styled.img`
     width: 100%;

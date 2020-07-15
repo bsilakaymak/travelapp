@@ -102,14 +102,11 @@ const unfollowUser = async (req, res) => {
                 .status(403)
                 .json({ errors: [{ msg: 'User is already followed' }] })
         }
-        try {
-            currentUser.following = currentUser.following.filter(
-                (following) => following.user.toString() !== userId
-            )
-            await currentUser.save()
-        } catch (error) {
-            return res.send(error).status(500)
-        }
+
+        currentUser.following = currentUser.following.filter(
+            (following) => following.user.toString() !== userId
+        )
+        await currentUser.save()
         user.followers = user.followers.filter(
             (follower) => follower.user.toString() !== req.userData.userId
         )

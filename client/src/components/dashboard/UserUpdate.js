@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { Form, Input, Label, FormTitle, InputHolder } from '../shared/FormGroup'
-import { Divider, Button, Icon, Image, Holder } from '../shared/Elements'
+import { Divider, Button, Icon } from '../shared/Elements'
 import ImageUpload from '../shared/ImageUpload'
 import { useDispatch } from 'react-redux'
 import { updateUser } from '../../actions/user'
@@ -57,11 +57,8 @@ const UpdateUser = ({ setShowEdit }) => {
                 <ImageUpload
                     name="image"
                     onChange={onChangeUserUpdateHandler}
+                    previewImage={previewUrl}
                 />
-                <Holder width="150px" height="150px">
-                    {!previewUrl && <p>Please pick an image.</p>}
-                    <Image src={previewUrl} alt="" />
-                </Holder>
 
                 <Button small>
                     <Icon mr="0.25rem" className="far fa-edit" />

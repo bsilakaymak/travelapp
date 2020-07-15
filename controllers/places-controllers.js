@@ -87,6 +87,18 @@ const addPlace = async (req, res) => {
         res.status(200).send(place)
     } catch (error) {
         console.error(error.message)
+        if (error.message.includes('Could not find')) {
+            return res
+                .status(404)
+                .json({
+                    errors: [
+                        {
+                            msg:
+                                'Could not find location for the specified address.',
+                        },
+                    ],
+                })
+        }
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }

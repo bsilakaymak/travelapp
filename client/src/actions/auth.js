@@ -53,6 +53,7 @@ export const register = (name, email, password) => async (dispatch) => {
             payload: res.data,
         })
         dispatch(loadUser())
+        dispatch(setAlert('Registration successful!', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {

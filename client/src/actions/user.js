@@ -44,6 +44,7 @@ export const followUser = (userId) => async (dispatch) => {
             type: FOLLOW_USER,
             payload: res.data,
         })
+        dispatch(setAlert('User followed', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -60,6 +61,7 @@ export const unfollowUser = (userId) => async (dispatch) => {
             type: UNFOLLOW_USER,
             payload: res.data,
         })
+        dispatch(setAlert('User unfollowed'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -75,6 +77,7 @@ export const deleteFollower = (userId) => async (dispatch) => {
             type: DELETE_FOLLOWER,
             payload: res.data,
         })
+        dispatch(setAlert('Follower deleted', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -90,6 +93,7 @@ export const addItemToWishlist = (placeId) => async (dispatch) => {
             type: ADD_PLACE_WL,
             payload: res.data,
         })
+        dispatch(setAlert('Place is added to wishlist', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -114,6 +118,7 @@ export const updateItemInWishlist = (placeId, formData) => async (dispatch) => {
             type: UPDATE_PLACE_WL,
             payload: res.data,
         })
+        dispatch(setAlert('Place is updated', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -129,6 +134,7 @@ export const removeItemFromWishlist = (placeId) => async (dispatch) => {
             type: DELETE_PLACE_WL,
             payload: res.data,
         })
+        dispatch(setAlert('Place is removed from wishlist'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {

@@ -56,6 +56,7 @@ export const addBoard = (formData) => async (dispatch) => {
             type: ADD_BOARD,
             payload: res.data,
         })
+        dispatch(setAlert('Board Added', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -77,6 +78,7 @@ export const updateBoard = (boardId, formData) => async (dispatch) => {
             type: UPDATE_BOARD,
             payload: res.data,
         })
+        dispatch(setAlert('Board Updated', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -93,6 +95,7 @@ export const deleteBoard = (boardId) => async (dispatch) => {
             type: DELETE_BOARD,
             payload: boardId,
         })
+        dispatch(setAlert('Board is deleted'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -109,6 +112,7 @@ export const addPlaceToBoard = (boardId, placeId) => async (dispatch) => {
             type: ADD_PLACE_B,
             payload: res.data,
         })
+        dispatch(setAlert('Place added to board', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -127,6 +131,7 @@ export const removePlaceFromBoard = (boardId, placeId) => async (dispatch) => {
             type: DELETE_PLACE_B,
             payload: res.data,
         })
+        dispatch(setAlert('Place removed from board'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -147,7 +152,7 @@ export const followBoard = (boardId) => async (dispatch) => {
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
-            errors.forEach((error) => dispatch(setAlert(error.msg,)))
+            errors.forEach((error) => dispatch(setAlert(error.msg)))
         }
     }
 }
@@ -160,10 +165,11 @@ export const unfollowBoard = (boardId) => async (dispatch) => {
             type: UNFOLLOW_BOARD,
             payload: res.data,
         })
+        dispatch(setAlert('Board is unfollowed'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
-            errors.forEach((error) => dispatch(setAlert(error.msg,)))
+            errors.forEach((error) => dispatch(setAlert(error.msg)))
         }
     }
 }

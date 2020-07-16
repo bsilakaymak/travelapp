@@ -68,7 +68,7 @@ export const addPlace = (placeData, history) => async (dispatch) => {
             type: ADD_PLACE,
             payload: res.data,
         })
-        history.push('/places')
+        dispatch(setAlert('Place is added', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -91,6 +91,7 @@ export const updatePlace = (placeId, formData) => async (dispatch) => {
             type: UPDATE_PLACE,
             payload: res.data,
         })
+        dispatch(setAlert('Place updated', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -108,6 +109,7 @@ export const deletePlace = (placeId, history) => async (dispatch) => {
             payload: placeId,
         })
         history.push('/places')
+        dispatch(setAlert('Place deleted'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {
@@ -151,6 +153,7 @@ export const deleteComment = (placeId, commentId) => async (dispatch) => {
             type: DELETE_COMMENT_PLACE,
             payload: res.data,
         })
+        dispatch(setAlert('Comment deleted', 'success'))
     } catch (error) {
         const errors = error.response.data.errors
         if (errors) {

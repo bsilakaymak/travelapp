@@ -31,13 +31,13 @@ const StarRating = (props) => {
                             type="radio"
                             name="rating"
                             value={ratingValue}
-                            onClick={() => setRating(ratingValue)}
+                            onClick={() => setRating(parseInt(ratingValue))}
                             onChange={props.onChange}
                         />
                         <Icon
                             value={props.count}
-                            onMouseEnter={() => setHover(ratingValue)}
-                            onMouseLeave={() => setHover(ratingValue)}
+                            onMouseEnter={() => setHover(parseInt(ratingValue))}
+                            onMouseLeave={() => setHover(parseInt(ratingValue))}
                             className="fas fa-star"
                             mr_s="7px"
                             size="25px;"

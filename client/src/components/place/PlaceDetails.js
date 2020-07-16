@@ -30,6 +30,7 @@ const PlaceDetails = () => {
 
     const [open, setOpen] = useState(false)
     const [isBoardsOpen, setIsBoardsOpen] = useState(false)
+    const [deletePlaceOpen, setDeletePlaceOpen] = useState(false)
     console.log()
     if (!place) return <h4>Loading</h4>
     return (
@@ -46,13 +47,43 @@ const PlaceDetails = () => {
                 <Grid md={6} sm={12} lg={4}>
                     <Card marginTop="1rem">
                         {user && user._id === place.creator && (
-                            <Icon
-                                mr="5px"
-                                className="far fa-trash-alt"
-                                onClick={() =>
-                                    dispatch(deletePlace(placeId, history))
-                                }
-                            ></Icon>
+                            <Fragment>
+                                <Icon
+                                    mr="5px"
+                                    className="far fa-trash-alt"
+                                    onClick={() => setDeletePlaceOpen(true)}
+                                ></Icon>
+                                <Modal
+                                    center
+                                    open={deletePlaceOpen}
+                                    onClose={()=>setDeletePlaceOpen(false)}
+                                >
+                                    <p>
+                                        Are you sure you want to delete this
+                                        place
+                                    </p>
+                                    <Button
+                                        small
+                                        red
+                                        onClick={() => {
+                                            dispatch(
+                                                deletePlace(placeId, history)
+                                            )
+                                        }}
+                                    >
+                                        DELETE
+                                    </Button>
+                                    <Button
+                                        darkGray
+                                        small
+                                        onClick={() =>
+                                            setDeletePlaceOpen(false)
+                                        }
+                                    >
+                                        Cancel
+                                    </Button>
+                                </Modal>
+                            </Fragment>
                         )}
                         <Title center marginTop="1.5rem" marginBottom="1.5rem">
                             {place.title}
@@ -101,7 +132,7 @@ const PlaceDetails = () => {
                                 {user &&
                                     user.placeLists &&
                                     user.placeLists.map((placelist) => (
-                                        <Fragment>
+                                        <Fragment key={placelist._id}>
                                             <Button
                                                 onClick={() => {
                                                     dispatch(

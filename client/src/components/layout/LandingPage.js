@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Button, Icon, Holder } from '../shared/Elements'
 import { Link } from 'react-router-dom'
 import { Container, Grid, Row } from '../shared/GridSystem'
+import { useSelector } from 'react-redux'
 
 const Jumbotron = styled.div`
     color: #fff;
@@ -38,6 +39,7 @@ const TitleTwo = styled.h4`
     padding: ${(props) => props.padding};
 `
 const LandingPage = () => {
+    const { isAuthenticated } = useSelector((state) => state.auth)
     return (
         <>
             <Jumbotron>
@@ -55,40 +57,42 @@ const LandingPage = () => {
                             </JumbotronContent>
                         </Grid>
                         <Grid md={6}>
-                            <Holder
-                                ml="auto"
-                                md_mt="5rem"
-                                md_width="50%"
-                                mt="0.8rem"
-                            >
-                                <Link to="/login">
-                                    <Button marginBottom="10px">
-                                        <Icon
-                                            mr="0.25rem"
-                                            className="fas fa-sign-in-alt"
-                                        />
-                                        Login
-                                    </Button>
-                                </Link>
-                                <Link to="/signup">
-                                    <Button marginBottom="10px">
-                                        <Icon className="far fa-envelope"></Icon>{' '}
-                                        Sign Up with Email
-                                    </Button>
-                                </Link>
-                                <Link to="/">
-                                    <Button marginBottom="10px">
-                                        <Icon className="fab fa-facebook"></Icon>{' '}
-                                        Facebook
-                                    </Button>
-                                </Link>
-                                <Link to="/">
-                                    <Button marginBottom="10px" red>
-                                        <Icon className="fab fa-google-plus-g"></Icon>{' '}
-                                        google
-                                    </Button>
-                                </Link>
-                            </Holder>
+                            {!isAuthenticated && (
+                                <Holder
+                                    ml="auto"
+                                    md_mt="5rem"
+                                    md_width="50%"
+                                    mt="0.8rem"
+                                >
+                                    <Link to="/login">
+                                        <Button marginBottom="10px">
+                                            <Icon
+                                                mr="0.25rem"
+                                                className="fas fa-sign-in-alt"
+                                            />
+                                            Login
+                                        </Button>
+                                    </Link>
+                                    <Link to="/signup">
+                                        <Button marginBottom="10px">
+                                            <Icon className="far fa-envelope"></Icon>{' '}
+                                            Sign Up with Email
+                                        </Button>
+                                    </Link>
+                                    <Link to="/">
+                                        <Button marginBottom="10px">
+                                            <Icon className="fab fa-facebook"></Icon>{' '}
+                                            Facebook
+                                        </Button>
+                                    </Link>
+                                    <Link to="/">
+                                        <Button marginBottom="10px" red>
+                                            <Icon className="fab fa-google-plus-g"></Icon>{' '}
+                                            google
+                                        </Button>
+                                    </Link>
+                                </Holder>
+                            )}
                         </Grid>
                     </Row>
                 </Container>

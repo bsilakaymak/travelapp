@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
-const JWT_KEY = 'sila_secret_key'
+const config = require('config')
+const JWT_KEY = config.get('JWT_KEY')
 module.exports = (req, res, next) => {
     if (req.method === 'OPTIONS') {
         return next()

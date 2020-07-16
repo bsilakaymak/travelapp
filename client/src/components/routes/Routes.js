@@ -17,6 +17,7 @@ import Alert from '../layout/Alert'
 import SendEmail from '../forgetPassword/SendEmail'
 import ResetPassword from '../forgetPassword/ResetPassword'
 import Users from '../users/Users'
+import UserDetails from '../users/UserDetails'
 function Routes() {
     return (
         <Router>
@@ -39,10 +40,15 @@ function Routes() {
                 />
                 <Route exact path="/places" component={Places} />
                 <Route exact path="/users" component={Users} />
+                <PrivateRoute
+                    exact
+                    path="/users/:uid"
+                    component={UserDetails}
+                />
 
                 <Route exact path="/place/:placeId" component={PlaceDetails} />
                 <Route exact path="/boards" component={BoardList} />
-                <Route
+                <PrivateRoute
                     exact
                     path={`/boards/:boardId`}
                     component={BoardDetails}

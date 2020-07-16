@@ -6,7 +6,9 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT,
-    UPDATE_USER
+    UPDATE_USER,
+    FOLLOW_USER,
+    UNFOLLOW_USER,
 } from '../actions/types'
 
 const initialState = {
@@ -37,6 +39,13 @@ export default (state = initialState, action) => {
                 isAuthenticated: true,
                 loading: false,
             }
+        case FOLLOW_USER:
+        case UNFOLLOW_USER:
+            return {
+                ...state,
+                user: { ...state.user, following: payload },
+            }
+
         case LOGIN_FAIL:
         case AUTH_ERROR:
         case REGISTER_FAIL:

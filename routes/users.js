@@ -8,7 +8,8 @@ const usersControllers = require('../controllers/users-controllers')
 
 //get all users
 route.get('/all', usersControllers.getUsers)
-
+//get a specific user
+route.get('/:uid', usersControllers.getUser)
 //login
 route.post(
     '/login',

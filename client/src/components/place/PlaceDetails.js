@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react'
-import { useParams, useHistory, Redirect } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import 'react-responsive-modal/styles.css'
 import { Modal } from 'react-responsive-modal'
 import {
@@ -19,7 +19,6 @@ import { getPlace, deletePlace } from '../../actions/places'
 import Map from '../../components/shared/Map'
 import { addPlaceToBoard } from '../../actions/boards'
 const PlaceDetails = () => {
-    const isAuth = useSelector((state) => state.auth.isAuthenticated)
     const history = useHistory()
     const placeId = useParams().placeId
     const dispatch = useDispatch()
@@ -27,13 +26,12 @@ const PlaceDetails = () => {
         dispatch(getPlace(placeId))
     }, [placeId, dispatch])
     const place = useSelector((state) => state.places.place)
-    const user = useSelector((state) => state.auth.user)
+    const { user, isAuthenticated } = useSelector((state) => state.auth)
 
     const [open, setOpen] = useState(false)
     const [isBoardsOpen, setIsBoardsOpen] = useState(false)
-
+    console.log()
     if (!place) return <h4>Loading</h4>
-
     return (
         <Container>
             <Row center>
@@ -81,18 +79,20 @@ const PlaceDetails = () => {
                         >
                             Map
                         </Button>
-                        <Button
-                            small
-                            margin="5px"
-                            fontSize="0.98rem"
-                            onClick={() => setIsBoardsOpen(true)}
-                        >
-                            Add to your board
-                        </Button>
+                        {isAuthenticated && (
+                            <Button
+                                small
+                                margin="5px"
+                                fontSize="0.98rem"
+                                onClick={() => setIsBoardsOpen(true)}
+                            >
+                                Add to your board
+                            </Button>
+                        )}
                         <Modal
                             center
                             open={isBoardsOpen}
-                            onClose={() => setIsBoardsOpen}
+                            onClose={() => setIsBoardsOpen(false)}
                         >
                             <div>
                                 <Title marginBottom="1rem" center>
@@ -110,11 +110,7 @@ const PlaceDetails = () => {
                                                             placeId
                                                         )
                                                     )
-                                                    return (
-                                                        <Redirect
-                                                            to={`/boards/${placelist._id}`}
-                                                        />
-                                                    )
+                                                    setIsBoardsOpen(false)
                                                 }}
                                             >
                                                 {placelist.listName}
@@ -137,7 +133,7 @@ const PlaceDetails = () => {
                             </Button>
                         </Modal>
                     </Card>
-                    {isAuth && (
+                    {isAuthenticated && (
                         <CommentForm placeId={place._id} place={place} />
                     )}
                 </Grid>

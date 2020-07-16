@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { followUser, unfollowUser } from '../../actions/user'
 import { Card, Image, Button } from '../shared/Elements'
 import styled from 'styled-components'
+import { getUser } from '../../actions/users'
+import { useParams } from 'react-router-dom'
 
 const UserDiv = styled.div`
     display: flex;
@@ -10,11 +12,17 @@ const UserDiv = styled.div`
     align-items: center;
     justify-content: space-evenly;
 `
-const User = ({ user }) => {
+const UserDetails = () => {
     const dispatch = useDispatch()
+    const { uid: userId } = useParams()
     const { user: currentUser, isAuthenticated } = useSelector(
         (state) => state.auth
     )
+    useEffect(() => {
+        dispatch(getUser(userId))
+    }, [dispatch, userId])
+    const { user } = useSelector((state) => state.users)
+    console.log(isAuthenticated)
     const isFollowed = (currentUserFollowing, followedUserId) => {
         if (
             currentUserFollowing.find(
@@ -36,7 +44,7 @@ const User = ({ user }) => {
                                     ? user.image
                                     : 'https://iupac.org/wp-content/uploads/2018/05/default-avatar-768x768.png'
                             }
-                            style={{ width: '30%' }}
+                            style={{ width: '50%' }}
                         />
                         <h3>{user.name}</h3>
                         {currentUser && user && isAuthenticated && (
@@ -65,4 +73,4 @@ const User = ({ user }) => {
     )
 }
 
-export default User
+export default UserDetails

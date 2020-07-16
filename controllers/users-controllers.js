@@ -1,12 +1,14 @@
 const gravatar = require('gravatar')
 const { validationResult } = require('express-validator')
+const config = require('config')
 const User = require('../models/User')
-const JWT_KEY = 'sila_secret_key'
+const JWT_KEY = config.get('JWT_KEY')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { forgetPasswordEmail, resetPasswordEmail } = require('../emails/account')
 const getUser = async (req, res) => {
     const { uid: userId } = req.params
+    console.log('called getUser fnc')
     try {
         const user = await User.findById(userId)
             .select('-password')

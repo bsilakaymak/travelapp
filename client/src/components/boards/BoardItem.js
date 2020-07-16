@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Card, Title, Divider, Button } from '../shared/Elements'
+import { useSelector } from 'react-redux'
 const BoardItemDiv = styled.div`
 width:30%;
 display:flex;
@@ -21,6 +22,7 @@ const BoardLink = styled(Link)`
     color: black;
 `
 const BoardItem = ({ board }) => {
+    const { isAuthenticated } = useSelector((state) => state.auth)
     return (
         <BoardItemDiv>
             {board && (
@@ -38,9 +40,11 @@ const BoardItem = ({ board }) => {
                         <Divider gray marginTop="1rem" marginBottom="1rem" />
                         <p>Followers: {board.followers.length}</p>
                         <Divider blue marginTop="1rem" marginBottom="1rem" />
-                        <BoardLink to={`/boards/${board._id}`}>
-                            <Button small>DETAILS</Button>
-                        </BoardLink>
+                        {isAuthenticated && (
+                            <BoardLink to={`/boards/${board._id}`}>
+                                <Button small>DETAILS</Button>
+                            </BoardLink>
+                        )}
                     </Card>
                 </Fragment>
             )}

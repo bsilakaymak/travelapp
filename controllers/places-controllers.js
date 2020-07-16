@@ -134,11 +134,9 @@ const ratePlace = async (req, res) => {
 
     try {
         place = await Place.findById(placeId)
-
         const ratedUser = place.ratings.find(
             (rating) => rating.user.toString() === req.userData.userId
         )
-
         if (ratedUser) {
             ratedUser.rating = rating
         } else {

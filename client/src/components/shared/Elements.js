@@ -34,11 +34,16 @@ export const Button = styled.button`
         } else if (props.gray) {
             return `background-color:gray;
             color:white;`
+        } else if (props.background) {
+            return `background-color: ${props.background};
+            color: ${props.buttonTextColor}
+            `
         } else {
             return `background-color:#3f51b5;
          color:white;`
         }
     }};
+
     ${({ active }) => active && ' background: rgba(0, 0, 0, 0.5);'};
     border: none;
     padding: 10px 10px;

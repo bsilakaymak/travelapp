@@ -38,7 +38,13 @@ export default function (state = initialState, action) {
                 loading: false,
             }
         }
-        case ADD_PLACE_WL:
+        case ADD_PLACE_WL: {
+            return {
+                ...state,
+                user: { ...state.user, travelWishList: payload.data },
+                loading: false,
+            }
+        }
         case UPDATE_PLACE_WL:
         case DELETE_PLACE_WL: {
             return {

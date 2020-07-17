@@ -18,6 +18,7 @@ import { getPlace, deletePlace } from '../../actions/places'
 
 import Map from '../../components/shared/Map'
 import { addPlaceToBoard } from '../../actions/boards'
+import { addItemToWishlist } from '../../actions/user'
 const PlaceDetails = () => {
     const history = useHistory()
     const placeId = useParams().placeId
@@ -31,7 +32,13 @@ const PlaceDetails = () => {
     const [open, setOpen] = useState(false)
     const [isBoardsOpen, setIsBoardsOpen] = useState(false)
     const [deletePlaceOpen, setDeletePlaceOpen] = useState(false)
-    console.log()
+    const isInWishlist = (wishlist, placeId) => {
+        if (wishlist.find((wish) => wish.wish._id === placeId)) {
+            return true
+        }
+        return false
+    }
+    const [buttonActive, setButtonActive] = useState(true)
     if (!place) return <h4>Loading</h4>
     return (
         <Container>
@@ -56,7 +63,7 @@ const PlaceDetails = () => {
                                 <Modal
                                     center
                                     open={deletePlaceOpen}
-                                    onClose={()=>setDeletePlaceOpen(false)}
+                                    onClose={() => setDeletePlaceOpen(false)}
                                 >
                                     <p>
                                         Are you sure you want to delete this
@@ -118,6 +125,23 @@ const PlaceDetails = () => {
                                 onClick={() => setIsBoardsOpen(true)}
                             >
                                 Add to your board
+                            </Button>
+                        )}
+                        {isAuthenticated && user && (
+                            <Button
+                                small
+                                margin="5px"
+                                background={buttonActive && !isInWishlist(user.travelWishList, placeId)  ? 'green' : 'dark-gray'}
+                                fontSize="0.98rem"
+                                onClick={() =>
+                                    !isInWishlist(user.travelWishList, placeId) && buttonActive 
+                                        ? dispatch(addItemToWishlist(placeId))
+                                        : setButtonActive(false)
+                                }
+                            >
+                                {isInWishlist(user.travelWishList, placeId)
+                                    ? 'in the Wishlist'
+                                    : 'Add to your wishlist'}
                             </Button>
                         )}
                         <Modal

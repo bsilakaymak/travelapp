@@ -138,7 +138,6 @@ export const resetPassword = (password, token) => async (dispatch) => {
         }
         dispatch(loadUser())
     } catch (error) {
-        console.log(error.response.data)
         const errors = error.response.data.errors
 
         if (errors) {

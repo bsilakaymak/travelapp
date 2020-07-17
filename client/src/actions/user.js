@@ -91,7 +91,7 @@ export const addItemToWishlist = (placeId) => async (dispatch) => {
         const res = await axios.post(`/api/user/wishlist/${placeId}`)
         dispatch({
             type: ADD_PLACE_WL,
-            payload: res.data,
+            payload: { data: res.data, placeId: placeId },
         })
         dispatch(setAlert('Place is added to wishlist', 'success'))
     } catch (error) {

@@ -9,7 +9,6 @@ const Users = () => {
         dispatch(getUsers())
     }, [dispatch])
     const { users } = useSelector((state) => state.users)
-    console.log(users)
     return (
         <div>
             <Title center fontSize="2rem" margin="1rem">

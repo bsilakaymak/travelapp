@@ -136,11 +136,11 @@ const CreatePlace = () => {
                     onChange={onChangeCreatePlaceHandler}
                     previewImage={previewUrl}
                 />
+                {checkbox}
                 <Button small>
                     <Icon mr="0.25rem" className="fas fa-plus" />
-                    Create
+                    Create Place
                 </Button>
-                {checkbox}
             </Form>
         </CreatePlaceContainer>
     )

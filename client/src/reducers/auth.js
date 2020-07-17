@@ -9,6 +9,8 @@ import {
     UPDATE_USER,
     FOLLOW_USER,
     UNFOLLOW_USER,
+    ADD_PLACE_WL,
+    DELETE_PLACE_WL,
 } from '../actions/types'
 
 const initialState = {
@@ -32,7 +34,6 @@ export default (state = initialState, action) => {
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
             localStorage.setItem('token', payload.token)
-            console.log(state.token)
             return {
                 ...state,
                 ...payload,
@@ -45,7 +46,12 @@ export default (state = initialState, action) => {
                 ...state,
                 user: { ...state.user, following: payload },
             }
-
+        case ADD_PLACE_WL:
+        case DELETE_PLACE_WL:
+            return{
+                ...state,
+                user:{...state.user, travelWishList: payload }
+            }
         case LOGIN_FAIL:
         case AUTH_ERROR:
         case REGISTER_FAIL:

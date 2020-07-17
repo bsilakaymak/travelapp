@@ -8,7 +8,6 @@ const bcrypt = require('bcryptjs')
 const { forgetPasswordEmail, resetPasswordEmail } = require('../emails/account')
 const getUser = async (req, res) => {
     const { uid: userId } = req.params
-    console.log('called getUser fnc')
     try {
         const user = await User.findById(userId)
             .select('-password')
@@ -132,7 +131,6 @@ const login = async (req, res) => {
 /* eslint-disable no-unused-vars */
 const confirmAccount = async (req, res) => {}
 const forgotPassword = async (req, res) => {
-    console.log(`test`)
     const { email } = req.body
     const errors = validationResult(req)
     if (!errors.isEmpty()) {

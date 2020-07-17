@@ -4,10 +4,16 @@ const { validationResult } = require('express-validator')
 
 const getCurrentUser = async (req, res) => {
     try {
-        const currentUser = await User.findById(req.userData.userId).populate([
-            'placeLists',
-            'places',
-        ])
+        const currentUser = await User.findById(req.userData.userId)
+            .populate('placeLists')
+            .populate('places')
+            .populate('travelWishList.wish')
+            .exec()
+        // in case  a deleted place still present in user's travel wish list
+        currentUser.travelWishList = currentUser.travelWishList.filter(
+            (wish) => wish.wish !== null
+        )
+        await currentUser.save()
         res.status(200).send(currentUser)
     } catch (error) {
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
@@ -137,9 +143,22 @@ const deleteFollower = async (req, res) => {
 
 const addItemToTravelWishlist = async (req, res) => {
     const { pid: placeId } = req.params
-    console.log(placeId)
     try {
-        const user = await User.findById(req.userData.userId)
+        const user = await await User.findById(req.userData.userId)
+            .populate('places')
+            .populate('placeLists')
+            .populate('travelWishList.wish')
+            .exec()
+        //check if it is in the wishlist already
+        if (
+            user.travelWishList.find(
+                (place) => place.wish._id.toString() === placeId
+            )
+        ) {
+            return res
+                .status(403)
+                .json({ errors: [{ msg: 'Already added to the wishlist' }] })
+        }
         const newWish = {
             wish: placeId,
             isVisited: false,
@@ -157,6 +176,10 @@ const updateItemInTravelWishlist = async (req, res) => {
     const { isVisited } = req.body
     try {
         const user = await User.findById(req.userData.userId)
+            .populate('places')
+            .populate('placeLists')
+            .populate('travelWishList.wish')
+            .exec()
         const wish = user.travelWishList.find(
             (wish) => wish.wish.toString() === placeId
         )
@@ -172,6 +195,10 @@ const deleteItemFromTravelWishlist = async (req, res) => {
     const { pid: wishId } = req.params
     try {
         const user = await User.findById(req.userData.userId)
+            .populate('places')
+            .populate('placeLists')
+            .populate('travelWishList.wish')
+            .exec()
         const removeIndex = user.travelWishList
             .map((wish) => wish.wish.toString())
             .indexOf(wishId)

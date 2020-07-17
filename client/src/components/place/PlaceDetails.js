@@ -19,6 +19,9 @@ import { getPlace, deletePlace } from '../../actions/places'
 import Map from '../../components/shared/Map'
 import { addPlaceToBoard } from '../../actions/boards'
 import UpdatePlace from './UpdatePlace'
+import { addItemToWishlist } from '../../actions/user'
+import { loadUser } from '../../actions/auth'
+
 const PlaceDetails = () => {
     const history = useHistory()
     const placeId = useParams().placeId
@@ -26,13 +29,23 @@ const PlaceDetails = () => {
     useEffect(() => {
         dispatch(getPlace(placeId))
     }, [placeId, dispatch])
+    useEffect(() => {
+        dispatch(loadUser())
+    }, [ dispatch])
     const place = useSelector((state) => state.places.place)
     const { user, isAuthenticated } = useSelector((state) => state.auth)
+
     const [updateMode, setUpdateMode] = useState(false)
+
     const [open, setOpen] = useState(false)
     const [isBoardsOpen, setIsBoardsOpen] = useState(false)
     const [deletePlaceOpen, setDeletePlaceOpen] = useState(false)
-    console.log()
+    const isInWishlist = (wishlist, placeId) => {
+        if (wishlist.find((wish) => wish.wish._id === placeId)) {
+            return true
+        }
+        return false
+    }
     if (!place) return <h4>Loading</h4>
     return (
         <Container>
@@ -133,6 +146,23 @@ const PlaceDetails = () => {
                                 onClick={() => setIsBoardsOpen(true)}
                             >
                                 Add to your board
+                            </Button>
+                        )}
+                        {isAuthenticated && user && !isInWishlist(user.travelWishList, placeId) ? (
+                            <Button
+                                small
+                                margin="5px"
+                                background= 'green'
+                                fontSize="0.98rem"
+                                onClick={() =>
+                                         dispatch(addItemToWishlist(placeId))
+                                }
+                            >
+                               Add to your wishlist
+                            </Button>
+                        ):(
+                            <Button small darkGray>
+                                In the Wishlist
                             </Button>
                         )}
                         <Modal

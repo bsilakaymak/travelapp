@@ -176,15 +176,14 @@ const deletePlace = async (req, res) => {
 
         // //make sure to delete the place from any place list it is added
 
-        place.placeListsAdded.map(async (pla) => {
-            const placeList = await PlaceList.findById(pla.listId)
+        place.placeListsAdded.map(async (placeListAdded) => {
+            const placeList = await PlaceList.findById(placeListAdded.listId)
             placeList.places = placeList.places.filter(
                 (place) => place.toString() !== placeId.toString()
             )
 
             await placeList.save()
-        })
-
+        }) 
         // Remove the image from cloudinary by id before add the new image
         if (place.imageId) {
             const public_id = place.imageId

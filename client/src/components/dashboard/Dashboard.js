@@ -2,43 +2,51 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Container, Grid, Row } from '../shared/GridSystem'
 import { Title, Divider, Image, Holder, Button, Icon } from '../shared/Elements'
-import { Modal } from 'react-responsive-modal'
-
 import UserUpdate from './UserUpdate'
 import UserBoards from './UserBoards'
 import { useSelector } from 'react-redux'
 import UserPlaces from './UserPlaces'
+import { Menu } from '../layout/Navbar'
 
 const UserInfoContent = styled.div`
     background: rgba(0, 0, 0, 0.3);
     color: #fff;
     box-shadow: 0px 1px 5px 0px;
     padding: 1rem;
-    margin-top: 2rem;
+    ${(props) => {
+        if (props.mt === 2) {
+            return 'margin-top:.5rem'
+        } else if (props.mt === 4) {
+            return 'margin-top:2rem;'
+        }
+    }};
 `
 const DashboardContainer = styled.div`
     display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100%;
     background: #3e497b;
+`
+const DashboardMenu = styled(Menu)`
+    margin-top: 2rem;
+    height: auto;
+    padding: 5px 15px;
 `
 const Dashboard = () => {
     const { user } = useSelector((state) => state.auth)
     const [showEdit, setShowEdit] = useState(false)
     const [isBoardsOpen, setIsBoardsOpen] = useState(false)
-    const [isPlacesOpen, setIsPlacesOpen] = useState(false)
+    const [isPlacesOpen, setIsPlacesOpen] = useState(true)
 
     return (
         <DashboardContainer>
             {user && (
                 <Container>
-                    <Row center>
+                    <Row>
                         <Grid md={4}>
                             {showEdit ? (
                                 <UserUpdate setShowEdit={setShowEdit} />
                             ) : (
-                                <UserInfoContent>
+                                <UserInfoContent mt={4}>
                                     <Icon
                                         color="#fff"
                                         className="fas fa-user-edit"
@@ -64,47 +72,42 @@ const Dashboard = () => {
                                         <span>Following : </span>{' '}
                                         {user.following.length}
                                     </Title>
-                                    <Divider width="100%" marginTop="5px" />
-                                    <Button
-                                        small
-                                        background="#007bff"
-                                        marginTop="1rem"
-                                        marginRight="1rem"
-                                        onClick={() =>
-                                            setIsPlacesOpen(!isBoardsOpen)
-                                        }
-                                    >
-                                        My Places
-                                    </Button>
-                                    <Button
-                                        small
-                                        background="#007bff"
-                                        marginTop="1rem"
-                                        onClick={() =>
-                                            setIsBoardsOpen(!isBoardsOpen)
-                                        }
-                                    >
-                                        My Boards
-                                    </Button>
                                 </UserInfoContent>
                             )}
                         </Grid>
+                        <Grid md={8}>
+                            <DashboardMenu>
+                                <Button
+                                    active={isPlacesOpen}
+                                    small
+                                    marginRight="1rem"
+                                    onClick={() => {
+                                        setIsPlacesOpen(true)
+                                        setIsBoardsOpen(false)
+                                    }}
+                                >
+                                    My Places
+                                </Button>
+                                <Button
+                                    active={isBoardsOpen}
+                                    small
+                                    onClick={() => {
+                                        setIsBoardsOpen(true)
+                                        setIsPlacesOpen(false)
+                                    }}
+                                >
+                                    My Boards
+                                </Button>
+                            </DashboardMenu>
+                            <UserInfoContent mt={2}>
+                                {isPlacesOpen ? (
+                                    <UserPlaces places={user.places} />
+                                ) : (
+                                    <UserBoards boards={user.placeLists} />
+                                )}
+                            </UserInfoContent>
+                        </Grid>
                     </Row>
-
-                    <Modal
-                        center
-                        open={isBoardsOpen}
-                        onClose={() => setIsBoardsOpen(false)}
-                    >
-                        <UserBoards boards={user.placeLists} />
-                    </Modal>
-                    <Modal
-                        center
-                        open={isPlacesOpen}
-                        onClose={() => setIsPlacesOpen(false)}
-                    >
-                        <UserPlaces places={user.places} />
-                    </Modal>
                 </Container>
             )}
         </DashboardContainer>

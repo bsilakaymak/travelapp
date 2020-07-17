@@ -15,27 +15,26 @@ const Ul = styled.ul`
     justify-content: space-around;
     margin-left: auto;
 `
-const Menu = styled.nav`
-  display: flex;
-  width: 100%;
-  height: 35px;
-  background:#122141;
-  position: relative;
-  padding: 1.5rem 1rem;
-  @media (max-width: 576px) { 
-    ${Ul}{
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        right: 0px;
-        top: 48px;
-        background:#122141;
-        width: 100%;
-        visibility: ${(props) => props.show || 'hidden'};
-        z-index:5
+export const Menu = styled.nav`
+    display: flex;
+    width: 100%;
+    height: 35px;
+    background: #122141;
+    position: relative;
+    padding: 1.5rem 1rem;
+    @media (max-width: 576px) {
+        ${Ul} {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            right: 0px;
+            top: 48px;
+            background: #122141;
+            width: 100%;
+            visibility: ${(props) => props.show || 'hidden'};
+            z-index: 5;
+        }
     }
-    }
-  }
 `
 const Link = styled(NavLink)`
     text-decoration: none;

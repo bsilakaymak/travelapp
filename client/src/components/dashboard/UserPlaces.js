@@ -1,23 +1,42 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { Divider } from '../shared/Elements'
-
+import { Divider, Card, Image, Title } from '../shared/Elements'
+import { Row, Grid } from '../shared/GridSystem'
 const UserPlaces = ({ places }) => {
-    console.log(places)
     return (
-        <div>
-            {places && places.length === 0 && <h4>No Places</h4>}
+        <Row>
+            {places && places.length === 0 && (
+                <Card>
+                    <Title color="black" center>
+                        No Places
+                    </Title>
+                </Card>
+            )}
+
             {places &&
-                places.map((place) => (
-                    <Fragment>
-                        <Link to={`/place/${place._id}`} key={place._id}>
-                            <h4>{place.title}</h4>
+                places.map(({ _id, title, image, description }) => (
+                    <Grid lg={3} md={6} sm={6} key={_id} mb={2}>
+                        <Link to={`/place/${_id}`}>
+                            <Card minHeight="360px">
+                                <Title center>{title}</Title>
+                                <Divider gray margin="0.5rem 0 .5rem 0" />
+                                <Image
+                                    width="200"
+                                    height="200"
+                                    src={image}
+                                    alt={title}
+                                />
+                                <Divider gray margin=".8rem .8rem" />
+                                <p>
+                                    {description.slice(0, 40)}{' '}
+                                    {description.slice(0, 40).length === 40 &&
+                                        '...'}
+                                </p>
+                            </Card>
                         </Link>
-                        <Divider></Divider>
-                        <p>{place.description}</p>
-                    </Fragment>
+                    </Grid>
                 ))}
-        </div>
+        </Row>
     )
 }
 

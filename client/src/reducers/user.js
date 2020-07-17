@@ -41,7 +41,7 @@ export default function (state = initialState, action) {
         case ADD_PLACE_WL: {
             return {
                 ...state,
-                user: { ...state.user, travelWishList: payload.data },
+                user: { ...state.user, travelWishList: payload },
                 loading: false,
             }
         }
@@ -49,7 +49,10 @@ export default function (state = initialState, action) {
         case DELETE_PLACE_WL: {
             return {
                 ...state,
-                user: { ...state.user, travelWishList: payload },
+                user: {
+                    ...state.user,
+                    travelWishList: payload
+                },
                 loading: false,
             }
         }

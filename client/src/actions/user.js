@@ -91,7 +91,7 @@ export const addItemToWishlist = (placeId) => async (dispatch) => {
         const res = await axios.post(`/api/user/wishlist/${placeId}`)
         dispatch({
             type: ADD_PLACE_WL,
-            payload: { data: res.data, placeId: placeId },
+            payload: res.data,
         })
         dispatch(setAlert('Place is added to wishlist', 'success'))
     } catch (error) {
@@ -129,7 +129,7 @@ export const updateItemInWishlist = (placeId, formData) => async (dispatch) => {
 //remove item form wishlist
 export const removeItemFromWishlist = (placeId) => async (dispatch) => {
     try {
-        const res = await axios.post(`/api/user/wishlist/${placeId}`)
+        const res = await axios.delete(`/api/user/wishlist/${placeId}`)
         dispatch({
             type: DELETE_PLACE_WL,
             payload: res.data,

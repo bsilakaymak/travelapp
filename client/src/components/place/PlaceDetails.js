@@ -19,6 +19,7 @@ import { getPlace, deletePlace } from '../../actions/places'
 import Map from '../../components/shared/Map'
 import { addPlaceToBoard } from '../../actions/boards'
 import { addItemToWishlist } from '../../actions/user'
+import { loadUser } from '../../actions/auth'
 const PlaceDetails = () => {
     const history = useHistory()
     const placeId = useParams().placeId
@@ -26,9 +27,11 @@ const PlaceDetails = () => {
     useEffect(() => {
         dispatch(getPlace(placeId))
     }, [placeId, dispatch])
+    useEffect(() => {
+        dispatch(loadUser())
+    }, [ dispatch])
     const place = useSelector((state) => state.places.place)
     const { user, isAuthenticated } = useSelector((state) => state.auth)
-
     const [open, setOpen] = useState(false)
     const [isBoardsOpen, setIsBoardsOpen] = useState(false)
     const [deletePlaceOpen, setDeletePlaceOpen] = useState(false)
@@ -38,7 +41,6 @@ const PlaceDetails = () => {
         }
         return false
     }
-    const [buttonActive, setButtonActive] = useState(true)
     if (!place) return <h4>Loading</h4>
     return (
         <Container>
@@ -127,21 +129,21 @@ const PlaceDetails = () => {
                                 Add to your board
                             </Button>
                         )}
-                        {isAuthenticated && user && (
+                        {isAuthenticated && user && !isInWishlist(user.travelWishList, placeId) ? (
                             <Button
                                 small
                                 margin="5px"
-                                background={buttonActive && !isInWishlist(user.travelWishList, placeId)  ? 'green' : 'dark-gray'}
+                                background= 'green'
                                 fontSize="0.98rem"
                                 onClick={() =>
-                                    !isInWishlist(user.travelWishList, placeId) && buttonActive 
-                                        ? dispatch(addItemToWishlist(placeId))
-                                        : setButtonActive(false)
+                                         dispatch(addItemToWishlist(placeId))
                                 }
                             >
-                                {isInWishlist(user.travelWishList, placeId)
-                                    ? 'in the Wishlist'
-                                    : 'Add to your wishlist'}
+                               Add to your wishlist
+                            </Button>
+                        ):(
+                            <Button small darkGray>
+                                In the Wishlist
                             </Button>
                         )}
                         <Modal

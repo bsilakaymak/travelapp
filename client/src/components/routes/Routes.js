@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import LandingPage from '../layout/LandingPage'
 import Register from '../auth/Register'
 import Login from '../auth/Login'
@@ -18,7 +18,13 @@ import SendEmail from '../forgetPassword/SendEmail'
 import ResetPassword from '../forgetPassword/ResetPassword'
 import Users from '../users/Users'
 import UserDetails from '../users/UserDetails'
+import { useDispatch } from 'react-redux'
+import { loadUser } from '../../actions/auth'
 function Routes() {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(loadUser())
+    }, [dispatch])
     return (
         <Router>
             <Navbar />

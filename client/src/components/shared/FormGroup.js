@@ -52,6 +52,7 @@ export const Form = styled.form`
     border-radius: 7px;
     border: 1px solid #fff;
     width: ${({ width }) => (width ? width : '81%')};
+    height: ${({ height }) => height};
     background: ${({ bg }) => (bg ? bg : 'rgba(0, 0, 0, 0.3)')};
     @media (min-width: 576px) {
     }

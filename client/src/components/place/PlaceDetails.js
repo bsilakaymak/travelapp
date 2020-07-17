@@ -18,6 +18,7 @@ import { getPlace, deletePlace } from '../../actions/places'
 
 import Map from '../../components/shared/Map'
 import { addPlaceToBoard } from '../../actions/boards'
+import UpdatePlace from './UpdatePlace'
 const PlaceDetails = () => {
     const history = useHistory()
     const placeId = useParams().placeId
@@ -27,7 +28,7 @@ const PlaceDetails = () => {
     }, [placeId, dispatch])
     const place = useSelector((state) => state.places.place)
     const { user, isAuthenticated } = useSelector((state) => state.auth)
-
+    const [updateMode, setUpdateMode] = useState(false)
     const [open, setOpen] = useState(false)
     const [isBoardsOpen, setIsBoardsOpen] = useState(false)
     const [deletePlaceOpen, setDeletePlaceOpen] = useState(false)
@@ -35,6 +36,13 @@ const PlaceDetails = () => {
     if (!place) return <h4>Loading</h4>
     return (
         <Container>
+            <Modal
+                center
+                open={updateMode}
+                onClose={() => setUpdateMode(false)}
+            >
+                <UpdatePlace current={place} setUpdateMode={setUpdateMode} />
+            </Modal>
             <Row center>
                 <Modal center open={open} onClose={() => setOpen(false)}>
                     <Map
@@ -53,10 +61,17 @@ const PlaceDetails = () => {
                                     className="far fa-trash-alt"
                                     onClick={() => setDeletePlaceOpen(true)}
                                 ></Icon>
+                                <Icon
+                                    mr="5px"
+                                    className="far fa-edit"
+                                    onClick={() => {
+                                        setUpdateMode(true)
+                                    }}
+                                ></Icon>
                                 <Modal
                                     center
                                     open={deletePlaceOpen}
-                                    onClose={()=>setDeletePlaceOpen(false)}
+                                    onClose={() => setDeletePlaceOpen(false)}
                                 >
                                     <p>
                                         Are you sure you want to delete this

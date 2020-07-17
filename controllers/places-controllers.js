@@ -88,16 +88,14 @@ const addPlace = async (req, res) => {
     } catch (error) {
         console.error(error.message)
         if (error.message.includes('Could not find')) {
-            return res
-                .status(404)
-                .json({
-                    errors: [
-                        {
-                            msg:
-                                'Could not find location for the specified address.',
-                        },
-                    ],
-                })
+            return res.status(404).json({
+                errors: [
+                    {
+                        msg:
+                            'Could not find location for the specified address.',
+                    },
+                ],
+            })
         }
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
@@ -109,7 +107,8 @@ const updatePlace = async (req, res) => {
         return res.status(400).json({ errors: errors.array() })
     }
     const { pid: placeId } = req.params
-    const { title, description } = req.body
+    const updates = Object.keys(req.body)
+
     try {
         const place = await Place.findById(placeId)
         // first check if user is authorized to update the place
@@ -118,9 +117,10 @@ const updatePlace = async (req, res) => {
                 .status(401)
                 .json({ errors: [{ msg: 'User Not Authorized' }] })
         }
-        place.title = title
-        place.description = description
+        updates.forEach((update) => (place[update] = req.body[update]))
+
         await place.save()
+
         res.send(place).status(200)
     } catch (error) {
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })

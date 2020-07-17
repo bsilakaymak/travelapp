@@ -39,8 +39,8 @@ export const Button = styled.button`
          color:white;`
         }
     }};
+    ${({ active }) => active && ' background: rgba(0, 0, 0, 0.5);'};
     border: none;
-
     padding: 10px 10px;
     margin: ${(props) => props.margin};
     margin-top: ${({ marginTop }) => (marginTop ? marginTop : '0.5rem')};
@@ -95,6 +95,7 @@ export const Card = styled.div`
     background: ${(props) => props.background};
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0.19), 0 0px 7px rgba(0, 0, 0, 0.23);
     text-align: ${(props) => props.textAlign};
+    min-height: ${({ minHeight }) => minHeight};
 `
 export const Title = styled.h4`
     text-align: ${(props) => props.center && 'center'};
@@ -104,6 +105,7 @@ export const Title = styled.h4`
     margin-bottom: ${(props) => props.marginBottom};
     margin-left: ${(props) => props.marginLeft};
     font-size: ${(props) => props.fontSize};
+    color: ${({ color }) => color};
 `
 export const Image = styled.img`
     width: 100%;

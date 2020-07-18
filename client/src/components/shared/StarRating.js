@@ -20,7 +20,7 @@ const RadioInput = styled.input`
 const StarRating = (props) => {
     const [rating, setRating] = useState(props.count)
     const [hover, setHover] = useState(null)
-
+    console.log(props.count)
     return (
         <StarRatingHolder>
             {[...Array(5)].map((start, index) => {
@@ -35,7 +35,6 @@ const StarRating = (props) => {
                             onChange={props.onChange}
                         />
                         <Icon
-                            value={props.count}
                             onMouseEnter={() => setHover(parseInt(ratingValue))}
                             onMouseLeave={() => setHover(parseInt(ratingValue))}
                             className="fas fa-star"

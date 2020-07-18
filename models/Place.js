@@ -55,22 +55,7 @@ const placeSchema = new Schema({
         ],
         default: [],
     },
-    comments: [
-        {
-            creator: {
-                type: mongoose.Types.ObjectId,
-                ref: 'user',
-            },
-            text: {
-                type: String,
-                required: true,
-            },
-            createdAt: {
-                type: Date,
-                default: Date.now,
-            },
-        },
-    ],
+
     placeListsAdded: [
         {
             listName: {

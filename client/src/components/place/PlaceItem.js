@@ -16,10 +16,11 @@ const TagContent = styled.div`
 `
 const PlaceItem = ({ place }) => {
     const { title, address, description, image, _id, tags, ratings } = place
-    console.log(place)
+
     const dispatch = useDispatch()
     const [warningOpen, setWarningOpen] = useState(false)
     const { isAuthenticated } = useSelector((state) => state.auth)
+
     return (
         <Card marginTop="1rem" marginBottom="1rem">
             <Title center marginTop="1.5rem" marginBottom="1.5rem">
@@ -53,7 +54,11 @@ const PlaceItem = ({ place }) => {
                 }}
                 ratings={`(${ratings.length} ratings)`}
             />
-            <Modal center open={warningOpen} onClose={()=>setWarningOpen(false)}>
+            <Modal
+                center
+                open={warningOpen}
+                onClose={() => setWarningOpen(false)}
+            >
                 Please login or sign up to rate a place
             </Modal>
             <Link to={`/place/${_id}`}>

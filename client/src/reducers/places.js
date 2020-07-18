@@ -6,12 +6,14 @@ import {
     COMMENT_PLACE,
     DELETE_COMMENT_PLACE,
     RATE_PLACE,
+    GET_PLACE_COMMENTS,
+    UPDATE_PLACE_COMMENTS,
 } from '../actions/types'
 
 const initialState = {
     places: null,
     place: null,
-    comments: [],
+    comments: null,
     loading: true,
     error: {},
 }
@@ -41,17 +43,42 @@ export default function (state = initialState, action) {
                 loading: false,
             }
         }
+        case GET_PLACE_COMMENTS:
+            return {
+                ...state,
+                comments: payload,
+                loading: false,
+            }
         case COMMENT_PLACE:
+            return {
+                ...state,
+                comments: [payload, ...state.comments],
+                loading: false,
+            }
+        case UPDATE_PLACE_COMMENTS:
+            return {
+                ...state,
+                comments: [
+                    ...state.comments.map((comment) =>
+                        comment._id === payload._id ? payload : comment
+                    ),
+                ],
+                loading: false,
+            }
         case DELETE_COMMENT_PLACE:
             return {
                 ...state,
-                place: { ...state.place, comments: payload },
+                comments: state.comments.filter(
+                    (comment) => comment._id !== payload
+                ),
                 loading: false,
             }
         case RATE_PLACE:
             return {
                 ...state,
-                place: { ...state.place, ratings: payload.ratings },
+                places: state.places.map((place) =>
+                    place._id === payload._id ? payload : place
+                ),
                 loading: false,
             }
         default:

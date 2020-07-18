@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Moment from 'react-moment'
 import styled from 'styled-components'
+import ScrollToBottom from 'react-scroll-to-bottom'
 
 import { Input, Form, Label, InputHolder } from '../shared/FormGroup'
-import { Card, Title, Icon, Holder } from '../shared/Elements'
+import { Card, Title, Icon, Holder, Image } from '../shared/Elements'
 import { useDispatch, useSelector } from 'react-redux'
-import { addComment, deleteComment } from '../../actions/places'
+import {
+    addComment,
+    deleteComment,
+    getComments,
+    updateComment,
+} from '../../actions/places'
 
 const CommentFormStyled = styled(Form)`
     background: none;
@@ -18,86 +24,122 @@ const CommentFormStyled = styled(Form)`
         width: 100%;
     }
 `
+const Comment = styled.p`
+    word-break: break-word;
+`
 const CommentItemHolder = styled.div`
     background: #eee;
-    padding: 1.5rem;
+    padding: 0.5rem 0.5rem 0;
 `
 const CommenterNameHolder = styled.div`
     display: flex;
     width: 100%;
     margin-bottom: 5px;
 `
-
-const CommentForm = ({ placeId, place }) => {
-    const userId = useSelector((state) => state.auth.user._id)
+const ScrollToBottomStyled = styled(ScrollToBottom)`
+    height: 400px;
+    width: 400px;
+`
+const CommentForm = ({ placeId, isAuthenticated, user }) => {
+    const { comments } = useSelector((state) => state.places)
     const dispatch = useDispatch()
     const [comment, setComment] = useState('')
+    const [updateMode, setUpdateMode] = useState(null)
 
     const onSubmitCommentHandler = (e) => {
         e.preventDefault()
-        dispatch(addComment(placeId, { text: comment }))
+        if (Boolean(updateMode)) {
+            dispatch(updateComment(updateMode, { comment }))
+        } else {
+            dispatch(addComment(placeId, { comment }))
+        }
+
+        setComment('')
     }
+    useEffect(() => {
+        dispatch(getComments(placeId))
+    }, [dispatch, placeId])
 
     return (
         <>
-            <CommentFormStyled onSubmit={onSubmitCommentHandler}>
-                <InputHolder>
-                    <Input
-                        borderColor="#244384"
-                        onChange={(e) => setComment(e.target.value)}
-                        value={comment}
-                        required
-                    />
-                    <Label color="#244384">Add comment</Label>
-                </InputHolder>
-            </CommentFormStyled>
-            {place && place.comments && place.comments.length > 0 && (
-                <CommentItemHolder>
-                    {place.comments.map((comment) => (
-                        <Card
-                            key={comment._id}
-                            marginTop="0.25rem"
-                            marginBottom="0.25rem"
-                        >
-                            <CommenterNameHolder>
-                                <Title marginRight="10px">{comment.user}</Title>
-                                <span>
-                                    <Moment format="h:mm a">
-                                        {comment.createdAt}
-                                    </Moment>
-                                </span>
-                                <Holder
-                                    ml="auto"
-                                    direction="inherit"
-                                    width="10%"
-                                >
-                                    {comment.creator._id === userId && (
-                                        <Icon
-                                            mr="5px"
-                                            className="far fa-trash-alt"
-                                            onClick={() =>
-                                                dispatch(
-                                                    deleteComment(
-                                                        placeId,
-                                                        comment._id
-                                                    )
-                                                )
-                                            }
-                                        ></Icon>
-                                    )}
-                                </Holder>
-                                {comment.creator && comment.creator.name && (
-                                    <div>
-                                        <p>by: {comment.creator.name}</p>
-                                    </div>
-                                )}
-                            </CommenterNameHolder>
-
-                            <p>{comment.text}</p>
-                        </Card>
-                    ))}
-                </CommentItemHolder>
+            {isAuthenticated && (
+                <CommentFormStyled onSubmit={onSubmitCommentHandler}>
+                    <InputHolder>
+                        <Input
+                            borderColor="#244384"
+                            onChange={(e) => setComment(e.target.value)}
+                            value={comment}
+                            required
+                        />
+                        <Label color="#244384">Add comment</Label>
+                    </InputHolder>
+                </CommentFormStyled>
             )}
+            <ScrollToBottomStyled>
+                {comments !== null &&
+                    comments.map(({ _id, createdAt, creator, comment }) => (
+                        <CommentItemHolder>
+                            <Card
+                                key={_id}
+                                marginTop="0.25rem"
+                                marginBottom="0.25rem"
+                            >
+                                <CommenterNameHolder>
+                                    <Holder
+                                        width="50px"
+                                        height="50px"
+                                        mt="-10px"
+                                        ml="-10px"
+                                    >
+                                        <Image
+                                            src={creator.image}
+                                            alt={creator.name}
+                                        />
+                                    </Holder>
+                                    <Title marginLeft="10px" marginRight="10px">
+                                        {creator.name}
+                                    </Title>
+                                    <span>
+                                        <Moment format="h:mm a">
+                                            {createdAt}
+                                        </Moment>
+                                    </span>
+                                    <Holder
+                                        ml="auto"
+                                        direction="inherit"
+                                        width="10%"
+                                    >
+                                        {isAuthenticated &&
+                                            creator._id === user._id && (
+                                                <>
+                                                    <Icon
+                                                        mr="5px"
+                                                        className="far fa-trash-alt"
+                                                        onClick={() =>
+                                                            dispatch(
+                                                                deleteComment(
+                                                                    _id
+                                                                )
+                                                            )
+                                                        }
+                                                    ></Icon>
+                                                    <Icon
+                                                        mr="5px"
+                                                        className="far fa-edit"
+                                                        onClick={() => {
+                                                            setUpdateMode(_id)
+                                                            setComment(comment)
+                                                        }}
+                                                    ></Icon>
+                                                </>
+                                            )}
+                                    </Holder>
+                                </CommenterNameHolder>
+                                <Comment>{comment}</Comment>
+                            </Card>
+                        </CommentItemHolder>
+                    ))}
+            </ScrollToBottomStyled>
         </>
     )
 }

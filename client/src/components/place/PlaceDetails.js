@@ -31,7 +31,7 @@ const PlaceDetails = () => {
     }, [placeId, dispatch])
     useEffect(() => {
         dispatch(loadUser())
-    }, [ dispatch])
+    }, [dispatch])
     const place = useSelector((state) => state.places.place)
     const { user, isAuthenticated } = useSelector((state) => state.auth)
 
@@ -148,19 +148,21 @@ const PlaceDetails = () => {
                                 Add to your board
                             </Button>
                         )}
-                        {isAuthenticated && user && !isInWishlist(user.travelWishList, placeId) ? (
+                        {isAuthenticated &&
+                        user &&
+                        !isInWishlist(user.travelWishList, placeId) ? (
                             <Button
                                 small
                                 margin="5px"
-                                background= 'green'
+                                background="green"
                                 fontSize="0.98rem"
                                 onClick={() =>
-                                         dispatch(addItemToWishlist(placeId))
+                                    dispatch(addItemToWishlist(placeId))
                                 }
                             >
-                               Add to your wishlist
+                                Add to your wishlist
                             </Button>
-                        ):(
+                        ) : (
                             <Button small darkGray>
                                 In the Wishlist
                             </Button>
@@ -209,9 +211,11 @@ const PlaceDetails = () => {
                             </Button>
                         </Modal>
                     </Card>
-                    {isAuthenticated && (
-                        <CommentForm placeId={place._id} place={place} />
-                    )}
+                    <CommentForm
+                        placeId={place._id}
+                        user={user}
+                        isAuthenticated={isAuthenticated}
+                    />
                 </Grid>
             </Row>
         </Container>

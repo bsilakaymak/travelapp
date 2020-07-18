@@ -10,6 +10,8 @@ import {
     COMMENT_PLACE,
     DELETE_COMMENT_PLACE,
     RATE_PLACE,
+    GET_PLACE_COMMENTS,
+    UPDATE_PLACE_COMMENTS,
 } from './types'
 
 // get places
@@ -117,6 +119,22 @@ export const deletePlace = (placeId, history) => async (dispatch) => {
         }
     }
 }
+// Get comments
+export const getComments = (placeId) => async (dispatch) => {
+    try {
+        const data = await axios.get(`/api/places/${placeId}/comments`)
+        dispatch({
+            type: GET_PLACE_COMMENTS,
+            payload: data.data,
+        })
+        console.log(data.data)
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
+}
 
 // add comment
 export const addComment = (placeId, formData) => async (dispatch) => {
@@ -126,7 +144,7 @@ export const addComment = (placeId, formData) => async (dispatch) => {
         },
     }
     try {
-        const res = await axios.put(
+        const res = await axios.post(
             `/api/places/${placeId}/comments`,
             formData,
             config
@@ -142,16 +160,38 @@ export const addComment = (placeId, formData) => async (dispatch) => {
         }
     }
 }
-
-// delete comment
-export const deleteComment = (placeId, commentId) => async (dispatch) => {
+// Update comment
+export const updateComment = (commentId, formData) => async (dispatch) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }
     try {
-        const res = await axios.put(
-            `/api/places/${placeId}/comments/${commentId}`
+        const res = await axios.patch(
+            `/api/places/${commentId}/comments`,
+            formData,
+            config
         )
         dispatch({
-            type: DELETE_COMMENT_PLACE,
+            type: UPDATE_PLACE_COMMENTS,
             payload: res.data,
+        })
+    } catch (error) {
+        const errors = error.response.data.errors
+        if (errors) {
+            errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')))
+        }
+    }
+}
+
+// delete comment
+export const deleteComment = (commentId) => async (dispatch) => {
+    try {
+        await axios.delete(`/api/places/comments/${commentId}`)
+        dispatch({
+            type: DELETE_COMMENT_PLACE,
+            payload: commentId,
         })
         dispatch(setAlert('Comment deleted', 'success'))
     } catch (error) {

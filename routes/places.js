@@ -12,6 +12,9 @@ route.get('/:pid', placesControllers.getPlace)
 //get places
 route.get('/', placesControllers.getPlaces)
 
+//get comments
+route.get('/:pid/comments', placesControllers.getComments)
+
 route.use(checkAuth)
 
 //add place
@@ -43,17 +46,20 @@ route.put('/:pid', placesControllers.ratePlace)
 //delete place
 route.delete('/:pid', placesControllers.deletePlace)
 
-//get comments
-route.get('/:pid/comments', placesControllers.getComments)
-
 //add comment
-route.put(
+route.post(
     '/:pid/comments',
-    [check('text', 'Text is required').not().isEmpty()],
+    [check('comment', 'Text is required').not().isEmpty()],
     placesControllers.addComment
+)
+//add update
+route.patch(
+    '/:cid/comments',
+    [check('comment', 'Text is required').not().isEmpty()],
+    placesControllers.updateComment
 )
 
 //delete comment
-route.put('/:pid/comments/:cid', placesControllers.deleteComment)
+route.delete('/comments/:cid', placesControllers.deleteComment)
 
 module.exports = route

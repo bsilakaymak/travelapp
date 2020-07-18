@@ -141,7 +141,6 @@ const deletePlaceList = async (req, res) => {
         try {
             placeList.places.map(async (pid) => {
                 const currentPlace = await Place.findById(pid)
-                console.log(pid, currentPlace)
                 currentPlace.placeListsAdded = currentPlace.placeListsAdded.filter(
                     (pla) => pla.listId.toString() !== plid.toString()
                 )

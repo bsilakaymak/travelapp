@@ -7,6 +7,7 @@ import UserBoards from './UserBoards'
 import { useSelector } from 'react-redux'
 import UserPlaces from './UserPlaces'
 import { Menu } from '../layout/Navbar'
+import UserWishlist from './UserWishlist'
 
 const UserInfoContent = styled.div`
     background: rgba(0, 0, 0, 0.3);
@@ -36,6 +37,7 @@ const Dashboard = () => {
     const [showEdit, setShowEdit] = useState(false)
     const [isBoardsOpen, setIsBoardsOpen] = useState(false)
     const [isPlacesOpen, setIsPlacesOpen] = useState(true)
+    const [isWishlistOpen, setIsWishlistOpen] = useState(false)
 
     return (
         <DashboardContainer>
@@ -84,6 +86,7 @@ const Dashboard = () => {
                                     onClick={() => {
                                         setIsPlacesOpen(true)
                                         setIsBoardsOpen(false)
+                                        setIsWishlistOpen(false)
                                     }}
                                 >
                                     My Places
@@ -94,16 +97,36 @@ const Dashboard = () => {
                                     onClick={() => {
                                         setIsBoardsOpen(true)
                                         setIsPlacesOpen(false)
+                                        setIsWishlistOpen(false)
                                     }}
                                 >
                                     My Boards
                                 </Button>
+                                <Button
+                                    active={isWishlistOpen}
+                                    small
+                                    marginLeft="1rem"
+                                    onClick={() => {
+                                        setIsBoardsOpen(false)
+                                        setIsPlacesOpen(false)
+                                        setIsWishlistOpen(true)
+                                    }}
+                                >
+                                    My Wishlist
+                                </Button>
                             </DashboardMenu>
                             <UserInfoContent mt={2}>
-                                {isPlacesOpen ? (
+                                {isPlacesOpen && (
                                     <UserPlaces places={user.places} />
-                                ) : (
+                                )}
+
+                                {isBoardsOpen && (
                                     <UserBoards boards={user.placeLists} />
+                                )}
+                                {isWishlistOpen && (
+                                    <UserWishlist
+                                        wishlist={user.travelWishList}
+                                    />
                                 )}
                             </UserInfoContent>
                         </Grid>

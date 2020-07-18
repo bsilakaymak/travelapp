@@ -22,7 +22,6 @@ const UserDetails = () => {
         dispatch(getUser(userId))
     }, [dispatch, userId])
     const { user } = useSelector((state) => state.users)
-    console.log(isAuthenticated)
     const isFollowed = (currentUserFollowing, followedUserId) => {
         if (
             currentUserFollowing.find(

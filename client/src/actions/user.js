@@ -129,7 +129,7 @@ export const updateItemInWishlist = (placeId, formData) => async (dispatch) => {
 //remove item form wishlist
 export const removeItemFromWishlist = (placeId) => async (dispatch) => {
     try {
-        const res = await axios.post(`/api/user/wishlist/${placeId}`)
+        const res = await axios.delete(`/api/user/wishlist/${placeId}`)
         dispatch({
             type: DELETE_PLACE_WL,
             payload: res.data,

@@ -5,6 +5,7 @@ import { Divider, Button } from '../shared/Elements'
 import { register } from '../../actions/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import { setAlert } from '../../actions/alert'
 
 const LoginContainer = styled.div`
     display: flex;
@@ -30,7 +31,7 @@ const Register = () => {
     const onSubmitAuthFormHandler = (e) => {
         e.preventDefault()
         if (password !== password2) {
-            console.log('Passwords do not match')
+            dispatch(setAlert('Passwords do not match'))
             return
         } else {
             dispatch(register(name, email, password))

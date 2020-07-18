@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator')
 const cloudinary = require('../uploads/cloudinary')
 const Place = require('../models/Place')
+const Comment = require('../models/Comments')
 const User = require('../models/User')
 const PlaceList = require('../models/PlaceList')
 const getCoordsForAddress = require('../utils/location')
@@ -149,7 +150,7 @@ const ratePlace = async (req, res) => {
 
         await place.save()
 
-        res.status(200).send(place.ratings)
+        res.status(200).send(place)
     } catch (error) {
         console.error(error)
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
@@ -183,7 +184,7 @@ const deletePlace = async (req, res) => {
             )
 
             await placeList.save()
-        }) 
+        })
         // Remove the image from cloudinary by id before add the new image
         if (place.imageId) {
             const public_id = place.imageId
@@ -200,14 +201,17 @@ const deletePlace = async (req, res) => {
 }
 
 const getComments = async (req, res) => {
-    const { pid: placeId } = req.params
     try {
-        const place = await Place.findById(placeId).populate(
-            'comments.creator',
-            'name'
-        )
-        res.status(200).send(place.comments)
+        const comments = await Comment.find({ placeId: req.params.pid })
+            .populate({
+                path: 'creator',
+                select: 'name image',
+            })
+            .sort('-createdAt')
+            .exec()
+        res.json(comments)
     } catch (error) {
+        console.error(error.message)
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
@@ -217,53 +221,73 @@ const addComment = async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
     }
-    const { pid: placeId } = req.params
-    const { text } = req.body
+
     try {
-        const place = await Place.findById(placeId).populate('comments.creator')
-        const newComment = {
-            creator: req.userData.userId,
-            text,
-        }
-        place.comments.push(newComment)
-        await place.save()
-        res.send(place.comments).status(200)
+        const placeId = req.params.pid
+        const creator = req.userData.userId
+        const comment = req.body.comment
+
+        const createdComment = await Comment.create({
+            placeId,
+            creator,
+            comment,
+        })
+        const comments = await Comment.findOne(createdComment)
+            .populate({
+                path: 'creator',
+                select: 'name image',
+            })
+            .exec()
+        res.json(comments)
     } catch (error) {
+        console.error(error.message)
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
     }
 }
 
 const deleteComment = async (req, res) => {
-    const { pid: placeId, cid: commentId } = req.params
-    try {
-        const place = await Place.findById(placeId).populate('comments.creator')
-        //get the comment
-        const comment = place.comments.find(
-            (comment) => comment.id.toString() === commentId
-        )
-        //  Make sure post exists
-        if (!comment) {
-            return res
-                .status(404)
-                .json({ errors: [{ msg: 'Comment not found' }] })
-        }
-        // check if the current user is authorized
-        if (comment.creator._id.toString() !== req.userData.userId) {
-            return res
-                .status(401)
-                .json({ errors: [{ msg: ' User not Authorized' }] })
-        }
-        //remove index
-        const removeIndex = place.comments
-            .map((comment) => comment.id.toString())
-            .indexOf(commentId)
-        // remove the comment
-        place.comments.splice(removeIndex, 1)
-        await place.save()
-        res.send(place.comments).status(200)
-    } catch (error) {
-        res.status(500).json({ errors: [{ msg: 'Server Error' }] })
+    const comment = await Comment.findById(req.params.cid).exec()
+    //  Make sure post exists
+    if (!comment) {
+        return res.status(404).json({ errors: [{ msg: 'Comment not found' }] })
     }
+
+    // check if the current user is authorized
+    if (comment.creator._id.toString() !== req.userData.userId) {
+        return res
+            .status(401)
+            .json({ errors: [{ msg: ' User not Authorized' }] })
+    }
+
+    await Comment.deleteOne(comment)
+
+    res.json({ message: 'Deleted' })
+}
+const updateComment = async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
+    const comment = await Comment.findById(req.params.cid)
+        .populate({
+            path: 'creator',
+            select: 'name image',
+        })
+        .exec()
+    //  Make sure post exists
+    if (!comment) {
+        return res.status(404).json({ errors: [{ msg: 'Comment not found' }] })
+    }
+
+    // check if the current user is authorized
+    if (comment.creator._id.toString() !== req.userData.userId) {
+        return res
+            .status(401)
+            .json({ errors: [{ msg: ' User not Authorized' }] })
+    }
+    comment.comment = req.body.comment
+    await comment.save()
+    res.json(comment)
 }
 
 module.exports = {
@@ -276,4 +300,5 @@ module.exports = {
     getComments,
     addComment,
     deleteComment,
+    updateComment,
 }

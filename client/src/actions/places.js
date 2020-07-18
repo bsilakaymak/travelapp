@@ -10,8 +10,6 @@ import {
     COMMENT_PLACE,
     DELETE_COMMENT_PLACE,
     RATE_PLACE,
-    CURRENT_PLACE,
-    CLEAR_CURRENT_PLACE,
 } from './types'
 
 // get places
@@ -101,11 +99,7 @@ export const updatePlace = (placeId, formData) => async (dispatch) => {
         }
     }
 }
-// current place
-export const getCurrent = (place) => (dispatch) =>
-    dispatch({ type: CURRENT_PLACE, payload: place })
-export const clearCurrent = () => (dispatch) =>
-    dispatch({ type: CLEAR_CURRENT_PLACE })
+
 // delete place
 export const deletePlace = (placeId, history) => async (dispatch) => {
     try {

@@ -6,8 +6,6 @@ import {
     COMMENT_PLACE,
     DELETE_COMMENT_PLACE,
     RATE_PLACE,
-    CURRENT_PLACE,
-    CLEAR_CURRENT_PLACE,
 } from '../actions/types'
 
 const initialState = {
@@ -16,7 +14,6 @@ const initialState = {
     comments: [],
     loading: true,
     error: {},
-    current: null,
 }
 
 export default function (state = initialState, action) {
@@ -36,16 +33,7 @@ export default function (state = initialState, action) {
                 loading: false,
             }
         }
-        case CURRENT_PLACE:
-            return {
-                ...state,
-                current: payload,
-            }
-        case CLEAR_CURRENT_PLACE:
-            return {
-                ...state,
-                current: null,
-            }
+
         case DELETE_PLACE: {
             return {
                 ...state,

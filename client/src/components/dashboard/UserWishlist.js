@@ -1,17 +1,14 @@
-import React, { useState, Fragment, useEffect } from 'react'
+import React, { useState, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { Divider, Card, Image, Title, Icon, Button } from '../shared/Elements'
 import { Row, Grid } from '../shared/GridSystem'
 import Modal from 'react-responsive-modal'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeItemFromWishlist } from '../../actions/user'
-import { loadUser } from '../../actions/auth'
 const UserWishlist = ({ wishlist }) => {
     const [deletePlaceOpen, setDeletePlaceOpen] = useState(false)
     const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(loadUser())
-    }, [dispatch])
+
     const { user } = useSelector((state) => state.auth)
     return (
         <Row>
@@ -27,7 +24,7 @@ const UserWishlist = ({ wishlist }) => {
                 user.travelWishList &&
                 user.travelWishList.map((el) => (
                     <Grid lg={3} md={6} sm={6} key={el._id} mb={2}>
-                        {el.wish && el.wish !==null && (
+                        {el.wish && el.wish !== null && (
                             <Fragment>
                                 <Icon
                                     mr="5px"

@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Container, Grid, Row } from '../shared/GridSystem'
 import { Title, Divider, Image, Holder, Button, Icon } from '../shared/Elements'
 import UserUpdate from './UserUpdate'
 import UserBoards from './UserBoards'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import UserPlaces from './UserPlaces'
 import { Menu } from '../layout/Navbar'
 import UserWishlist from './UserWishlist'
+import { loadUser } from '../../actions/auth'
 
 const UserInfoContent = styled.div`
     background: rgba(0, 0, 0, 0.3);
@@ -38,7 +39,10 @@ const Dashboard = () => {
     const [isBoardsOpen, setIsBoardsOpen] = useState(false)
     const [isPlacesOpen, setIsPlacesOpen] = useState(true)
     const [isWishlistOpen, setIsWishlistOpen] = useState(false)
-
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(loadUser())
+    }, [dispatch])
     return (
         <DashboardContainer>
             {user && (

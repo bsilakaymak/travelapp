@@ -15,7 +15,10 @@ const getPlaceLists = async (req, res) => {
 const getPlaceList = async (req, res) => {
     const { plid } = req.params
     try {
-        const placeList = await PlaceList.findById(plid).populate(['places', 'followers'])
+        const placeList = await PlaceList.findById(plid).populate([
+            'places',
+            'followers',
+        ])
         res.send(placeList).status(200)
     } catch (error) {
         res.status(500).json({ errors: [{ msg: 'Server Error' }] })
@@ -160,11 +163,11 @@ const followPlaceList = async (req, res) => {
     const { plid } = req.params
     try {
         const user = await User.findById(req.userData.userId)
-        const placeList = await PlaceList.findById(plid)
+        const placeList = await PlaceList.findById(plid).populate('followers')
         //check if the place list is already followed
         if (
             placeList.followers.find(
-                (follower) => follower.toString() === req.userData.userId
+                (follower) => follower._id.toString() === req.userData.userId
             ) !== undefined
         ) {
             return res
@@ -182,22 +185,22 @@ const followPlaceList = async (req, res) => {
 const unfollowPlaceList = async (req, res) => {
     const { plid } = req.params
     try {
-        const placeList = await PlaceList.findById(plid)
+        const placeList = await PlaceList.findById(plid).populate('followers')
         //check if the current user following the list
         if (
             placeList.followers.find(
-                (follower) => follower === req.userData.userId
-            )
+                (follower) => follower._id.toString() === req.userData.userId
+            ) === undefined
         ) {
             return res
                 .status(403)
                 .json({ errors: [{ msg: 'User is not a follower' }] })
         }
-        const removeIndex = placeList.followers
-            .map((follower) => follower.toString())
-            .indexOf(req.userData.id)
-        // unfollow
-        placeList.followers.splice(removeIndex, 1)
+        placeList.followers = placeList.followers.filter(
+            (follower) => follower._id.toString() !== req.userData.userId
+        )
+        console.log(placeList.followers)
+        console.log(req.userData.userId)
         await placeList.save()
         res.send(placeList.followers).status(200)
     } catch (error) {

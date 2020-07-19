@@ -259,7 +259,7 @@ const deleteComment = async (req, res) => {
 
     res.json({ message: 'Deleted' })
 }
-const updateComment = async (req, res, next) => {
+const updateComment = async (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })

@@ -30,11 +30,7 @@ const getPlaces = async (req, res) => {
     let places
     try {
         places = await Place.find()
-        if (places.length === 0) {
-            return res
-                .status(404)
-                .json({ errors: [{ msg: 'Place not found' }] })
-        }
+
         if (tagFilter) {
             places = await Place.find({
                 tags: { $in: tagFilter.split(',') },

@@ -11,7 +11,7 @@ import {
 } from '../actions/types'
 
 const initialState = {
-    boards: [],
+    boards: null,
     board: null,
     loading: true,
     error: {},

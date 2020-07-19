@@ -20,7 +20,7 @@ const CommentFormStyled = styled(Form)`
     margin-bottom: 0.8rem;
     margin-top: 0.8rem;
 
-    @media (min-width: 576px) {
+    @media (min-width: 300px) {
         width: 100%;
     }
 `
@@ -38,7 +38,7 @@ const CommenterNameHolder = styled.div`
 `
 const ScrollToBottomStyled = styled(ScrollToBottom)`
     height: 400px;
-    width: 400px;
+    width: 100%;
 `
 const CommentForm = ({ placeId, isAuthenticated, user }) => {
     const { comments } = useSelector((state) => state.places)
@@ -75,71 +75,80 @@ const CommentForm = ({ placeId, isAuthenticated, user }) => {
                     </InputHolder>
                 </CommentFormStyled>
             )}
-            <ScrollToBottomStyled>
-                {comments !== null &&
-                    comments.map(({ _id, createdAt, creator, comment }) => (
-                        <CommentItemHolder>
-                            <Card
-                                key={_id}
-                                marginTop="0.25rem"
-                                marginBottom="0.25rem"
-                            >
-                                <CommenterNameHolder>
-                                    <Holder
-                                        width="50px"
-                                        height="50px"
-                                        mt="-10px"
-                                        ml="-10px"
-                                    >
-                                        <Image
-                                            src={creator.image}
-                                            alt={creator.name}
-                                        />
-                                    </Holder>
-                                    <Title marginLeft="10px" marginRight="10px">
-                                        {creator.name}
-                                    </Title>
-                                    <span>
-                                        <Moment format="h:mm a">
-                                            {createdAt}
-                                        </Moment>
-                                    </span>
-                                    <Holder
-                                        ml="auto"
-                                        direction="inherit"
-                                        width="10%"
-                                    >
-                                        {isAuthenticated &&
-                                            creator._id === user._id && (
-                                                <>
-                                                    <Icon
-                                                        mr="5px"
-                                                        className="far fa-trash-alt"
-                                                        onClick={() =>
-                                                            dispatch(
-                                                                deleteComment(
+            {comments.length > 0 && (
+                <ScrollToBottomStyled>
+                    {comments !== null &&
+                        comments.map(({ _id, createdAt, creator, comment }) => (
+                            <CommentItemHolder>
+                                <Card
+                                    key={_id}
+                                    marginTop="0.25rem"
+                                    marginBottom="0.25rem"
+                                >
+                                    <CommenterNameHolder>
+                                        <Holder
+                                            width="50px"
+                                            height="50px"
+                                            mt="-10px"
+                                            ml="-10px"
+                                        >
+                                            <Image
+                                                src={creator.image}
+                                                alt={creator.name}
+                                            />
+                                        </Holder>
+                                        <Title
+                                            marginLeft="10px"
+                                            marginRight="10px"
+                                        >
+                                            {creator.name}
+                                        </Title>
+                                        <span>
+                                            <Moment format="h:mm a">
+                                                {createdAt}
+                                            </Moment>
+                                        </span>
+                                        <Holder
+                                            ml="auto"
+                                            direction="inherit"
+                                            width="10%"
+                                        >
+                                            {isAuthenticated &&
+                                                creator._id === user._id && (
+                                                    <>
+                                                        <Icon
+                                                            mr="5px"
+                                                            className="far fa-trash-alt"
+                                                            onClick={() =>
+                                                                dispatch(
+                                                                    deleteComment(
+                                                                        _id
+                                                                    )
+                                                                )
+                                                            }
+                                                        ></Icon>
+                                                        <Icon
+                                                            mr="5px"
+                                                            className="far fa-edit"
+                                                            onClick={() => {
+                                                                setUpdateMode(
                                                                     _id
                                                                 )
-                                                            )
-                                                        }
-                                                    ></Icon>
-                                                    <Icon
-                                                        mr="5px"
-                                                        className="far fa-edit"
-                                                        onClick={() => {
-                                                            setUpdateMode(_id)
-                                                            setComment(comment)
-                                                        }}
-                                                    ></Icon>
-                                                </>
-                                            )}
-                                    </Holder>
-                                </CommenterNameHolder>
-                                <Comment>{comment}</Comment>
-                            </Card>
-                        </CommentItemHolder>
-                    ))}
-            </ScrollToBottomStyled>
+                                                                setComment(
+                                                                    comment
+                                                                )
+                                                            }}
+                                                        ></Icon>
+                                                    </>
+                                                )}
+                                        </Holder>
+                                    </CommenterNameHolder>
+                                    <Comment>{comment}</Comment>
+                                </Card>
+                            </CommentItemHolder>
+                        ))}
+                </ScrollToBottomStyled>
+            )}
         </>
     )
 }

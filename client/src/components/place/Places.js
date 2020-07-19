@@ -11,6 +11,7 @@ const Places = () => {
     const [search, setSearch] = useState(null)
     const [tags, setTags] = useState([])
     const isAuth = useSelector((state) => state.auth.isAuthenticated)
+    // const { loading } = useSelector((state) => state.places)
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getPlaces(search, tags.join(',')))

@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { getBoards } from '../../actions/boards'
 import BoardItem from './BoardItem'
-import { Button, Icon } from '../shared/Elements'
+import { Button, Icon, Card, Title } from '../shared/Elements'
 import { Link } from 'react-router-dom'
-
+import { Container } from '../shared/GridSystem'
 const BoardListDiv = styled.div`
     display: flex;
     align-item: center;
@@ -42,9 +42,18 @@ const BoardList = () => {
                 </CreateBoardLink>
             )}
             <BoardListDiv>
-                {boards.map((board) => (
-                    <BoardItem board={board} key={board._id} />
-                ))}
+                <Container>
+                    {boards !== null && boards.length === 0 ? (
+                        <Card>
+                            <Title center>No Boards</Title>
+                        </Card>
+                    ) : (
+                        boards !== null &&
+                        boards.map((board) => (
+                            <BoardItem board={board} key={board._id} />
+                        ))
+                    )}
+                </Container>
             </BoardListDiv>
         </>
     )

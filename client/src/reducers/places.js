@@ -8,12 +8,13 @@ import {
     RATE_PLACE,
     GET_PLACE_COMMENTS,
     UPDATE_PLACE_COMMENTS,
+    ADD_PLACE,
 } from '../actions/types'
 
 const initialState = {
     places: null,
     place: null,
-    comments: null,
+    comments: [],
     loading: true,
     error: {},
 }
@@ -27,6 +28,7 @@ export default function (state = initialState, action) {
                 places: payload,
                 loading: false,
             }
+
         case GET_PLACE:
         case UPDATE_PLACE: {
             return {
@@ -35,7 +37,12 @@ export default function (state = initialState, action) {
                 loading: false,
             }
         }
-
+        case ADD_PLACE:
+            return {
+                ...state,
+                places: [...state.places, payload],
+                loading: false,
+            }
         case DELETE_PLACE: {
             return {
                 ...state,

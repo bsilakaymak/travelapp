@@ -32,7 +32,7 @@ export const Menu = styled.nav`
             background: #122141;
             width: 100%;
             visibility: ${(props) => props.show || 'hidden'};
-            z-index: 5;
+            z-index: 6;
         }
     }
 `
@@ -83,13 +83,18 @@ const Navbar = () => {
             ></HamburgerButton>
             <Ul>
                 {!isAuthenticated && (
-                    <Link active={isActive('/') ? '#3F51B5' : '#fff'} to="/">
+                    <Link
+                        active={isActive('/') ? '#3F51B5' : '#fff'}
+                        to="/"
+                        onClick={() => toggle(false)}
+                    >
                         Home
                     </Link>
                 )}
                 <Link
                     active={isActive('/places') ? '#3F51B5' : '#fff'}
                     to="/places"
+                    onClick={() => toggle(false)}
                 >
                     Places
                 </Link>
@@ -97,6 +102,7 @@ const Navbar = () => {
                 <Link
                     active={isActive('/boards') ? '#3F51B5' : '#fff'}
                     to="/boards"
+                    onClick={() => toggle(false)}
                 >
                     Boards
                 </Link>
@@ -104,6 +110,7 @@ const Navbar = () => {
                     <Link
                         active={isActive('/dashboard') ? '#3F51B5' : '#fff'}
                         to="/dashboard"
+                        onClick={() => toggle(false)}
                     >
                         Dashboard
                     </Link>
@@ -112,12 +119,19 @@ const Navbar = () => {
                 <Link
                     active={isActive('/users') ? '#3F51B5' : '#fff'}
                     to="/users"
+                    onClick={() => toggle(false)}
                 >
                     Users
                 </Link>
 
                 {isAuthenticated && (
-                    <Link to="#!" onClick={(e) => dispatch(logout())}>
+                    <Link
+                        to="#!"
+                        onClick={(e) => {
+                            dispatch(logout())
+                            toggle(false)
+                        }}
+                    >
                         Logout
                     </Link>
                 )}

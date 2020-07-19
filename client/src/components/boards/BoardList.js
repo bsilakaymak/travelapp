@@ -5,19 +5,7 @@ import { getBoards } from '../../actions/boards'
 import BoardItem from './BoardItem'
 import { Button, Icon, Card, Title } from '../shared/Elements'
 import { Link } from 'react-router-dom'
-import { Container } from '../shared/GridSystem'
-const BoardListDiv = styled.div`
-    display: flex;
-    align-item: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 2%;
-    @media (max-width: 768px) {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-`
+import { Container, Row } from '../shared/GridSystem'
 
 const CreateBoardLink = styled(Link)`
     text-align: center;
@@ -41,8 +29,8 @@ const BoardList = () => {
                     </Button>
                 </CreateBoardLink>
             )}
-            <BoardListDiv>
-                <Container>
+            <Container>
+                <Row>
                     {boards !== null && boards.length === 0 ? (
                         <Card>
                             <Title center>No Boards</Title>
@@ -53,8 +41,8 @@ const BoardList = () => {
                             <BoardItem board={board} key={board._id} />
                         ))
                     )}
-                </Container>
-            </BoardListDiv>
+                </Row>
+            </Container>
         </>
     )
 }

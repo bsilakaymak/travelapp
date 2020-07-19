@@ -2,15 +2,7 @@ import React, { useEffect, useState, Fragment } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'react-responsive-modal/styles.css'
 import { Modal } from 'react-responsive-modal'
-import {
-    Card,
-    Title,
-    Holder,
-    Image,
-    Divider,
-    Button,
-    Icon,
-} from '../shared/Elements'
+import { Card, Title, Image, Divider, Button, Icon } from '../shared/Elements'
 import { Container, Row, Grid } from '../shared/GridSystem'
 import CommentForm from './CommentForm'
 import { useSelector, useDispatch } from 'react-redux'
@@ -120,13 +112,10 @@ const PlaceDetails = () => {
 
                         <Image src={place.image} />
 
-                        <Divider gray marginBottom="0.8rem" />
-                        <Holder>
-                            <Image src={''} alt="" />
-                        </Holder>
                         <Title center marginTop="1.5rem" marginBottom="1.5rem">
                             {place.address}
                         </Title>
+                        <Divider gray marginBottom="0.8rem" />
                         <p>{place.description}</p>
                         <Divider
                             gray
@@ -154,10 +143,9 @@ const PlaceDetails = () => {
                         user &&
                         !isInWishlist(user.travelWishList, placeId) ? (
                             <Button
-                                small
+                                medium
                                 margin="5px"
-                                background="green"
-                                fontSize="0.98rem"
+                                joustBlue
                                 onClick={() =>
                                     dispatch(addItemToWishlist(placeId))
                                 }

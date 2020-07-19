@@ -1,21 +1,9 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Card, Title, Divider, Button } from '../shared/Elements'
 import { useSelector } from 'react-redux'
-const BoardItemDiv = styled.div`
-width:30%;
-display:flex;
-flex-direction column;
-align-items:center;
-justify-content:center;
-margin:1%;
-padding:1%;
-text-align:center;
-@media (max-width: 768px) {
-    width:80%;
-}
-`
+import { Grid } from '../shared/GridSystem'
 
 const BoardLink = styled(Link)`
     text-decoration: none;
@@ -24,9 +12,9 @@ const BoardLink = styled(Link)`
 const BoardItem = ({ board }) => {
     const { isAuthenticated } = useSelector((state) => state.auth)
     return (
-        <BoardItemDiv>
+        <Grid md={4} sm={6}>
             {board && (
-                <Fragment>
+                <>
                     <Card
                         marginTop="1rem"
                         marginBottom="1rem"
@@ -46,9 +34,9 @@ const BoardItem = ({ board }) => {
                             </BoardLink>
                         )}
                     </Card>
-                </Fragment>
+                </>
             )}
-        </BoardItemDiv>
+        </Grid>
     )
 }
 

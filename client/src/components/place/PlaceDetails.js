@@ -117,7 +117,9 @@ const PlaceDetails = () => {
                             {place.title}
                         </Title>
                         <Divider gray marginBottom="0.8rem" />
+
                         <Image src={place.image} />
+
                         <Divider gray marginBottom="0.8rem" />
                         <Holder>
                             <Image src={''} alt="" />

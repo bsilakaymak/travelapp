@@ -51,7 +51,7 @@ export const getPlace = (placeId) => async (dispatch) => {
 }
 
 // add place
-export const addPlace = (placeData, history) => async (dispatch) => {
+export const addPlace = (placeData) => async (dispatch) => {
     const { title, image, address, description, tags } = placeData
     const formData = new FormData()
     formData.append('title', title)
@@ -70,6 +70,7 @@ export const addPlace = (placeData, history) => async (dispatch) => {
             type: ADD_PLACE,
             payload: res.data,
         })
+
         dispatch(setAlert('Place is added', 'success'))
     } catch (error) {
         const errors = error.response.data.errors

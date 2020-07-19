@@ -18,6 +18,7 @@ svg {
 }
 #root{
     height:calc(100vh - 48px);
+    overflow: auto;
 }
 
 

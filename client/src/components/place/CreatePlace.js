@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useHistory, Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Form, Input, Label, FormTitle, InputHolder } from '../shared/FormGroup'
 import { Divider, Button, Icon } from '../shared/Elements'
 import ImageUpload from '../shared/ImageUpload'
@@ -26,10 +26,9 @@ const CreatePlace = () => {
         image: null,
     })
     const dispatch = useDispatch()
-
     const [previewUrl, setPreviewUrl] = useState()
-
     const { title, address, description, image } = placeData
+
     const onChangeCreatePlaceHandler = (e) => {
         if (e.target.name === 'image') {
             setPlaceData({ ...placeData, image: e.target.files[0] })
@@ -38,6 +37,7 @@ const CreatePlace = () => {
             setPlaceData({ ...placeData, [e.target.name]: e.target.value })
         }
     }
+
     const onSubmitCreatPlaceFormHandler = (e) => {
         e.preventDefault()
         const placeFormData = { image, title, address, description, tags }
@@ -51,10 +51,11 @@ const CreatePlace = () => {
             return dispatch(setAlert(' All fields are required', 'danger'))
         }
 
-        dispatch(addPlace(placeFormData, history))
+        dispatch(addPlace(placeFormData))
 
-        return <Redirect to={`/places`} />
+        history.push('/places')
     }
+
     const checkboxHandler = (event) => {
         const tagName = event.target.value
         const checked = event.target.checked

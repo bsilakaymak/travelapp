@@ -181,7 +181,7 @@ const updateItemInTravelWishlist = async (req, res) => {
             .populate('travelWishList.wish')
             .exec()
         const wish = user.travelWishList.find(
-            (wish) => wish.wish.toString() === placeId
+            (wish) => wish.wish._id.toString() === placeId
         )
         wish.isVisited = isVisited
         await user.save()

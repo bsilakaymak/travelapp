@@ -4,11 +4,27 @@ import { Divider, Card, Image, Title, Icon, Button } from '../shared/Elements'
 import { Row, Grid } from '../shared/GridSystem'
 import Modal from 'react-responsive-modal'
 import { useDispatch, useSelector } from 'react-redux'
-import { removeItemFromWishlist } from '../../actions/user'
+import {
+    removeItemFromWishlist,
+    updateItemInWishlist,
+} from '../../actions/user'
+import styled from 'styled-components'
+const StyledCheckBox = styled.input`
+    width: 1.5rem;
+    height: 1.5rem;
+    font-family: 'Font Awesome 5 Free';
+    content: '\f00c';
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 900;
+    color: #3f51b5;
+    margin-right: 10px;
+    box-shadow: 1px 1px 7px 0px rgba(0, 0, 255, 0.5);
+`
+
 const UserWishlist = ({ wishlist }) => {
     const [deletePlaceOpen, setDeletePlaceOpen] = useState(false)
     const dispatch = useDispatch()
-
     const { user } = useSelector((state) => state.auth)
     return (
         <Row>
@@ -84,13 +100,31 @@ const UserWishlist = ({ wishlist }) => {
                                             {el.wish.description.slice(0, 40)
                                                 .length === 40 && '...'}
                                         </p>
-                                        <p>
-                                            {el.isVisited
-                                                ? 'Visited'
-                                                : 'Not Visited Yet'}
-                                        </p>
                                     </Card>
                                 </Link>
+                                <div style={{marginTop:'3%', textAlign:'center',padding:'1rem', backgroundColor:'#3E497A'}}>
+                                    <StyledCheckBox
+                                        name="is-visited"
+                                        type="checkbox"
+                                        value={el.isVisited}
+                                        checked={el.isVisited}
+                                        onChange={() => {
+                                            dispatch(
+                                                updateItemInWishlist(
+                                                    el.wish._id,
+                                                    {
+                                                        isVisited: !el.isVisited,
+                                                    }
+                                                )
+                                            )
+                                        }}
+                                    />
+                                    <label htmlFor="is-visited">
+                                        {el.isVisited
+                                            ? 'Visited'
+                                            : 'Not Visited Yet'}
+                                    </label>
+                                </div>
                             </Fragment>
                         )}
                     </Grid>

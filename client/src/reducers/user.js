@@ -38,20 +38,14 @@ export default function (state = initialState, action) {
                 loading: false,
             }
         }
-        case ADD_PLACE_WL: {
-            return {
-                ...state,
-                user: { ...state.user, travelWishList: payload },
-                loading: false,
-            }
-        }
+        case ADD_PLACE_WL:
         case UPDATE_PLACE_WL:
         case DELETE_PLACE_WL: {
             return {
                 ...state,
                 user: {
                     ...state.user,
-                    travelWishList: payload
+                    travelWishList: payload,
                 },
                 loading: false,
             }

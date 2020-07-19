@@ -11,6 +11,7 @@ import {
     UNFOLLOW_USER,
     ADD_PLACE_WL,
     DELETE_PLACE_WL,
+    UPDATE_PLACE_WL,
 } from '../actions/types'
 
 const initialState = {
@@ -48,9 +49,10 @@ export default (state = initialState, action) => {
             }
         case ADD_PLACE_WL:
         case DELETE_PLACE_WL:
-            return{
+        case UPDATE_PLACE_WL:
+            return {
                 ...state,
-                user:{...state.user, travelWishList: payload }
+                user: { ...state.user, travelWishList: payload },
             }
         case LOGIN_FAIL:
         case AUTH_ERROR:

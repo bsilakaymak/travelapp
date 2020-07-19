@@ -38,6 +38,7 @@ const Checkbox = (props) => {
                 value={props.value}
                 onChange={props.onChange}
                 name={props.name}
+                checked={props.checked}
             />
             <Label htmlFor={props.htmlFor}>{props.label}</Label>
         </CheckBoxHolder>

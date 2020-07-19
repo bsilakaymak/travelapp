@@ -24,19 +24,20 @@ export const Divider = styled.div`
     border-radius: 10px;
 `
 export const Button = styled.button`
-    ${(props) => {
-        if (props.darkGray) {
+    ${({ darkGray, red, gray, joustBlue }) => {
+        if (darkGray) {
             return `background-color:rgba(0,0,0,.75);;
            color:white;`
-        } else if (props.red) {
+        } else if (red) {
             return `background-color:#e84118;
             color:white;`
-        } else if (props.gray) {
+        } else if (gray) {
             return `background-color:gray;
             color:white;`
-        } else if (props.background) {
-            return `background-color: ${props.background};
-            color: ${props.buttonTextColor}
+        } else if (joustBlue) {
+            return `
+            background-color:#54a0ff;
+            color:black;
             `
         } else {
             return `background-color:#3f51b5;
@@ -58,15 +59,23 @@ export const Button = styled.button`
     display: inline-block;
     font-size: 16px;
     outline: none;
-    width: ${(props) => (props.small ? '150px' : '100%')};
+    width: ${({ small, medium }) => {
+        if (small) {
+            return '150px'
+        } else if (medium) {
+            return '200px'
+        } else {
+            return '100%'
+        }
+    }};
     @media (max-width: 576px) {
         width: 100%;
     }
     cursor: pointer;
-    font-size: ${(props) => props.fontSize};
+    font-size: ${({ fontSize }) => fontSize};
     position: relative;
     z-index: 1;
-    float: ${(props) => props.right && 'right'};
+    float: ${({ right }) => right && 'right'};
     &::after {
         content: '';
         position: absolute;
@@ -114,6 +123,8 @@ export const Title = styled.h4`
 `
 export const Image = styled.img`
     width: 100%;
+    height: ${({ height }) => height};
+    border-radius: ${({ rounded }) => rounded && '50%'};
 `
 export const Holder = styled.div`
     display: flex;

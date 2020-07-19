@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import ScrollToBottom from 'react-scroll-to-bottom'
 
 import { Input, Form, Label, InputHolder } from '../shared/FormGroup'
-import { Card, Title, Icon, Holder, Image } from '../shared/Elements'
+import { Card, Title, Icon, Holder, Image, Divider } from '../shared/Elements'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     addComment,
@@ -97,12 +97,14 @@ const CommentForm = ({ placeId, isAuthenticated, user }) => {
                                                 alt={creator.name}
                                             />
                                         </Holder>
+
                                         <Title
                                             marginLeft="10px"
                                             marginRight="10px"
                                         >
                                             {creator.name}
                                         </Title>
+
                                         <span>
                                             <Moment format="h:mm a">
                                                 {createdAt}
@@ -143,6 +145,11 @@ const CommentForm = ({ placeId, isAuthenticated, user }) => {
                                                 )}
                                         </Holder>
                                     </CommenterNameHolder>
+                                    <Divider
+                                        gray
+                                        marginTop="0.5rem"
+                                        marginBottom="0.5rem"
+                                    />
                                     <Comment>{comment}</Comment>
                                 </Card>
                             </CommentItemHolder>

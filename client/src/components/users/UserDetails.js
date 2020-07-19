@@ -55,7 +55,8 @@ const UserDetails = () => {
                                         : dispatch(unfollowUser(user._id))
                                 }}
                             >
-                                {isAuthenticated && !isFollowed(currentUser.following, user._id)
+                                {isAuthenticated &&
+                                !isFollowed(currentUser.following, user._id)
                                     ? 'Follow'
                                     : 'Unfollow'}
                             </Button>
